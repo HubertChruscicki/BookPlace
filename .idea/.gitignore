@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Node/Vite frontend
+bookplace-frontend/frontend/node_modules/
+bookplace-frontend/frontend/dist/
+bookplace-frontend/frontend/.env
+bookplace-frontend/frontend/.vite/
+
+# MacOS/Linux
+.DS_Store
