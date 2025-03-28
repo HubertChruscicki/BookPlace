@@ -4,9 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="added models according to db">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0002_remove_offers_offer_type_id_offers_offer_types.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_images_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_location_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offfer_types_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353/storage_v2/_src_/database/db.fgwAAA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353/storage_v2/_src_/database/db.fgwAAA/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/routers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +66,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend" />
     </key>
@@ -85,10 +102,26 @@
       <workItem from="1742566111991" duration="3000" />
       <workItem from="1743097122480" duration="7000" />
       <workItem from="1743100022638" duration="669000" />
+      <workItem from="1743100719718" duration="3140000" />
+      <workItem from="1743114732344" duration="7000" />
+      <workItem from="1743176253208" duration="2640000" />
     </task>
+    <task id="LOCAL-00001" summary="added models according to db">
+      <option name="closed" value="true" />
+      <created>1743101005016</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743101005016</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added models according to db" />
+    <option name="LAST_COMMIT_MESSAGE" value="added models according to db" />
   </component>
 </project>

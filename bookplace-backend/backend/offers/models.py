@@ -5,7 +5,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Offers(models.Model):
     landlord_id = models.ForeignKey(Users, on_delete=models.CASCADE)
-    offer_type_id = models.ForeignKey('OfferTypes', on_delete=models.CASCADE)
+    offer_types = models.ManyToManyField('OfferTypes')
     title = models.CharField(max_length=100, default='')
     description = models.CharField(max_length=1000, default='')
     price_per_night = models.IntegerField(
@@ -39,7 +39,7 @@ class OfferLocation(models.Model):
 class OfferImages(models.Model):
     offer_id = models.ForeignKey(Offers, on_delete=models.CASCADE)
     is_main = models.BooleanField(default=False)
-    path = models.FileField(upload_to='images/')  # NIE wymaga Pillow!
+    path = models.FileField(upload_to='images/')
 
 
 class OfferDetails(models.Model):
