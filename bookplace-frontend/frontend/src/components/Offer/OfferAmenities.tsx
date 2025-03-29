@@ -30,6 +30,7 @@ const OfferAmenitites: React.FC = () => {
                 textTransform: "none",
                 fontSize: "1.1rem"
             }}
+            className={"text-8xl"}
             >
             Show all amenities (20)
             </Button>

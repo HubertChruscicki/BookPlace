@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Typography} from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import {colors} from "../../theme/colors.ts";
+import {useOffer} from "./OfferContext.tsx";
 const OfferHeader: React.FC = () => {
 
     const [isLiked, setIsLiked] = useState<boolean>(false)
+
+        const { offer, isLoading, error } = useOffer();
+
+    useEffect(() => {
+        console.log(offer)
+    }, [offer]);
+
+
 
   return (
     <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between",
@@ -20,7 +29,7 @@ const OfferHeader: React.FC = () => {
         }}>
 
         <Typography variant="h1" component="h2" sx={{fontSize: "1.5rem", fontWeight: "bold", maxWidth: "78%"}}>
-            Luksusowy i zapierający dech w piersiach Eiffel & Paris Amazing View
+            {offer?.title}
         </Typography>
 
 

@@ -18,9 +18,10 @@ class Offers(models.Model):
 
 class OfferTypes(models.Model):
     name = models.CharField(max_length=100, default='')
+    #TODO MAIN TYPE TO DISPLAY ON OFFER PAGE
 
 class OfferLocation(models.Model):
-    offer_id = models.ForeignKey(Offers, on_delete=models.CASCADE)
+    offer_id = models.OneToOneField(Offers, on_delete=models.CASCADE)
     country = models.CharField(max_length=100, default='')
     city = models.CharField(max_length=100, default='')
     address = models.CharField(max_length=100, default='')

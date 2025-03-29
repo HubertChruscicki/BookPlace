@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import {Avatar, Box, Button, Rating, Typography} from "@mui/material";
+import React, {useEffect} from 'react';
+import { Box } from "@mui/material";
 import OfferAmenities from "./OfferAmenities.tsx";
 import OfferDescPreview from "./OfferDescPreview.tsx";
 import OfferLandlordPreview from "./OfferLandlordPreview.tsx";
 import OfferLocationRating from "./OfferLocationRating.tsx";
 const OfferInfo: React.FC = () => {
+
+
 
   return (
     <Box sx={{display: "flex", flexDirection: "column",

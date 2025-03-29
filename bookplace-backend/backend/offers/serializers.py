@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Offers, OfferLocation, OfferDetails, OfferImages, OfferTypes
-
+from users.models import Users
 class OffersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offers
@@ -150,7 +150,13 @@ class OfferTypesSerializer(serializers.ModelSerializer):
         return value
 
 
-
+class LandlordBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Users
+        fields = [
+            'id',
+            'first_name'
+        ]
 
 
 
