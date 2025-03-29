@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="added models according to db">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0002_remove_offers_offer_type_id_offers_offer_types.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_images_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_location_view.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offfer_types_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353.xml" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353/storage_v2/_src_/database/db.fgwAAA/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/.idea/dataSources/688b5f5f-46ad-41b4-8d4b-795a69ae9353/storage_v2/_src_/database/db.fgwAAA/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/routers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,21 +36,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/BookPlace/BookPlace&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/huber/Desktop/BookPlace/BookPlace",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "copyright",
+    "ts.external.directory.path": "C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
@@ -105,6 +92,7 @@
       <workItem from="1743100719718" duration="3140000" />
       <workItem from="1743114732344" duration="7000" />
       <workItem from="1743176253208" duration="2640000" />
+      <workItem from="1743181472329" duration="338000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
