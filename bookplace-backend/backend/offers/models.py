@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Offers(models.Model):
     landlord_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     offer_types = models.ManyToManyField('OfferTypes')
+    offer_main_type = models.ForeignKey('OfferTypes', on_delete=models.CASCADE, related_name='main_offer_type', default=1)
     title = models.CharField(max_length=100, default='')
     description = models.CharField(max_length=1000, default='')
     price_per_night = models.IntegerField(

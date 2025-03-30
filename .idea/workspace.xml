@@ -5,16 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="gitignor update">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/const.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/BookPlace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BookPlace.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/media/images/zakopane6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferAmenities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferAmenities.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferDescPreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferDescPreview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferLocationRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferLocationRating.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,13 +82,15 @@
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
       </set>
     </attachedChunks>
   </component>
@@ -116,6 +123,8 @@
       <workItem from="1743254468127" duration="3521000" />
       <workItem from="1743264343611" duration="19000" />
       <workItem from="1743269568528" duration="1087000" />
+      <workItem from="1743356175180" duration="6507000" />
+      <workItem from="1743365159760" duration="6212000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />

@@ -2,6 +2,7 @@ import {Box, Button, Typography} from "@mui/material";
 import {colors} from "../../theme/colors.ts";
 import React, {useState} from "react";
 import Divider from "@mui/material/Divider";
+import {useOffer} from "./OfferContext.tsx";
 
 const description = `
 Dom nie jest wynajmowany 21.06 - 15.08. Rezerwacja jest czynna 9 miesięcy wcześniej.
@@ -14,7 +15,11 @@ Odosobniony pokój telewizyjny (tylko streaming).
 Loft z 4 łóżkami (Uwaga: strome schody).
 2 łazienki, jedna z sauną i pralką.
 `;
+
+
 const OfferDescPreview: React.FC = () => {
+
+    const { offer, isLoading, error } = useOffer();
 
     return (
         <Box>
@@ -34,7 +39,7 @@ const OfferDescPreview: React.FC = () => {
                 textOverflow: 'ellipsis',
               }}
             >
-              {description}
+              {offer?.description || description}
             </Typography>
 
             <Button

@@ -8,6 +8,7 @@ class OffersSerializer(serializers.ModelSerializer):
             'id',
             'landlord_id',
             'offer_types',
+            'offer_main_type',
             'title',
             'description',
             'price_per_night',
@@ -15,6 +16,14 @@ class OffersSerializer(serializers.ModelSerializer):
             'is_active'
         ]
         depth = 1
+    def validate(self, data):
+        main_type = data.get('offer_main_type')
+        types = data.get('offer_types')
+
+        if main_type and types and main_type not in types:
+            raise serializers.ValidationError("Main offer type must be one of the selected offer types.")
+
+        return data
     def validate_price_per_night(self, value):
         if value < 0:
             raise serializers.ValidationError("Price per night cannot be negative.")
