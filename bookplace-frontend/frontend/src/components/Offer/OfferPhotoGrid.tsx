@@ -18,11 +18,6 @@ const OfferHeader: React.FC = () => {
         }
     }, [offer]);
 
-    useEffect(() => {
-    console.log("imageUrls updated:", imageUrls);
-}, [imageUrls]);
-
-
   return (
     <Box
     sx={{

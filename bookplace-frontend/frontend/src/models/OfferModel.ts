@@ -31,6 +31,7 @@ export interface OfferLocation {
   country: string;
   city: string;
   address: string;
+  province: string;
   latitude: number;
   longitude: number;
 }
