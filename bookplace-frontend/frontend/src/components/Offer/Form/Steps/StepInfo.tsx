@@ -37,7 +37,7 @@ const StepInfo: React.FC = () => {
                     error={!!errors.description}
                 />
 
-                <Box //TODO WHY THIS BOX MAKES FORMS THINER
+                <Box
                     sx={{display: "flex", width: "100%", justifyContent: "space-between", marginBottom: 4}}>
                     <Typography variant="caption" color="error">
                         {errors.description?.type === "required" && "Description is required"}

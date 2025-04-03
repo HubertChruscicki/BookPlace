@@ -1,10 +1,11 @@
+import {Box, Typography} from "@mui/material";
 import {OfferModel} from "../models/OfferModel.ts";
 import api from "../api/axiosApi.ts";
 import AddOfferForm from "../components/Offer/Form/AddOfferForm.tsx";
 
-const AddOfferPage: React.FC = () => {
+const AddUserPage: React.FC = () => {
 
-    const handleAddOffer = async (offer: OfferModel) => {
+    const handleAddUser = async (offer: UserModel) => {
         try {
             await api.post(`/offers/add-offer/`, offer, {
                 headers: {
@@ -19,9 +20,9 @@ const AddOfferPage: React.FC = () => {
 
 
     return(
-        <AddOfferForm onSubmit={handleAddOffer}/>
+        <AddUserForm onSubmit={handleAddUser}/>
     );
 };
 
 
-export default AddOfferPage;
+export default AddUserPage;

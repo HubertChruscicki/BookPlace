@@ -6,10 +6,10 @@ import {colors} from "../../theme/colors.ts"
 interface FormContainerProps {
     title?: string;
     children?: React.ReactNode;
-    // onSubmit?: React.FormEventHandler<HTMLFormElement>;
+    onSubmit?: React.FormEventHandler<HTMLFormElement>;
 }
 
-const FormContainer: React.FC<FormContainerProps> = ({title, children}) => {
+const FormContainer: React.FC<FormContainerProps> = ({title, onSubmit, children}) => {
 
     return (
         <Container maxWidth="md" sx={{
@@ -17,12 +17,13 @@ const FormContainer: React.FC<FormContainerProps> = ({title, children}) => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            height: "100vh"
+            height: "100vh",
         }}>
             <Paper
                 elevation={0}
                 sx={{
                     p: 6,
+                    minWidth: "35vw",
                     position: 'relative',
                 }}
             >
@@ -43,6 +44,7 @@ const FormContainer: React.FC<FormContainerProps> = ({title, children}) => {
 
                 <Box
                     component="form"
+                    onSubmit={onSubmit}
                     sx={{
                         width: "100%",
                         '& .MuiFormControl-root': {

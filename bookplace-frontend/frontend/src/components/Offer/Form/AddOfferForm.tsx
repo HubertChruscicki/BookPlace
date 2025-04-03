@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {OfferModel} from "../../../models/OfferModel.ts";
-import {useNavigate} from "react-router-dom";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {FormProvider} from "react-hook-form";
 import {Box, Button, Step, StepLabel, Stepper} from "@mui/material";
 import StepInfo from './Steps/StepInfo.tsx';
@@ -17,15 +16,14 @@ export interface OfferFormProps {
 
 const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
 
-    const navigate = useNavigate();
     const [activeStep, setActiveStep] = React.useState(0);
     const methods = useForm<OfferModel>({
         mode: "onSubmit",
         defaultValues: {
           title: "",
           description: "",
-          price_per_night: null,
-          max_guests: null,
+          price_per_night: 0,
+          max_guests: 5,
           location: {
             country: "",
             city: "",
@@ -47,10 +45,10 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
             swimming_pool: false,
             sauna: false,
             jacuzzi: false,
-            rooms: null,
-            beds: null,
-            double_beds: null,
-            sofa_beds: null
+            rooms: 1,
+            beds: 0,
+            double_beds: 0,
+            sofa_beds: 0
           },
           images: [],
           offer_types: [],
@@ -92,8 +90,9 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
 
     // const handleFinalSubmit = methods.handleSubmit(onSubmit);
 
-    const handleFinalSubmit = methods.handleSubmit((data) => {
+    const handleFinalSubmit = methods.handleSubmit(async (data) => {
         console.log("🟢 Data that would be sent to server:", data);
+        await onSubmit(data);
     });
 
 

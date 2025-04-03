@@ -100,6 +100,7 @@ class OfferLocationSerializer(serializers.ModelSerializer):
             'country',
             'city',
             'address',
+            'province',
             'latitude',
             'longitude'
         ]
@@ -117,6 +118,12 @@ class OfferLocationSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("Address is required.")
         return value
+
+    def validate_province(self, value):
+        if not value:
+            raise serializers.ValidationError("Province is required.")
+        return value
+
     def validate_latitude(self, value):
         if value < -90 or value > 90:
             raise serializers.ValidationError("Latitude must be between -90 and 90.")
@@ -169,5 +176,26 @@ class LandlordBasicSerializer(serializers.ModelSerializer):
 
 
 
+class FullOfferCreateSerializer(serializers.ModelSerializer):
+    details = OfferDetailsSerializer()
+    location = OfferLocationSerializer()
+    images = OfferImagesSerializer(many=True)
 
+    class Meta:
+        model = Offers
+        fields = [
+            'title',
+            'description',
+            'price_per_night',
+            'max_guests',
+            'offer_main_type',
+            'offer_types',
+            'details',
+            'location',
+            'images'
+        ]
 
+    def validate(self, data):
+        if data["offer_main_type"] not in data["offer_types"]:
+            raise serializers.ValidationError("Main offer type must be one of the selected offer types.")
+        return data

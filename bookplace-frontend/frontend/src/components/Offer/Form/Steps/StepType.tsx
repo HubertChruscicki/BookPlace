@@ -17,11 +17,6 @@ const StepType: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    const validateBedsSum = () => {
-        const { beds, double_beds, sofa_beds } = getValues().details;
-        const bedsSum = (Number(beds) || 0) + (Number(double_beds) || 0) + (Number(sofa_beds) || 0);
-        return bedsSum > 0 || "At least one bed in whole object must be specified";
-    };
 
     useEffect(() => {
         api.get("/offer-type/")

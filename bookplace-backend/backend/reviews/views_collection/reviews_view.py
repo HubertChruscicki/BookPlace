@@ -1,60 +1,48 @@
-from rest_framework.viewsets import ViewSet
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
+from django.http import Http404
+from rest_framework.viewsets import ModelViewSet
 
-class ReviewViewAPI(ViewSet):
-    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[^/.]+)')
-    def user_reviews(self, request, user_id=None):
-        if user_id == "1":
-            mock_data = [
-                {"id": "1", "user_id": "1", "offer_id": "2", "rating": 5, "comment": "Ladnie czysto schludnie!"},
-                {"id": "2", "user_id": "1", "offer_id": "3", "rating": 1, "comment": "Brud smród."}
-            ]
-            return Response(mock_data, status=status.HTTP_200_OK)
+from ..models import Reviews
+from ..serializers import ReviewsSerializer
+from users.models import Users
+from offers.models import Offers
 
-        return Response({"detail": "No reviews found."}, status=status.HTTP_404_NOT_FOUND)
+class ReviewViewAPI(ModelViewSet):
+    serializer_class = ReviewsSerializer
+    def get_queryset(self):
+        return Reviews.objects.all()
 
-    @action(detail=False, methods=['get'], url_path='offer/(?P<offer_id>[^/.]+)')
-    def offer_reviews(self, request, offer_id=None):
-        mock_data = [
-            {"id": "1", "user_id": "1", "offer_id": "1", "rating": 5, "comment": "Świetne miejsce!"},
-            {"id": "3", "user_id": "2", "offer_id": "1", "rating": 3, "comment": "Ładne, ale hałaśliwe sąsiedztwo."}
-        ]
-        filtered_reviews = [review for review in mock_data if review["offer_id"] == offer_id]
-
-        if not filtered_reviews:
-            return Response({"detail": "No reviews found for this offer."}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response(filtered_reviews, status=status.HTTP_200_OK)
-
-    @action(detail=False, methods=['post'], url_path='add')
-    def add_review(self, request):
+    def get_object(self):
         try:
-            data = request.data
-            if not isinstance(data.get("user_id"), int) or not isinstance(data.get("offer_id"), int):
-                raise ValueError("Invalid format. 'user_id' and 'offer_id' must be integers.")
+            return super().get_object()
+        except Http404:
+            raise NotFound(detail="Review does not exist or does not have provided details.")
 
-            if not isinstance(data.get("rating"), int) or not (1 <= data["rating"] <= 5):
-                raise ValueError("Invalid rating. It must be an integer between 1 and 5.")
+    @action(detail=False, methods=["post"], url_path="add-review/(?P<offer_id>[^/.]+)")
+    def add_review(self, request,  offer_id=None):
+        try:
+            offer = Offers.objects.get(pk=offer_id)
+        except Offers.DoesNotExist:
+            raise NotFound(detail="Offer does not exist.")
 
-            return Response({"message": "Review added successfully"}, status=status.HTTP_201_CREATED)
+        try:
+            user = Users.objects.get(pk=2)
+        except Users.DoesNotExist:
+            raise NotFound(detail="User does not exist.")
 
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        data={
+            "user_id": user.id,
+            "offer_id": offer.id,
+            "rating": request.data.get("rating"),
+            "comment": request.data.get("comment"),
+        }
 
-
-# test 201
-# {
-#     "user_id": 1,
-#     "offer_id": 2,
-#     "rating": 5,
-#     "comment": "Bardzo dobra lokalizacja!"
-# }
-# test 500
-# {
-#     "user_id": "abc",
-#     "offer_id": 2,
-#     "rating": 5,
-#     "comment": "Świetna lokalizacja!"
-# }
+        serializer = self.get_serializer(data=data)
+        if serializer.is_valid():
+            serializer.save(user_id=user, offer_id=offer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

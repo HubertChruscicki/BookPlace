@@ -1,9 +1,11 @@
 from ..models import Offers
-from ..serializers import OffersSerializer, OfferDetailsSerializer, OfferLocationSerializer, OfferImagesSerializer, LandlordBasicSerializer
+from ..serializers import OffersSerializer, OfferDetailsSerializer, OfferLocationSerializer, OfferImagesSerializer, LandlordBasicSerializer, FullOfferCreateSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import NotFound
 from django.http import Http404
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework import status
 
 
 class OfferViewAPI(ModelViewSet):
@@ -28,5 +30,28 @@ class OfferViewAPI(ModelViewSet):
             raise NotFound(detail="Such offer doesnt exist.")
 
 
+    @action(detail=False, methods=["post"], url_path="add-offer")
+    def add_offer(self, request):
+        serializer = FullOfferCreateSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        validated_data = serializer.validated_data
 
+        details_data = validated_data.pop('details')
+        location_data = validated_data.pop('location')
+        images_data = validated_data.pop('images')
+        offer_types_data = validated_data.pop('offer_types')
+        landlord_id = 1
+        offer = Offers.objects.create(landlord_id=landlord_id, **validated_data)
 
+        for idx, img_data in enumarate(images_data):
+            OfferImages.objects.create(
+                offer_id=offer,
+                path=img_data['path'],
+                is_main=(idx == 0)
+            )
+
+        return Response({
+            "id": offer.id,
+            "message": "Offer created successfully"
+        }, status=status.HTTP_201_CREATED)

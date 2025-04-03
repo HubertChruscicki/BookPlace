@@ -46,6 +46,7 @@ export interface OfferModel {
   id: number;
   landlord_id: Landlord;
   offer_types: OfferType[];
+  offer_main_type: number;
   title: string;
   description: string;
   price_per_night: number;
