@@ -4,27 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(api): receving photos on frontend from server from path stored in db">
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/reviews/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reviews/AddReviewForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/ReviewModel.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddReviewPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddUserPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/BookPlace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BookPlace.iml" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews">
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0005_remove_offer_main_type_columns.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0002_remove_offers_offer_type_id_offers_offer_types.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0003_alter_offerlocation_offer_id.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/migrations/0004_offers_offer_main_type.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_images_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_images_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reviews/views_collection/reviews_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reviews/views_collection/reviews_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/AddOfferForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/AddOfferForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepDetails.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepSummary.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepType.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepType.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferLocationRating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferLocationRating.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,8 +92,8 @@
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Form\Steps" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Form\Steps" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend" />
     </key>
@@ -146,6 +143,12 @@
       <workItem from="1743544951318" duration="313000" />
       <workItem from="1743623577000" duration="6037000" />
       <workItem from="1743680753802" duration="6251000" />
+      <workItem from="1743769232053" duration="17000" />
+      <workItem from="1744233955594" duration="4700000" />
+      <workItem from="1744286090097" duration="4411000" />
+      <workItem from="1744381908698" duration="7937000" />
+      <workItem from="1744658653081" duration="11000" />
+      <workItem from="1744717221693" duration="334000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -171,7 +174,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743372044523</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews">
+      <option name="closed" value="true" />
+      <created>1743690687026</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743690687026</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +192,7 @@
     <MESSAGE value="added models according to db" />
     <MESSAGE value="gitignor update" />
     <MESSAGE value="feat(api): receving photos on frontend from server from path stored in db" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(api): receving photos on frontend from server from path stored in db" />
+    <MESSAGE value="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews" />
   </component>
 </project>

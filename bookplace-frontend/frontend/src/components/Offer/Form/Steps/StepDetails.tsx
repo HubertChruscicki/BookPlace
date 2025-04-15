@@ -37,7 +37,7 @@ const StepDetails: React.FC = () => {
         <Box>
             <FormContainer title="Fill the details">
 
-                <Autocomplete
+                <Autocomplete //TODO WALIDACJA PLUS WPISANIE DO FORMA
                     multiple
                     options={options}
                     renderInput={(params) => (

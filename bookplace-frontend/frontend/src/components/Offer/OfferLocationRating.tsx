@@ -11,7 +11,7 @@ const OfferLocationRating: React.FC = () => {
             width: '100%',
         }}>
               <Typography variant="h1" component="h2" sx={{fontSize: "1.5rem", fontWeight: "bold"}}>
-                  {`${offer?.offer_main_type.name} in ${offer?.location.city}, ${offer?.location.country}`}
+                  {`${offer?.offer_type.name} in ${offer?.location.city}, ${offer?.location.country}`}
                 </Typography>
             <Rating name="half-rating" defaultValue={4} precision={0.5} readOnly/>
         </Box>

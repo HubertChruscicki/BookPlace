@@ -1,59 +1,25 @@
 from rest_framework import serializers
-from .models import Offers, OfferLocation, OfferDetails, OfferImages, OfferTypes
+from .models import Offers, OfferLocation, OfferDetails, OfferImages, OfferTypes, OfferAmenities
 from users.models import Users
-class OffersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Offers
-        fields = [
-            'id',
-            'landlord_id',
-            'offer_types',
-            'offer_main_type',
-            'title',
-            'description',
-            'price_per_night',
-            'max_guests',
-            'is_active'
-        ]
-        depth = 1
-    def validate(self, data):
-        main_type = data.get('offer_main_type')
-        types = data.get('offer_types')
+from datetime import datetime
+from django.core.files.base import ContentFile
+import base64
+import json
 
-        if main_type and types and main_type not in types:
-            raise serializers.ValidationError("Main offer type must be one of the selected offer types.")
-
-        return data
-    def validate_price_per_night(self, value):
-        if value < 0:
-            raise serializers.ValidationError("Price per night cannot be negative.")
-        return value
-
-    def validate_max_guests(self, value):
-        if value < 1:
-            raise serializers.ValidationError("Max guests must be at least 1.")
-        return value
-
-    def validate(self, attrs):
-        if not attrs.get('offer_types'):
-            raise serializers.ValidationError("At least one offer type is required.")
-        return attrs
-
-    def create(self, validated_data):
-        offer_types = validated_data.pop('offer_types')
-        offer = Offers.objects.create(**validated_data)
-        offer.offer_types.set(offer_types)
-        return offer
-
-    def update(self, instance, validated_data):
-        offer_types = validated_data.pop('offer_types', [])
-        instance = super().update(instance, validated_data)
-        instance.offer_types.set(offer_types)
-        return instance
 
 class OfferDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OfferDetails
+        fields = [
+            'rooms',
+            'beds',
+            'double_beds',
+            'sofa_beds',
+        ]
+
+class OfferAmenitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OfferAmenities
         fields = [
             'private_bathroom',
             'kitchen',
@@ -67,31 +33,7 @@ class OfferDetailsSerializer(serializers.ModelSerializer):
             'swimming_pool',
             'sauna',
             'jacuzzi',
-            'rooms',
-            'beds',
-            'double_beds',
-            'sofa_beds'
         ]
-
-    def validate_rooms(self, value):
-        if value < 1:
-            raise serializers.ValidationError("Rooms must be at least 1.")
-        return value
-
-    def validate_beds(self, value):
-        if value < 0:
-            raise serializers.ValidationError("Beds cannot be negative.")
-        return value
-
-    def validate_double_beds(self, value):
-        if value < 0:
-            raise serializers.ValidationError("Double beds cannot be negative.")
-        return value
-
-    def validate_sofa_beds(self, value):
-        if value < 0:
-            raise serializers.ValidationError("Sofa beds cannot be negative.")
-        return value
 
 class OfferLocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,54 +46,26 @@ class OfferLocationSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude'
         ]
-    def validate_country(self, value):
-        if not value:
-            raise serializers.ValidationError("Country is required.")
-        return value
 
-    def validate_city(self, value):
-        if not value:
-            raise serializers.ValidationError("City is required.")
-        return value
-
-    def validate_address(self, value):
-        if not value:
-            raise serializers.ValidationError("Address is required.")
-        return value
-
-    def validate_province(self, value):
-        if not value:
-            raise serializers.ValidationError("Province is required.")
-        return value
-
-    def validate_latitude(self, value):
-        if value < -90 or value > 90:
-            raise serializers.ValidationError("Latitude must be between -90 and 90.")
-        return value
-
-    def validate_longitude(self, value):
-        if value < -180 or value > 180:
-            raise serializers.ValidationError("Longitude must be between -180 and 180.")
-        return value
-
-class OfferImagesSerializer(serializers.ModelSerializer):
+class OfferGetImagesSerializer(serializers.ModelSerializer):
+    path = serializers.SerializerMethodField()
     class Meta:
         model = OfferImages
         fields = [
-            'id',
             'is_main',
             'path'
         ]
+    def get_path(self, obj):
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.path.url)
+        return obj.path.url
 
-    def validate_is_main(self, value):
-        if value is None:
-            raise serializers.ValidationError("is_main is required.")
-        return value
-
-    def validate_path(self, value):
-        if not value:
-            raise serializers.ValidationError("path is required.")
-        return value
+class OfferUploadImagesSerializer(serializers.ModelSerializer):
+    path = serializers.FileField()
+    class Meta:
+        model = OfferImages
+        fields = ['is_main', 'path']
 
 class OfferTypesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -160,11 +74,6 @@ class OfferTypesSerializer(serializers.ModelSerializer):
             'id',
             'name'
         ]
-    def validate_name(self, value):
-        if not value:
-            raise serializers.ValidationError("Name is required.")
-        return value
-
 
 class LandlordBasicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -174,28 +83,104 @@ class LandlordBasicSerializer(serializers.ModelSerializer):
             'first_name'
         ]
 
-
-
-class FullOfferCreateSerializer(serializers.ModelSerializer):
-    details = OfferDetailsSerializer()
-    location = OfferLocationSerializer()
-    images = OfferImagesSerializer(many=True)
-
+class OffersSerializer(serializers.ModelSerializer):
+    location = OfferLocationSerializer(source='offerlocation', read_only=True)
+    offer_type = OfferTypesSerializer(read_only=True)
+    details = OfferDetailsSerializer(source='offerdetails', read_only=True)
+    amenities = OfferAmenitiesSerializer(source='offeramenities', read_only=True)
+    images = OfferGetImagesSerializer(source='offerimages_set', many=True, read_only=True)
+    landlord = LandlordBasicSerializer(read_only=True)
     class Meta:
         model = Offers
         fields = [
+            'id',
+            'landlord',
+            'offer_type',
             'title',
             'description',
             'price_per_night',
             'max_guests',
-            'offer_main_type',
-            'offer_types',
-            'details',
+            'is_active',
             'location',
+            'details',
+            'amenities',
             'images'
         ]
 
-    def validate(self, data):
-        if data["offer_main_type"] not in data["offer_types"]:
-            raise serializers.ValidationError("Main offer type must be one of the selected offer types.")
-        return data
+class OfferUploadImageBase64Serializer(serializers.ModelSerializer):
+    image_base64 = serializers.CharField(write_only=True)
+    class Meta:
+        model = OfferImages
+        fields = ['is_main', 'image_base64']
+        extra_kwargs = {
+            'offer': {'write_only': True}
+        }
+    def create(self, validated_data):
+        image_base64 = validated_data.pop('image_base64')
+        offer = self.context.get('offer')
+        format, imgstr = image_base64.split(';base64,')
+        ext = format.split('/')[-1]
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        filename = f"offer{offer.id}img{timestamp}.{ext}"
+
+        image_file = ContentFile(base64.b64decode(imgstr), name=filename)
+        offer_image = OfferImages.objects.create(
+            offer_id=offer,
+            is_main=validated_data['is_main'],
+        )
+        offer_image.path.save(filename, image_file, save=True)
+        return offer_image
+
+
+class CreateOfferSerializer(serializers.ModelSerializer):
+    location = OfferLocationSerializer(write_only=True)
+    details = OfferDetailsSerializer(write_only=True)
+    amenities = OfferAmenitiesSerializer(write_only=True)
+    images = OfferUploadImageBase64Serializer(many=True, write_only=True)
+    class Meta:
+        model = Offers
+        fields = [
+            'offer_type',
+            'title',
+            'description',
+            'price_per_night',
+            'max_guests',
+            'location',
+            'details',
+            'amenities',
+            'images'
+        ]
+        extra_kwargs = {
+            'offer_type': {'required': True},
+            'title': {'required': True},
+            'description': {'required': True},
+            'price_per_night': {'required': True},
+            'max_guests': {'required': True},
+        }
+    def create(self, validated_data):
+        location_data = validated_data.pop('location')
+        details_data = validated_data.pop('details')
+        amenities_data = validated_data.pop('amenities')
+        images_data = validated_data.pop('images')
+
+        #TODO change for logged landlord for now HARDOCODED
+        landlord = Users.objects.get(id=2)
+
+        offer = Offers.objects.create(
+            landlord=landlord,
+            is_active=True,
+            **validated_data
+        )
+        OfferLocation.objects.create(offer_id=offer, **location_data)
+        OfferDetails.objects.create(offer_id=offer, **details_data)
+        OfferAmenities.objects.create(offer_id=offer, **amenities_data)
+
+        for image in images_data:
+            image_serializer = OfferUploadImageBase64Serializer(
+                data=image,
+                context={'offer': offer}
+            )
+            image_serializer.is_valid(raise_exception=True)
+            image_serializer.save()
+
+        return offer

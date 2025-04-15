@@ -5,7 +5,6 @@ import api from "../../api/axiosApi.ts";
 
 const OfferHeader: React.FC = () => {
 
-    const baseUrl = import.meta.env.VITE_BASE_API_IMAGES_URL;
     const [imageUrls, setImageUrls] = useState<string[]>([]);
 
     const { offer, isLoading, error } = useOffer();
@@ -13,7 +12,7 @@ const OfferHeader: React.FC = () => {
     useEffect(() => {
 
         if (offer?.images) {
-            const paths = offer.images.map(img => `${baseUrl}${img.path.trim()}`);
+            const paths = offer.images.map(img => img.path.trim());
             setImageUrls(paths);
         }
     }, [offer]);

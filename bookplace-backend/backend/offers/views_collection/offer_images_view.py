@@ -1,5 +1,5 @@
 from ..models import OfferImages
-from ..serializers import OfferImagesSerializer
+from ..serializers import OfferGetImagesSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import NotFound
 from django.http import Http404
@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 class OfferImagesViewAPI(ModelViewSet):
-    serializer_class = OfferImagesSerializer
+    serializer_class = OfferGetImagesSerializer
     def get_queryset(self):
         return OfferImages.objects.all()
 

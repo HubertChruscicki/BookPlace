@@ -3,6 +3,7 @@ import {useFormContext} from "react-hook-form";
 import {Autocomplete, Box, TextField} from "@mui/material";
 import FormContainer from "../../../Common/FormContainer.tsx";
 import api from "../../../../api/axiosApi.ts";
+import { Controller } from "react-hook-form";
 
 
 interface Option {
@@ -12,7 +13,7 @@ interface Option {
 
 const StepType: React.FC = () => {
 
-    const {register, watch, getValues, setValue, formState: {errors}} = useFormContext();
+    const {register, watch, control, getValues, setValue, formState: {errors}} = useFormContext();
     const [options, setOptions] = useState<Option[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -42,50 +43,62 @@ const StepType: React.FC = () => {
         <Box>
             <FormContainer title="Describe your place">
 
-                <Autocomplete
-                    options={options}
-                    value={options.find((o) => o.value === watch("offer_main_type")) || null}
-                    onChange={(_, newValue) => {
-                        setValue("offer_main_type", newValue?.value || null, { shouldValidate: true });
-                    }}
-                    getOptionLabel={(option) => option?.label || ""}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Offer main type"
-                            variant="outlined"
-                            fullWidth
-                            error={!!errors.offer_main_type}
-                            helperText={errors.offer_main_type?.message}
-                        />
-                    )}
-                />
-
-                <input type="hidden" {...register("offer_types", {required: "Main offer type is required"})} />
-
-                <Autocomplete
-                    multiple
-                    options={options}
-                    filterSelectedOptions
-                    value={options.filter((o) =>
-                        (watch("offer_types") || []).includes(o.value)
-                    )}
-                    onChange={(_, newValue) => {
-                        const ids = newValue.map((option) => option.value);
-                        setValue("offer_types", ids);
-                    }}
-                    getOptionLabel={(option) => option?.label || ""}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Offer other types"
-                            variant="outlined"
-                            fullWidth
+                <Controller
+                    name="offer_main_type"
+                    control={control}
+                    rules={{ required: "Main offer type is required" }}
+                    render={({ field }) => (
+                        <Autocomplete
+                            options={options}
+                            value={options.find((o) => o.value === field.value) || null}
+                            onChange={(_, newValue) => {
+                                field.onChange(newValue?.value || null);
+                            }}
+                            getOptionLabel={(option) => option?.label || ""}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Offer main type"
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!errors.offer_main_type}
+                                    helperText={errors.offer_main_type?.message}
+                                />
+                            )}
                         />
                     )}
                 />
 
 
+                <Controller
+                    name="offer_type"
+                    control={control}
+                    rules={{ required: "At least one other type is required" }}
+                    render={({ field }) => (
+                        <Autocomplete
+                            multiple
+                            options={options}
+                            value={options.filter((o) =>
+                                (watch("offer_type") || []).includes(o.value)
+                            )}
+                            onChange={(_, newValue) => {
+                                const ids = newValue.map((option) => option.value);
+                                setValue("offer_type", ids, {shouldValidate: true});
+                            }}
+                            getOptionLabel={(option) => option?.label || ""}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Offer other type"
+                                    variant="outlined"
+                                    fullWidth
+                                    error={!!errors.offer_type}
+                                    helperText={errors.offer_type?.message}
+                                />
+                            )}
+                        />
+                    )}
+                />
 
             </FormContainer>
         </Box>

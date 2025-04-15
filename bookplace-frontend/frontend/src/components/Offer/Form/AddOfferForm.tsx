@@ -22,8 +22,8 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
         defaultValues: {
           title: "",
           description: "",
-          price_per_night: 0,
-          max_guests: 5,
+          price_per_night: null,
+          max_guests: null,
           location: {
             country: "",
             city: "",
@@ -45,13 +45,13 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
             swimming_pool: false,
             sauna: false,
             jacuzzi: false,
-            rooms: 1,
-            beds: 0,
-            double_beds: 0,
-            sofa_beds: 0
+            rooms: null,
+            beds: null,
+            double_beds: null,
+            sofa_beds: null
           },
           images: [],
-          offer_types: [],
+          offer_type: [],
         },
       });
 
@@ -66,7 +66,7 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
 
     const handleNext = async () => {
         const fieldsPerStep: string[][] = [
-          ["offer_main_type", "offer_types"],
+          ["offer_type"],
           ["title", "description", "price_per_night", "max_guests"],
           ["details.private_bathroom", "details.rooms", "details.beds", "details.double_beds", "details.sofa_beds"],
           ["location.city", "location.address", "location.country", "location.province", "location.latitude", "location.longitude"],

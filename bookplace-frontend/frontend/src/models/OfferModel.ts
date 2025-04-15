@@ -21,10 +21,10 @@ export interface OfferDetails {
   swimming_pool: boolean;
   sauna: boolean;
   jacuzzi: boolean;
-  rooms: number;
-  beds: number;
-  double_beds: number;
-  sofa_beds: number;
+  rooms: number | null;
+  beds: number | null;
+  double_beds: number | null;
+  sofa_beds: number | null;
 }
 
 export interface OfferLocation {
@@ -45,12 +45,12 @@ export interface OfferImage {
 export interface OfferModel {
   id: number;
   landlord_id: Landlord;
-  offer_types: OfferType[];
+  offer_type: name;
   offer_main_type: number;
   title: string;
   description: string;
-  price_per_night: number;
-  max_guests: number;
+  price_per_night: number | null;
+  max_guests: number | null;
   is_active: boolean;
   details: OfferDetails;
   location: OfferLocation;
