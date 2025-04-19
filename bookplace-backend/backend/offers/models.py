@@ -66,7 +66,7 @@ def offer_image_upload_path(instance, filename):
 class OfferImages(models.Model):
     offer_id = models.ForeignKey(Offers, on_delete=models.CASCADE)
     is_main = models.BooleanField(default=False)
-    path = models.FileField(upload_to=offer_image_upload_path)
+    image = models.FileField(upload_to=offer_image_upload_path)
 
 
 

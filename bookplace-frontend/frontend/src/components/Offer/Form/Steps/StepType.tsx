@@ -42,54 +42,21 @@ const StepType: React.FC = () => {
     return (
         <Box>
             <FormContainer title="Describe your place">
-
                 <Controller
-                    name="offer_main_type"
+                    name="offer_type"
                     control={control}
-                    rules={{ required: "Main offer type is required" }}
+                    rules={{ required: "Offer type is required" }}
                     render={({ field }) => (
                         <Autocomplete
                             options={options}
                             value={options.find((o) => o.value === field.value) || null}
-                            onChange={(_, newValue) => {
-                                field.onChange(newValue?.value || null);
+                            onChange={(_, selected) => {
+                                field.onChange(selected?.value || null);
                             }}
-                            getOptionLabel={(option) => option?.label || ""}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Offer main type"
-                                    variant="outlined"
-                                    fullWidth
-                                    error={!!errors.offer_main_type}
-                                    helperText={errors.offer_main_type?.message}
-                                />
-                            )}
-                        />
-                    )}
-                />
-
-
-                <Controller
-                    name="offer_type"
-                    control={control}
-                    rules={{ required: "At least one other type is required" }}
-                    render={({ field }) => (
-                        <Autocomplete
-                            multiple
-                            options={options}
-                            value={options.filter((o) =>
-                                (watch("offer_type") || []).includes(o.value)
-                            )}
-                            onChange={(_, newValue) => {
-                                const ids = newValue.map((option) => option.value);
-                                setValue("offer_type", ids, {shouldValidate: true});
-                            }}
-                            getOptionLabel={(option) => option?.label || ""}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Offer other type"
+                                    label="Offer type"
                                     variant="outlined"
                                     fullWidth
                                     error={!!errors.offer_type}
@@ -99,7 +66,6 @@ const StepType: React.FC = () => {
                         />
                     )}
                 />
-
             </FormContainer>
         </Box>
     );

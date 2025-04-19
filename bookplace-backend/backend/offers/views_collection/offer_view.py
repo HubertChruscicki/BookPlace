@@ -56,7 +56,7 @@ class OfferViewAPI(ReadOnlyModelViewSet):
             400: OpenApiResponse(description="Validation errors"),
         }
     )
-    @action (detail=False, methods=['post'], url_path='add-offer')
+    @action (detail=False, methods=['post'], url_path='add-offer') #TODO DODAC OPIS IMAGE MA BYC BASE 64
     def add_offer(self, request):
         """
         #### Example Request:

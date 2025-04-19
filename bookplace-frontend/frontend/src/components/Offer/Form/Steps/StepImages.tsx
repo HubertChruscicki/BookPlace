@@ -12,7 +12,9 @@ const StepImages: React.FC = () => {
     const {register, setValue, watch, formState: {errors}} = useFormContext();
     const images = watch("images") || [];
 
+
     const handleFilesChange = (files: File[]) => {
+
         const total = [...images, ...files].slice(0, MAX_FILES);
         setValue("images", total, { shouldValidate: true });
     };

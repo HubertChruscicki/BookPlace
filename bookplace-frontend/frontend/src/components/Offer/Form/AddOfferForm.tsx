@@ -9,6 +9,7 @@ import StepImages from "./Steps/StepImages.tsx";
 import StepLocation from './Steps/StepLocation.tsx';
 import StepSummary from "./Steps/StepSummary.tsx";
 import StepType from "./Steps/StepType.tsx";
+import StepAmenities from "./Steps/StepAmenities.tsx";
 
 export interface OfferFormProps {
     onSubmit: (offer: OfferModel) => Promise<void>;
@@ -20,38 +21,40 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
     const methods = useForm<OfferModel>({
         mode: "onSubmit",
         defaultValues: {
-          title: "",
-          description: "",
-          price_per_night: null,
-          max_guests: null,
-          location: {
-            country: "",
-            city: "",
-            address: "",
-            province: "",
-            latitude: 0,
-            longitude: 0
-          },
-          details: {
-            private_bathroom: false,
-            kitchen: false,
-            wifi: false,
-            tv: false,
-            fridge_in_room: false,
-            air_conditioning: false,
-            smoking_allowed: false,
-            pets_allowed: false,
-            parking: false,
-            swimming_pool: false,
-            sauna: false,
-            jacuzzi: false,
-            rooms: null,
-            beds: null,
-            double_beds: null,
-            sofa_beds: null
-          },
-          images: [],
-          offer_type: [],
+            offer_type: null,
+            title: "",
+            description: "",
+            price_per_night: null,
+            max_guests: null,
+            location: {
+                country: "",
+                city: "",
+                address: "",
+                province: "",
+                latitude: 0,
+                longitude: 0
+            },
+            details: {
+                rooms: null,
+                beds: null,
+                double_beds: null,
+                sofa_beds: null
+            },
+            amenities: {
+                private_bathroom: false,
+                kitchen: false,
+                wifi: false,
+                tv: false,
+                fridge_in_room: false,
+                air_conditioning: false,
+                smoking_allowed: false,
+                pets_allowed: false,
+                parking: false,
+                swimming_pool: false,
+                sauna: false,
+                jacuzzi: false,
+            },
+            images: []
         },
       });
 
@@ -66,11 +69,26 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
 
     const handleNext = async () => {
         const fieldsPerStep: string[][] = [
-          ["offer_type"],
-          ["title", "description", "price_per_night", "max_guests"],
-          ["details.private_bathroom", "details.rooms", "details.beds", "details.double_beds", "details.sofa_beds"],
-          ["location.city", "location.address", "location.country", "location.province", "location.latitude", "location.longitude"],
-          ["images"],
+        ["offer_type"],
+        ["title", "description", "price_per_night", "max_guests"],
+        ["location.city", "location.address", "location.country", "location.province", "location.latitude", "location.longitude"],
+        ["details.rooms", "details.beds", "details.double_beds", "details.sofa_beds"],
+        ["details.rooms", "details.beds", "details.double_beds", "details.sofa_beds"],
+        [
+            "amenities.private_bathroom",
+            "amenities.kitchen",
+            "amenities.wifi",
+            "amenities.tv",
+            "amenities.fridge_in_room",
+            "amenities.air_conditioning",
+            "amenities.smoking_allowed",
+            "amenities.pets_allowed",
+            "amenities.parking",
+            "amenities.swimming_pool",
+            "amenities.sauna",
+            "amenities.jacuzzi"
+        ],
+        ["images"],
         ];
 
         if(activeStep >= fieldsPerStep.length){
@@ -88,13 +106,35 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
         setActiveStep(s => s - 1);
     }
 
-    // const handleFinalSubmit = methods.handleSubmit(onSubmit);
+    const convertToBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = (error) => reject(error);
+        });
+    };
 
     const handleFinalSubmit = methods.handleSubmit(async (data) => {
-        console.log("🟢 Data that would be sent to server:", data);
-        await onSubmit(data);
-    });
 
+        const files = data.images as unknown as File[];
+        const base64Images = await Promise.all(
+            files.map(file => convertToBase64(file))
+        );
+
+        const formattedImages = base64Images.map((b64, index) => ({
+            is_main: index === 0,
+            image: b64,
+        }));
+
+        const finalData = {
+            ...data,
+            images: formattedImages,
+        };
+
+        console.log("🟢 Data to send (with base64):", finalData);
+        await onSubmit(finalData);
+    });
 
 
     return(
@@ -104,10 +144,11 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
            >
                 {activeStep === 0 && <StepType/>}
                 {activeStep === 1 && <StepInfo/>}
-                {activeStep === 2 && <StepDetails/>}
-                {activeStep === 3 && <StepLocation/>}
-                {activeStep === 4 && <StepImages/>}
-                {activeStep === 5 && <StepSummary/>}
+                {activeStep === 2 && <StepLocation/>}
+                {activeStep === 3 && <StepDetails/>}
+                {activeStep === 4 && <StepAmenities/>}
+                {activeStep === 5 && <StepImages/>}
+                {activeStep === 6 && <StepSummary/>}
             </Box>
 
             <Box

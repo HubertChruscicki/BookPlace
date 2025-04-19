@@ -37,18 +37,18 @@ const StepDetails: React.FC = () => {
         <Box>
             <FormContainer title="Fill the details">
 
-                <Autocomplete //TODO WALIDACJA PLUS WPISANIE DO FORMA
-                    multiple
-                    options={options}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Offer amenities"
-                            variant="outlined"
-                            fullWidth
-                        />
-                    )}
-                />
+                {/*<Autocomplete //TODO WALIDACJA PLUS WPISANIE DO FORMA*/}
+                {/*    multiple*/}
+                {/*    options={options}*/}
+                {/*    renderInput={(params) => (*/}
+                {/*        <TextField*/}
+                {/*            {...params}*/}
+                {/*            label="Offer amenities"*/}
+                {/*            variant="outlined"*/}
+                {/*            fullWidth*/}
+                {/*        />*/}
+                {/*    )}*/}
+                {/*/>*/}
 
                 <TextField
                     {...register("details.rooms", {required: "Number of rooms is required",

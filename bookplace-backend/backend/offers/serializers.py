@@ -35,6 +35,10 @@ class OfferAmenitiesSerializer(serializers.ModelSerializer):
             'jacuzzi',
         ]
 
+class AmenityFieldsSerializer(serializers.Serializer):
+    key = serializers.CharField()
+    label = serializers.CharField()
+
 class OfferLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = OfferLocation
@@ -48,24 +52,18 @@ class OfferLocationSerializer(serializers.ModelSerializer):
         ]
 
 class OfferGetImagesSerializer(serializers.ModelSerializer):
-    path = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
     class Meta:
         model = OfferImages
         fields = [
             'is_main',
-            'path'
+            'image'
         ]
-    def get_path(self, obj):
+    def get_image(self, obj):
         request = self.context.get('request')
         if request is not None:
-            return request.build_absolute_uri(obj.path.url)
-        return obj.path.url
-
-class OfferUploadImagesSerializer(serializers.ModelSerializer):
-    path = serializers.FileField()
-    class Meta:
-        model = OfferImages
-        fields = ['is_main', 'path']
+            return request.build_absolute_uri(obj.image.url)
+        return obj.image.url
 
 class OfferTypesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -108,15 +106,15 @@ class OffersSerializer(serializers.ModelSerializer):
         ]
 
 class OfferUploadImageBase64Serializer(serializers.ModelSerializer):
-    image_base64 = serializers.CharField(write_only=True)
+    image = serializers.CharField(write_only=True)
     class Meta:
         model = OfferImages
-        fields = ['is_main', 'image_base64']
+        fields = ['is_main', 'image']
         extra_kwargs = {
             'offer': {'write_only': True}
         }
     def create(self, validated_data):
-        image_base64 = validated_data.pop('image_base64')
+        image_base64 = validated_data.pop('image')
         offer = self.context.get('offer')
         format, imgstr = image_base64.split(';base64,')
         ext = format.split('/')[-1]
@@ -128,7 +126,7 @@ class OfferUploadImageBase64Serializer(serializers.ModelSerializer):
             offer_id=offer,
             is_main=validated_data['is_main'],
         )
-        offer_image.path.save(filename, image_file, save=True)
+        offer_image.image.save(filename, image_file, save=True)
         return offer_image
 
 

@@ -12,7 +12,7 @@ const OfferHeader: React.FC = () => {
     useEffect(() => {
 
         if (offer?.images) {
-            const paths = offer.images.map(img => img.path.trim());
+            const paths = offer.images.map(img => img.image.trim());
             setImageUrls(paths);
         }
     }, [offer]);
