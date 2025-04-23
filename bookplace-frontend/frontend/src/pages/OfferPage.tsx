@@ -4,6 +4,7 @@ import OfferPhotoGrid from "../components/Offer/OfferPhotoGrid.tsx";
 import OfferInfo from "../components/Offer/OfferInfo.tsx";
 import OfferSummary from "../components/Offer/OfferSummary.tsx";
 import {OfferProvider, useOffer} from "../components/Offer/OfferContext.tsx";
+import Header from "../components/Header/Header.tsx";
 
 const OfferContent = () => {
     const {offer, isLoading, error} = useOffer();
@@ -30,6 +31,7 @@ const OfferContent = () => {
                 justifyContent: "center",
                 p: "0px 40px"
             }}>
+                <Header/>
                 <OfferHeader/>
                 <OfferPhotoGrid/>
                 <Box sx={{
