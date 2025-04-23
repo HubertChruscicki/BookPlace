@@ -1,11 +1,9 @@
-import {AppBar, Box, Toolbar, Avatar, Typography, InputBase, styled} from "@mui/material";
+import {AppBar, Box, Toolbar, InputBase, styled} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ListIcon from '@mui/icons-material/List';
-import {OfferModel} from "../../models/OfferModel.ts";
-import React from "react";
+import React, {useState} from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
+import LoginModal from "../Login/LoginModal.tsx";
 
-// Stylowany kontener dla searchbara
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -30,64 +28,52 @@ export interface HeaderProps {
 
 
 const Header: React.FC<HeaderProps> = ({fullWidth}) => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     return (
-        <AppBar position="sticky" elevation={0}
-            sx={{
-                backgroundColor: "white",
-                color: "black",
-                ...(fullWidth ? {} : { maxWidth: "1220px" })
-            }}
-        >
-            <Toolbar
-                disableGutters
+        <>
+            <AppBar position="sticky" elevation={0}
                 sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%",
+                    backgroundColor: "white",
+                    color: "black",
+                    ...(fullWidth ? {} : { maxWidth: "1220px" })
                 }}
             >
-                <Box
+                <Toolbar
+                    disableGutters
                     sx={{
-                        width: 140,
-                        height: 48,
-                        backgroundImage: 'url("/logo.png")',
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "left center",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
                     }}
-                />
+                >
+                    <Box
+                        sx={{
+                            width: 140,
+                            height: 48,
+                            backgroundImage: 'url("/logo.png")',
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "left center",
+                        }}
+                    />
 
-                <SearchContainer>
-                    <SearchIcon color="action" />
-                    <SearchInput placeholder="Search..." />
-                </SearchContainer>
+                    <SearchContainer>
+                        <SearchIcon color="action" />
+                        <SearchInput placeholder="Search..." />
+                    </SearchContainer>
 
-                {/*<Box*/}
-                {/*    sx={{*/}
-                {/*        display: "flex",*/}
-                {/*        alignItems: "center",*/}
-                {/*        gap: 1.5,*/}
-                {/*        borderRadius: "30px",*/}
-                {/*        border: "1px solid black"*/}
-                {/*    }}*/}
-                {/*>*/}
-                {/*    <Box*/}
-                {/*        sx={{*/}
-                {/*            display: "flex",*/}
-                {/*            flexDirection: "row",*/}
-                {/*            padding: 1,*/}
-                {/*            gap: 2*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        <ListIcon fontSize="large"/>*/}
-                {/*        <Avatar alt="John Doe" src="/avatar.jpg" />*/}
-                {/*    </Box>*/}
-                {/*</Box>*/}
-
-                <ProfileBlock/ >
-            </Toolbar>
-        </AppBar>
+                    <ProfileBlock
+                        isLogged={false}
+                        onModalOpen={()=>setIsModalOpen(true)}
+                    />
+                </Toolbar>
+            </AppBar>
+            <LoginModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
+        </>
     );
 };
 

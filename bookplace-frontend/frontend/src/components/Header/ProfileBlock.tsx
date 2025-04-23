@@ -1,16 +1,17 @@
-import {Avatar, Box, IconButton, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
+import {Avatar, Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
 import React from "react";
 import {colors} from "../../theme/colors.ts"
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import {ArrowForwardIos} from "@mui/icons-material";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
+import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
+import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
 
 const iconStyles = {
     padding: '4px',
-    bgcolor: colors.grey[100],
     width: 30,
     height: 30,
     borderRadius: '50%',
@@ -18,25 +19,37 @@ const iconStyles = {
 
 export interface ProfileBlockProps {
     isLogged: boolean;
+    onModalOpen: () => void;
 }
 
-const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged}) => {
+const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged, onModalOpen}) => {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const settings = [
-        { label: "My account", icon: <PersonIcon sx={iconStyles} /> },
-        { label: "Reservations", icon: <CardTravelIcon sx={iconStyles} /> },
-        { label: "Reviews", icon: <ReviewsOutlinedIcon sx={iconStyles} /> },
-        { label: "Saved", icon: <FavoriteBorderOutlinedIcon sx={iconStyles} /> },
-        { label: "Logout", icon: <ExitToAppIcon sx={iconStyles} /> },
-    ];
+    const settings = isLogged ?
+        [
+            { label: "My account", icon: <AccountCircleOutlinedIcon sx={iconStyles} /> },
+            { label: "My offers", icon: <HomeWorkOutlinedIcon sx={iconStyles} /> },
+            { label: "Reservations", icon: <CardTravelIcon sx={iconStyles} /> },
+            { label: "Reviews", icon: <ReviewsOutlinedIcon sx={iconStyles} /> },
+            { label: "Saved", icon: <FavoriteBorderOutlinedIcon sx={iconStyles} /> },
+            { label: "Logout", icon: <ExitToAppIcon sx={iconStyles} /> }
+        ] :
+        [
+            { label: "Login", icon: <LoginOutlinedIcon sx={iconStyles} /> },
+            { label: "Register", icon: <VpnKeyOutlinedIcon sx={iconStyles} /> }
+        ];
+
+
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = (setting: string) => {
+    const handleCloseUserMenu = (label: string) => {
         setAnchorElUser(null);
+        if (label === "Login") {
+            onModalOpen();
+        }
     };
 
     return (
@@ -67,8 +80,11 @@ const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged}) => {
 
             </IconButton>
             <Menu
-                sx={{
-                    mt: 6
+                PaperProps={{
+                    sx: {
+                        borderRadius: 5,
+                        mt: 6,
+                    },
                 }}
                 anchorEl={anchorElUser}
                 anchorOrigin={{
