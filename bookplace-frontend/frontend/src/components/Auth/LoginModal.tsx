@@ -9,13 +9,13 @@ export interface LoginFormData {
     password: string;
 }
 
-export interface EventFormProps {
+export interface LoginModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
 
-const LoginModal: React.FC<EventFormProps> = ({isOpen, onClose}) => {
+const LoginModal: React.FC<LoginModalProps> = ({isOpen, onClose}) => {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -25,7 +25,7 @@ const LoginModal: React.FC<EventFormProps> = ({isOpen, onClose}) => {
             onClose();
         } catch (error) {
             console.error("Error during login:", error);
-            setErrorMessage("Login failed. Please try again.");
+            setErrorMessage("Auth failed. Please try again.");
         }
     };
 

@@ -4,14 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): first mockup of navbar with profileblock">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormStack.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Login/LoginModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Login/RegisterModal.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): login modal added">
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/permissions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/views_collection/auth_view.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/RegisterModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Login/LoginModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Login/RegisterModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/authentication.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,28 +61,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/huber/Desktop/BookPlace/BookPlace/bookplace-frontend/frontend/src/components/Common",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "copyright",
-    "ts.external.directory.path": "C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/BookPlace/BookPlace/bookplace-frontend/frontend/src/components/Common&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;copyright&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Common" />
@@ -83,10 +90,11 @@
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend" />
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Form\Steps" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend" />
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -144,7 +152,9 @@
       <workItem from="1744724206895" duration="2423000" />
       <workItem from="1744735498489" duration="12000" />
       <workItem from="1745096857152" duration="3712000" />
-      <workItem from="1745344439633" duration="19526000" />
+      <workItem from="1745344439633" duration="19859000" />
+      <workItem from="1745505205811" duration="2102000" />
+      <workItem from="1745600988660" duration="14946000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -194,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745410695851</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat(design): login modal added">
+      <option name="closed" value="true" />
+      <created>1745433264253</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1745433264253</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,6 +225,7 @@
     <MESSAGE value="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews" />
     <MESSAGE value="feat(api): add post endpoint for adding offer" />
     <MESSAGE value="feat(design): first mockup of navbar with profileblock" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(design): first mockup of navbar with profileblock" />
+    <MESSAGE value="feat(design): login modal added" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(design): login modal added" />
   </component>
 </project>

@@ -35,7 +35,7 @@ const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged, onModalOpen}) => {
             { label: "Logout", icon: <ExitToAppIcon sx={iconStyles} /> }
         ] :
         [
-            { label: "Login", icon: <LoginOutlinedIcon sx={iconStyles} /> },
+            { label: "Login ", icon: <LoginOutlinedIcon sx={iconStyles} /> },
             { label: "Register", icon: <VpnKeyOutlinedIcon sx={iconStyles} /> }
         ];
 

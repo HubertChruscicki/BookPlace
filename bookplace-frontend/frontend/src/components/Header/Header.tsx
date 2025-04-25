@@ -2,7 +2,7 @@ import {AppBar, Box, Toolbar, InputBase, styled} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React, {useState} from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
-import LoginModal from "../Login/LoginModal.tsx";
+import LoginModal from "../Auth/LoginModal.tsx";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",

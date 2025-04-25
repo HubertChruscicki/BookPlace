@@ -1,7 +1,8 @@
 from django.urls import path, include
-from users.routers import router
+from .views_collection.auth_view import RegisterView, LoginView, RefreshTokenView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('register/', RegisterView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('refresh/', RefreshTokenView.as_view()),
 ]
-
