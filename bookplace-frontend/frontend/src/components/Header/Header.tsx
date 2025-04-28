@@ -26,7 +26,6 @@ export interface HeaderProps {
     fullWidth?: boolean;
 }
 
-
 const Header: React.FC<HeaderProps> = ({fullWidth}) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     return (
@@ -64,14 +63,16 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
                     </SearchContainer>
 
                     <ProfileBlock
-                        isLogged={false}
                         onModalOpen={()=>setIsModalOpen(true)}
                     />
                 </Toolbar>
             </AppBar>
             <LoginModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    setIsModalOpen(false)
+                }}
+
             />
         </>
     );

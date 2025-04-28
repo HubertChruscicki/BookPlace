@@ -3,6 +3,9 @@ import {Button, Modal, Box, TextField, Typography} from "@mui/material";
 import {SubmitHandler, useForm} from "react-hook-form";
 import FormContainer from "../Common/FormContainer.tsx";
 import FormStack from '../Common/FormStack.tsx';
+import api from "../../api/axiosApi.ts";
+import {BASE_API_URL} from "../../api/const.ts";
+import {useAuth} from "../../Auth/useAuth.ts";
 
 export interface LoginFormData {
     email: string;
@@ -14,15 +17,32 @@ export interface LoginModalProps {
     onClose: () => void;
 }
 
-
 const LoginModal: React.FC<LoginModalProps> = ({isOpen, onClose}) => {
 
+    const { setAuth } = useAuth();
     const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const handleLogin = async (credentials: LoginFormData) => {
+        console.log("Sending request to:", `${BASE_API_URL}/auth/login/`);
+        console.log("With credentials:", credentials);
+        try {
+            const response = await api.post("/auth/login/", credentials);
+            const { access, refresh, user } = response.data;
+
+            localStorage.setItem('token', access);
+            localStorage.setItem('refresh', refresh);
+            localStorage.setItem('user', JSON.stringify(user));
+            setAuth({ token: access, user });
+            onClose();
+        } catch (error) {
+            console.error("Login error:", error);
+            setErrorMessage("Login failed. Please try again.");
+        }
+    }
 
     const onSubmitHandler: SubmitHandler<LoginFormData> = async (data) => {
         try {
-            console.log("Logging in with:", data);
-            onClose();
+            await handleLogin(data);
         } catch (error) {
             console.error("Error during login:", error);
             setErrorMessage("Auth failed. Please try again.");
@@ -83,7 +103,7 @@ const LoginModal: React.FC<LoginModalProps> = ({isOpen, onClose}) => {
                     </FormStack>
 
                     <Button variant="contained" color="primary" type="submit" fullWidth
-                            sx={{marginTop: 2, textTransform: 'none'}}>
+                            sx={{marginTop: 2, textTransform: 'none'}} >
                         Login
                     </Button>
                 </FormContainer>

@@ -1,14 +1,17 @@
 import {Avatar, Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
-import React from "react";
+import React, from "react";
 import {colors} from "../../theme/colors.ts"
-import CardTravelIcon from '@mui/icons-material/CardTravel';
-import ReviewsOutlinedIcon from '@mui/icons-material/ReviewsOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
-import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
+import {
+    AccountCircleOutlined as AccountIcon,
+    HomeWorkOutlined as OffersIcon,
+    CardTravel as ReservationsIcon,
+    ReviewsOutlined as ReviewsIcon,
+    FavoriteBorderOutlined as SavedIcon,
+    ExitToApp as LogoutIcon,
+    LoginOutlined as LoginIcon,
+    VpnKeyOutlined as RegisterIcon,
+} from "@mui/icons-material";
+import { useAuth } from "../../Auth/useAuth.ts";
 
 const iconStyles = {
     padding: '4px',
@@ -18,26 +21,40 @@ const iconStyles = {
 };
 
 export interface ProfileBlockProps {
-    isLogged: boolean;
     onModalOpen: () => void;
 }
 
-const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged, onModalOpen}) => {
+const ProfileBlock: React.FC<ProfileBlockProps> = ({onModalOpen}) => {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const settings = isLogged ?
-        [
-            { label: "My account", icon: <AccountCircleOutlinedIcon sx={iconStyles} /> },
-            { label: "My offers", icon: <HomeWorkOutlinedIcon sx={iconStyles} /> },
-            { label: "Reservations", icon: <CardTravelIcon sx={iconStyles} /> },
-            { label: "Reviews", icon: <ReviewsOutlinedIcon sx={iconStyles} /> },
-            { label: "Saved", icon: <FavoriteBorderOutlinedIcon sx={iconStyles} /> },
-            { label: "Logout", icon: <ExitToAppIcon sx={iconStyles} /> }
-        ] :
-        [
-            { label: "Login ", icon: <LoginOutlinedIcon sx={iconStyles} /> },
-            { label: "Register", icon: <VpnKeyOutlinedIcon sx={iconStyles} /> }
-        ];
+    const { auth, setAuth } = useAuth();
+    const isLogged = Boolean(auth.token);
+    const roles = auth.user?.roles ?? [];
+
+    const settings: { label: string; icon: JSX.Element }[] = [];
+
+    if (!isLogged) {
+        settings.push(
+            { label: "Login", icon: <LoginIcon sx={iconStyles} /> },
+            { label: "Register", icon: <RegisterIcon sx={iconStyles} /> }
+        );
+    } else {
+        settings.push(
+            { label: "My account", icon: <AccountIcon sx={iconStyles} /> }
+        );
+
+        if (roles.includes("landlord")) {
+            settings.push({ label: "My offers", icon: <OffersIcon sx={iconStyles} /> });
+        }
+
+        settings.push(
+            { label: "Reservations", icon: <ReservationsIcon sx={iconStyles} /> },
+            { label: "Reviews",      icon: <ReviewsIcon      sx={iconStyles} /> },
+            { label: "Saved",        icon: <SavedIcon        sx={iconStyles} /> },
+            { label: "Logout", icon: <LogoutIcon sx={iconStyles} /> }
+        );
+    }
+
 
 
 
@@ -49,6 +66,12 @@ const ProfileBlock: React.FC<ProfileBlockProps> = ({isLogged, onModalOpen}) => {
         setAnchorElUser(null);
         if (label === "Login") {
             onModalOpen();
+        }
+        if (label === "Logout") {
+            setAuth({});
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('user');
         }
     };
 
