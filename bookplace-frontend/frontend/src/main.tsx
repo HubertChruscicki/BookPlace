@@ -10,7 +10,6 @@ import AddOfferPage from "./pages/AddOfferPage.tsx";
 import AddReviewPage from "./pages/AddReviewPage.tsx";
 import {AuthProvider} from "./Auth/AuthProvider.tsx";
 
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <ThemeProvider theme={theme}>

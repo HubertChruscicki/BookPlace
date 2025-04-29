@@ -1,5 +1,5 @@
 import {Avatar, Box, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography} from "@mui/material";
-import React, from "react";
+import React from "react";
 import {colors} from "../../theme/colors.ts"
 import {
     AccountCircleOutlined as AccountIcon,
@@ -20,14 +20,10 @@ const iconStyles = {
     borderRadius: '50%',
 };
 
-export interface ProfileBlockProps {
-    onModalOpen: () => void;
-}
-
-const ProfileBlock: React.FC<ProfileBlockProps> = ({onModalOpen}) => {
+const ProfileBlock: React.FC = () => {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const { auth, setAuth } = useAuth();
+    const { auth, setAuth, openAuthModal } = useAuth();
     const isLogged = Boolean(auth.token);
     const roles = auth.user?.roles ?? [];
 
@@ -65,7 +61,10 @@ const ProfileBlock: React.FC<ProfileBlockProps> = ({onModalOpen}) => {
     const handleCloseUserMenu = (label: string) => {
         setAnchorElUser(null);
         if (label === "Login") {
-            onModalOpen();
+            openAuthModal("login")
+        }
+        if (label === "Register") {
+            openAuthModal("register");
         }
         if (label === "Logout") {
             setAuth({});

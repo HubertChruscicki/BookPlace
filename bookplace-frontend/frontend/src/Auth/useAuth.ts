@@ -1,4 +1,7 @@
 import React, {createContext, useContext} from "react";
+import { AuthMode } from "../components/Auth/AuthModal";
+
+
 
 export interface IUserCredntials {
     id: number;
@@ -17,6 +20,8 @@ export interface IAuth {
 export interface IAuthContext {
     auth: IAuth;
     setAuth: React.Dispatch<React.SetStateAction<IAuth>>;
+    openAuthModal: (mode: AuthMode) => void;
+    closeAuthModal: () => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);

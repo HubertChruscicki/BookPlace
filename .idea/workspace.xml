@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(auth): add login register based on jwt">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/AuthProvider.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/useAuth.ts" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(auth): add login with jwt credentials on frontend">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/AuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/useAuth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/useAuth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
     </list>
@@ -154,6 +150,8 @@
       <workItem from="1745662059229" duration="3702000" />
       <workItem from="1745699078486" duration="11281000" />
       <workItem from="1745872500494" duration="6742000" />
+      <workItem from="1745882470422" duration="2107000" />
+      <workItem from="1745947516291" duration="2103000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
