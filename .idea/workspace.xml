@@ -4,13 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(auth): add login with jwt credentials on frontend">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(auth): skeleton of new global accesible authmodal">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/RegisterForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/AuthModels.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/AuthProvider.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/useAuth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/useAuth.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/RegisterModal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +98,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
       </set>
     </attachedChunks>
   </component>
@@ -151,7 +157,9 @@
       <workItem from="1745699078486" duration="11281000" />
       <workItem from="1745872500494" duration="6742000" />
       <workItem from="1745882470422" duration="2107000" />
-      <workItem from="1745947516291" duration="2103000" />
+      <workItem from="1745947516291" duration="8146000" />
+      <workItem from="1746044941830" duration="51000" />
+      <workItem from="1746048912162" duration="574000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -217,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745625225912</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat(auth): skeleton of new global accesible authmodal">
+      <option name="closed" value="true" />
+      <created>1745949754448</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1745949754448</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,6 +248,7 @@
     <MESSAGE value="feat(design): first mockup of navbar with profileblock" />
     <MESSAGE value="feat(design): login modal added" />
     <MESSAGE value="feat(auth): add login register based on jwt" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(auth): add login register based on jwt" />
+    <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(auth): skeleton of new global accesible authmodal" />
   </component>
 </project>

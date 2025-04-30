@@ -1,8 +1,7 @@
 import {AppBar, Box, Toolbar, InputBase, styled} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React, {useState} from "react";
+import React from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
-import LoginModal from "../Auth/LoginModal.tsx";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -27,7 +26,6 @@ export interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({fullWidth}) => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     return (
         <>
             <AppBar position="sticky" elevation={0}
@@ -62,18 +60,9 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
                         <SearchInput placeholder="Search..." />
                     </SearchContainer>
 
-                    <ProfileBlock
-                        onModalOpen={()=>setIsModalOpen(true)}
-                    />
+                    <ProfileBlock/>
                 </Toolbar>
             </AppBar>
-            <LoginModal
-                isOpen={isModalOpen}
-                onClose={() => {
-                    setIsModalOpen(false)
-                }}
-
-            />
         </>
     );
 };

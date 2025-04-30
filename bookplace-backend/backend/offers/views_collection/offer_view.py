@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
-from django.shortcuts import get_object_or_404
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import AllowAny
 
 from ..serializers import (
     OffersSerializer,
@@ -23,8 +23,8 @@ def add_offer(self, request):
     ...
 
 class OfferViewAPI(ReadOnlyModelViewSet):
+    permission_classes = [AllowAny]
     serializer_class  = OffersSerializer
-    #permision_classes TODO
     def get_queryset(self):
         return Offers.objects.all()
 

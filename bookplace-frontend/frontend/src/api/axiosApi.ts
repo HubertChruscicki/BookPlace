@@ -55,7 +55,6 @@ api.interceptors.response.use(
                 if(!refreshToken) {
                     throw new Error("Refresh token is missing");
                 }
-                console.log(BASE_API_URL);
                 const response = await axios.post(`${BASE_API_URL}/auth/refresh/`, {
                     refresh_token: refreshToken
                 })
@@ -68,10 +67,12 @@ api.interceptors.response.use(
                 processQueue(error, null);
                 localStorage.removeItem("token");
                 localStorage.removeItem("refresh");
-                // window.location.href = "/login";
             } finally {
                 isTokenRefreshing = false;
             }
+        }
+        if (axios.isAxiosError(error) && error.response?.data?.error) {
+            error.message = error.response.data.error;
         }
         return Promise.reject(error);
     }

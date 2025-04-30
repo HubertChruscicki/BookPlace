@@ -1,5 +1,7 @@
 import React from 'react';
-import { Modal, Button, TextField } from '@mui/material';
+import {Modal, Box} from '@mui/material';
+import LoginForm from "./LoginForm.tsx";
+import RegisterForm from "./RegisterForm.tsx";
 
 export type AuthMode = 'login' | 'register';
 
@@ -10,31 +12,30 @@ interface AuthModalProps {
     onSwitchMode: (mode: AuthMode) => void;
 }
 
+//TODO CHECK THE ERROR RESPONDS
 const AuthModal: React.FC<AuthModalProps> = ({ open, mode, onClose, onSwitchMode }) => {
     return (
         <Modal open={open} onClose={onClose}>
-            <div className="p-6 bg-white rounded shadow-lg mx-auto mt-20 max-w-sm">
-                <h2 className="text-2xl mb-4">{mode === 'login' ? 'Logowanie' : 'Rejestracja'}</h2>
-                <form>
-                    {mode === 'register' && (
-                        <TextField fullWidth label="Imię i nazwisko" className="mb-4" />
-                    )}
-                    <TextField fullWidth label="Email" className="mb-4" />
-                    <TextField fullWidth type="password" label="Hasło" className="mb-4" />
-                    <Button variant="contained" fullWidth>
-                        {mode === 'login' ? 'Zaloguj się' : 'Zarejestruj się'}
-                    </Button>
-                </form>
-                <div className="mt-4 text-center">
-                    <button
-                        type="button"
-                        className="text-sm text-blue-600 hover:underline"
-                        onClick={() => onSwitchMode(mode === 'login' ? 'register' : 'login')}
-                    >
-                        {mode === 'login' ? 'Nie masz konta? Zarejestruj się' : 'Masz konto? Zaloguj się'}
-                    </button>
-                </div>
-            </div>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    minWidth: "25vw",
+                    maxWidth: "500px",
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    borderRadius: 5,
+                    p: 4,
+                    outline: 'none',
+                }}
+            >
+                {mode === 'login'
+                    ? <LoginForm onClose={onClose} onSwitchToRegister={() => onSwitchMode('register')} />
+                    : <RegisterForm onClose={onClose} onSwitchToLogin={() => onSwitchMode('login')} />
+                }
+            </Box>
         </Modal>
     );
 };

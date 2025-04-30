@@ -1,9 +1,8 @@
     import Container from "@mui/material/Container";
     import Paper from "@mui/material/Paper";
-    import {Box, IconButton, Typography} from "@mui/material";
+    import {Box, Typography} from "@mui/material";
     import {colors} from "../../theme/colors.ts"
     import React from "react";
-    import CloseIcon from "@mui/icons-material/Close";
 
     interface FormContainerProps {
         title?: string;
@@ -13,7 +12,7 @@
         onClose?: () => void;
     }
 
-    const FormContainer: React.FC<FormContainerProps> = ({title, onSubmit, onClose, children, modal }) => {
+    const FormContainer: React.FC<FormContainerProps> = ({title, onSubmit, modal, children}) => {
 
         return (
             <Container maxWidth="md" sx={{
@@ -36,22 +35,6 @@
                         borderRadius: 5
                     }}
                 >
-
-                    {modal && <IconButton
-                        onClick={onClose}
-                        sx={{
-                            display: "flex",
-                            color: 'text.secondary',
-                            marginLeft: "auto",
-                            '&:hover': {
-                                backgroundColor: 'rgba(0,0,0,0.03)',
-                                color: colors.blue[500]
-                            }
-                        }}
-                    >
-                        <CloseIcon fontSize="medium"/>
-                    </IconButton>}
-
                     <Typography
                         variant="h4"
                         sx={{
