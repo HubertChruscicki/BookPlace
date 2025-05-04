@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
 import Divider from "@mui/material/Divider";
+import {useNavigate} from "react-router-dom";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -27,6 +28,9 @@ export interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({fullWidth}) => {
+
+    const navigate = useNavigate();
+
     return (
         <>
             <AppBar position="sticky" elevation={0}
@@ -54,7 +58,9 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
                             backgroundSize: "contain",
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "left center",
+                            cursor: "pointer"
                         }}
+                        onClick={()=>navigate("/")}
                     />
 
                     <SearchContainer>
