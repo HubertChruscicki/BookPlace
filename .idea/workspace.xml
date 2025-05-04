@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): offer card added">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(fix): offer card type fix">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Footer/Footer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/authentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/authentication.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -156,7 +151,7 @@
       <workItem from="1745947516291" duration="8146000" />
       <workItem from="1746044941830" duration="51000" />
       <workItem from="1746048912162" duration="574000" />
-      <workItem from="1746195454750" duration="8837000" />
+      <workItem from="1746195454750" duration="10198000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -230,7 +225,23 @@
       <option name="project" value="LOCAL" />
       <updated>1745949754448</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat(design): offer card added">
+      <option name="closed" value="true" />
+      <created>1746364327510</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1746364327510</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat(fix): offer card type fix">
+      <option name="closed" value="true" />
+      <created>1746364471191</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1746364471191</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +258,7 @@
     <MESSAGE value="feat(auth): add login register based on jwt" />
     <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
     <MESSAGE value="feat(design): offer card added" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(design): offer card added" />
+    <MESSAGE value="feat(fix): offer card type fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(fix): offer card type fix" />
   </component>
 </project>
