@@ -63,7 +63,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                             {offer.title}
                         </Typography>
                         <Typography noWrap color="text.secondary">
-                            {offer.title}
+                            {offer.type}
                         </Typography>
                     </Box>
                     <Row justify="flex-end">

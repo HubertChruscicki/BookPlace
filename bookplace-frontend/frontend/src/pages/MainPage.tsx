@@ -7,6 +7,7 @@ const MainPage: React.FC = () => {
     const offer: OfferCardModel = {
         id: 1,
         title: 'Przytulny apartament w centrum',
+        type: "Domek w górach",
         price_per_night: 120,
         rating: 4.7,
         city: 'Kraków',

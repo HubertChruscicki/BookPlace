@@ -65,6 +65,7 @@ export interface OfferModel {
 export interface OfferCardModel {
   id: number;
   title: string;
+  type: string;
   price_per_night: number;
   rating: number;
   city: string;
