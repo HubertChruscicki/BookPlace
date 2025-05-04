@@ -1,6 +1,6 @@
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiResponse
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from ..models import Offers, OfferImages
+from ..models import Offers, OfferImages, OfferTypes
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -9,6 +9,8 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.exceptions import ParseError
+
 
 from ..serializers import (
     OffersSerializer,
@@ -17,7 +19,7 @@ from ..serializers import (
 )
 
 class OfferCardPagination(LimitOffsetPagination):
-    default_limit = 20
+    default_limit = 48
     max_limit = 100
 
 
@@ -102,6 +104,7 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         parameters=[
             OpenApiParameter("offset", type=int, description="Offset"),
             OpenApiParameter("limit", type=int, description="Max items"),
+            OpenApiParameter("type", type=int, description="Filter by offer type ID"),
             OpenApiParameter("min_beds", type=int, description="Min beds"),
             OpenApiParameter("max_beds", type=int, description="Max beds"),
             OpenApiParameter("min_guests", type=int, description="Min guests"),
@@ -123,42 +126,89 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         ],
         responses={200: OpenApiResponse(response=OfferCardSerializer(many=True))}
     )
-    @action(detail=False, methods=['get'], url_path='load-offers',
-            pagination_class=OfferCardPagination)
-    def loead(self, request):
-        qs = Offers.objects.filter(is_active=True)
+    @action(detail=False, methods=['get'], url_path='load-offers', pagination_class=OfferCardPagination)
+    def load(self, request):
+        queryset = Offers.objects.filter(is_active=True)
         params = request.query_params
+        def get_int(name):
+            field_value = params.get(name)
+            if field_value is None:
+                return None
+            try:
+                return int(field_value)
+            except ValueError:
+                raise ParseError({name: f"{field_value}Must be an integer"})
+        def get_bool(name):
+            field_value = params.get(name)
+            if field_value is None:
+                return None
+            lower_case_value = field_value.lower()
+            if lower_case_value in ('1', 'true', 'yes'):
+                return True
+            if lower_case_value in ('0', 'false', 'no'):
+                return False
+            raise ParseError({name: f"{field_value}Must be an boolean"})
 
-        # beds
-        if params.get('min_beds') is not None:
-            qs = qs.filter(offerdetails__beds__gte=int(params['min_beds']))
-        if params.get('max_beds') is not None:
-            qs = qs.filter(offerdetails__beds__lte=int(params['max_beds']))
+        type_id = get_int('type')
+        if type_id is not None:
+            if not OfferTypes.objects.filter(id=type_id).exists():
+                raise ParseError({'type': f"Offer with type {type_id} id does not exist"})
+            queryset = queryset.filter(offer_type__id=type_id)
 
-        # guests
-        if params.get('min_guests') is not None:
-            qs = qs.filter(max_guests__gte=int(params['min_guests']))
-        if params.get('max_guests') is not None:
-            qs = qs.filter(max_guests__lte=int(params['max_guests']))
+        min_beds = get_int('min_beds')
+        if min_beds is not None:
+            queryset = queryset.filter(offerdetails__beds__gte=min_beds)
+        max_beds = get_int('max_beds')
+        if max_beds is not None:
+            queryset = queryset.filter(offerdetails__beds__lte=max_beds)
+
+        min_guests = get_int('min_guests')
+        if min_guests is not None:
+            queryset = queryset.filter(max_guests__gte=min_guests)
+        max_guests = get_int('max_guests')
+        if max_guests is not None:
+            queryset = queryset.filter(max_guests__lte=max_guests)
 
         for field in [
             'private_bathroom', 'kitchen', 'wifi', 'tv',
             'fridge_in_room', 'air_conditioning', 'smoking_allowed',
             'pets_allowed', 'parking', 'swimming_pool', 'sauna', 'jacuzzi'
         ]:
-            v = params.get(field)
-            if v is not None:
-                flag = v.lower() in ['1', 'true', 'yes']
-                qs = qs.filter(**{f'offeramenities__{field}': flag})
+            flag = get_bool(field)
+            if flag is not None:
+                queryset = queryset.filter(**{f'offeramenities__{field}': flag})
 
-        if params.get('city'):
-            qs = qs.filter(offerlocation__city__iexact=params['city'])
-        if params.get('country'):
-            qs = qs.filter(offerlocation__country__iexact=params['country'])
+        city = params.get('city')
+        if city:
+            queryset = queryset.filter(offerlocation__city__iexact=city)
+        country = params.get('country')
+        if country:
+            queryset = queryset.filter(offerlocation__country__iexact=country)
 
-        page = self.paginate_queryset(qs)
-        serializer = OfferCardSerializer(page, many=True, context={'request': request})
-        return self.get_paginated_response(serializer.data)
+        queryset = queryset.order_by('-id')
+        total = queryset.count()
 
+        offset = get_int('offset') or 0
+        limit = get_int('limit') or OfferCardPagination.default_limit
+        limit = min(limit, OfferCardPagination.max_limit)
+
+        if offset >= total:
+            offset = 0
+
+        page_queryset = queryset[offset:offset + limit]
+        base = request.build_absolute_uri(request.path)
+        def gen_enpoint(offset):
+            return f"{base}?limit={limit}&offset={offset}" if 0 <= offset < total else None
+
+        next_offset = offset + limit
+        prev_offset = offset - limit
+
+        serializer = OfferCardSerializer(page_queryset, many=True, context={'request': request})
+        return Response({
+            'count': total,
+            'next': gen_enpoint(next_offset),
+            'previous': gen_enpoint(prev_offset),
+            'results': serializer.data
+        })
 
 

@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(api): add offer load enpoint and serializer">
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(api): load endpoint fix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -264,7 +264,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746387505611</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="feat(api): load endpoint fix">
+      <option name="closed" value="true" />
+      <created>1746388301748</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1746388301748</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,6 +293,7 @@
     <MESSAGE value="feat(design): add footer on main page" />
     <MESSAGE value="feat(design): add offer cards grid" />
     <MESSAGE value="feat(api): add offer load enpoint and serializer" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(api): add offer load enpoint and serializer" />
+    <MESSAGE value="feat(api): load endpoint fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(api): load endpoint fix" />
   </component>
 </project>
