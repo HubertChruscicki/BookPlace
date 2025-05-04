@@ -6,10 +6,13 @@ from django.http import Http404
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import models
+from rest_framework.permissions import AllowAny
+
 
 
 class OfferDetailsViewAPI(ModelViewSet):
     serializer_class = OfferDetailsSerializer
+    permission_classes = [AllowAny]
     def get_queryset(self):
         return OfferDetails.objects.all()
 

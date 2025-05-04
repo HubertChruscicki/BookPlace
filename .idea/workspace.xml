@@ -4,19 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(auth): skeleton of new global accesible authmodal">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/.eslintrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/RegisterForm.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/AuthModels.ts" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): offer card added">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/api/axiosApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/AuthModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/LoginModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Auth/RegisterModal.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormContainer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_details_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/authentication.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/authentication.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/OfferModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +94,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
       </set>
     </attachedChunks>
   </component>
@@ -160,6 +156,7 @@
       <workItem from="1745947516291" duration="8146000" />
       <workItem from="1746044941830" duration="51000" />
       <workItem from="1746048912162" duration="574000" />
+      <workItem from="1746195454750" duration="8837000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -249,6 +246,7 @@
     <MESSAGE value="feat(design): login modal added" />
     <MESSAGE value="feat(auth): add login register based on jwt" />
     <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(auth): skeleton of new global accesible authmodal" />
+    <MESSAGE value="feat(design): offer card added" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(design): offer card added" />
   </component>
 </project>

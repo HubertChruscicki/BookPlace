@@ -71,7 +71,7 @@ REST_FRAMEWORK = {
         'users.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'users.permissions.IsUser',
     ],
 }
 

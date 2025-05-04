@@ -61,3 +61,13 @@ export interface OfferModel {
   location: OfferLocation;
   images: OfferImage[];
 }
+
+export interface OfferCardModel {
+  id: number;
+  title: string;
+  price_per_night: number;
+  rating: number;
+  city: string;
+  country: string;
+  img_url: string;
+}

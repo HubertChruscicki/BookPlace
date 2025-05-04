@@ -30,7 +30,7 @@ const OfferHeader: React.FC = () => {
     }}
     >
         <Box
-          sx={{gridArea: "1 / 3 / 2 / 4", bgcolor: "orange", p: 2, height: 250,
+          sx={{gridArea: "1 / 3 / 2 / 4", bgcolor: "grey", p: 2, height: 250,
                 backgroundImage: imageUrls[1] ? `url(${imageUrls[1]})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",}}
@@ -39,7 +39,7 @@ const OfferHeader: React.FC = () => {
         </Box>
 
         <Box
-          sx={{gridArea: "1 / 4 / 2 / 5", bgcolor: "green", p: 2, height: 250, borderTopRightRadius: 15,
+          sx={{gridArea: "1 / 4 / 2 / 5", bgcolor: "grey", p: 2, height: 250, borderTopRightRadius: 15,
                 backgroundImage: imageUrls[2] ? `url(${imageUrls[2]})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",}}
@@ -48,7 +48,7 @@ const OfferHeader: React.FC = () => {
         </Box>
 
         <Box
-          sx={{gridArea: "2 / 3 / 3 / 4", bgcolor: "yellow", p: 2, height: 250,
+          sx={{gridArea: "2 / 3 / 3 / 4", bgcolor: "grey", p: 2, height: 250,
                 backgroundImage: imageUrls[3] ? `url(${imageUrls[3]})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",}}
@@ -57,7 +57,7 @@ const OfferHeader: React.FC = () => {
         </Box>
 
         <Box
-          sx={{gridArea: "2 / 4 / 3 / 5", bgcolor: "red", p: 2, height: 250, borderBottomRightRadius: 15,
+          sx={{gridArea: "2 / 4 / 3 / 5", bgcolor: "grey", p: 2, height: 250, borderBottomRightRadius: 15,
                 backgroundImage: imageUrls[4] ? `url(${imageUrls[4]})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",}}
@@ -66,7 +66,7 @@ const OfferHeader: React.FC = () => {
         </Box>
 
         <Box
-          sx={{gridArea: "1 / 1 / 3 / 3", bgcolor: "lightblue", p: 2, borderTopLeftRadius: 15, borderBottomLeftRadius: 15,
+          sx={{gridArea: "1 / 1 / 3 / 3", bgcolor: "grey", p: 2, borderTopLeftRadius: 15, borderBottomLeftRadius: 15,
                 backgroundImage: imageUrls[0] ? `url(${imageUrls[0]})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
