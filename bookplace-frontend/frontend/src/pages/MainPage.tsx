@@ -3,18 +3,11 @@ import Header from "../components/Header/Header";
 import OffersGrid from "../components/Offer/OffersGrid";
 import Footer from "../components/Footer/Footer";
 import { OfferCardModel } from "../models/OfferModel";
+import {useState} from "react";
 
 const MainPage: React.FC = () => {
-    const offers: OfferCardModel[] = Array.from({ length: 48 }, (_, i) => ({
-        id: i + 1,
-        title: `Oferta Oferta Oferta #${i + 1}`,
-        type: "Domek w górach",
-        price_per_night: 120 + i * 5,
-        rating: 4 + (i % 5) * 0.2,
-        city: "Kraków",
-        country: "Polska",
-        img_url: "http://localhost:8000/media/images/zakopane1.png",
-    }));
+
+    const [offers, setOffers] = useState<OfferCardModel[]>([])
 
     return (
         <Box

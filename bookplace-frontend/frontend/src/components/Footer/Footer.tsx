@@ -8,13 +8,15 @@ const Footer: React.FC = () => {
     return (
         <AppBar
             component="footer"
-            position="sticky"
+            position="fixed"      // fixed zamiast sticky
             sx={{
                 top: "auto",
                 bottom: 0,
                 backgroundColor: "white",
                 color: "black",
                 boxShadow: "none",
+                width: "100%",       // wymusza pełną szerokość
+
             }}
         >
             <Divider
