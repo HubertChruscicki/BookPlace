@@ -7,11 +7,19 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny
+from rest_framework import generics
+from rest_framework.pagination import LimitOffsetPagination
 
 from ..serializers import (
     OffersSerializer,
-    CreateOfferSerializer
+    CreateOfferSerializer,
+    OfferCardSerializer
 )
+
+class OfferCardPagination(LimitOffsetPagination):
+    default_limit = 20
+    max_limit = 100
+
 
 @action(
     detail=False,
@@ -84,5 +92,73 @@ class OfferViewAPI(ReadOnlyModelViewSet):
             raise NotFound(detail="Offer does not exist. Cannot delete it.")
         offer.delete()
         return Response({"message": "Offer deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+    @extend_schema(
+        summary="List offer cards (quick load)",
+        description="""
+               Retrieve a paginated list of offer cards in the format:
+               Supports offset/limit and filters on beds, guests, all amenities, city, country.
+           """,
+        parameters=[
+            OpenApiParameter("offset", type=int, description="Offset"),
+            OpenApiParameter("limit", type=int, description="Max items"),
+            OpenApiParameter("min_beds", type=int, description="Min beds"),
+            OpenApiParameter("max_beds", type=int, description="Max beds"),
+            OpenApiParameter("min_guests", type=int, description="Min guests"),
+            OpenApiParameter("max_guests", type=int, description="Max guests"),
+            OpenApiParameter("private_bathroom", type=bool, description="Filter by private bathroom"),
+            OpenApiParameter("kitchen", type=bool, description="Filter by kitchen"),
+            OpenApiParameter("wifi", type=bool, description="Filter by wifi"),
+            OpenApiParameter("tv", type=bool, description="Filter by TV"),
+            OpenApiParameter("fridge_in_room", type=bool, description="Filter by fridge"),
+            OpenApiParameter("air_conditioning", type=bool, description="Filter by A/C"),
+            OpenApiParameter("smoking_allowed", type=bool, description="Filter by smoking allowed"),
+            OpenApiParameter("pets_allowed", type=bool, description="Filter by pets allowed"),
+            OpenApiParameter("parking", type=bool, description="Filter by parking"),
+            OpenApiParameter("swimming_pool", type=bool, description="Filter by pool"),
+            OpenApiParameter("sauna", type=bool, description="Filter by sauna"),
+            OpenApiParameter("jacuzzi", type=bool, description="Filter by jacuzzi"),
+            OpenApiParameter("city", type=str, description="Filter by city"),
+            OpenApiParameter("country", type=str, description="Filter by country"),
+        ],
+        responses={200: OpenApiResponse(response=OfferCardSerializer(many=True))}
+    )
+    @action(detail=False, methods=['get'], url_path='load-offers',
+            pagination_class=OfferCardPagination)
+    def cards(self, request):
+        qs = Offers.objects.filter(is_active=True)
+        params = request.query_params
+
+        # beds
+        if params.get('min_beds') is not None:
+            qs = qs.filter(offerdetails__beds__gte=int(params['min_beds']))
+        if params.get('max_beds') is not None:
+            qs = qs.filter(offerdetails__beds__lte=int(params['max_beds']))
+
+        # guests
+        if params.get('min_guests') is not None:
+            qs = qs.filter(max_guests__gte=int(params['min_guests']))
+        if params.get('max_guests') is not None:
+            qs = qs.filter(max_guests__lte=int(params['max_guests']))
+
+        for field in [
+            'private_bathroom', 'kitchen', 'wifi', 'tv',
+            'fridge_in_room', 'air_conditioning', 'smoking_allowed',
+            'pets_allowed', 'parking', 'swimming_pool', 'sauna', 'jacuzzi'
+        ]:
+            v = params.get(field)
+            if v is not None:
+                flag = v.lower() in ['1', 'true', 'yes']
+                qs = qs.filter(**{f'offeramenities__{field}': flag})
+
+        if params.get('city'):
+            qs = qs.filter(offerlocation__city__iexact=params['city'])
+        if params.get('country'):
+            qs = qs.filter(offerlocation__country__iexact=params['country'])
+
+        page = self.paginate_queryset(qs)
+        serializer = OfferCardSerializer(page, many=True, context={'request': request})
+        return self.get_paginated_response(serializer.data)
+
 
 

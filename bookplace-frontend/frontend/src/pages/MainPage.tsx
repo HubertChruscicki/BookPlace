@@ -5,10 +5,9 @@ import Footer from "../components/Footer/Footer";
 import { OfferCardModel } from "../models/OfferModel";
 
 const MainPage: React.FC = () => {
-    // przykładowa tablica ofert
     const offers: OfferCardModel[] = Array.from({ length: 48 }, (_, i) => ({
         id: i + 1,
-        title: `Oferta #${i + 1}`,
+        title: `Oferta Oferta Oferta #${i + 1}`,
         type: "Domek w górach",
         price_per_night: 120 + i * 5,
         rating: 4 + (i % 5) * 0.2,

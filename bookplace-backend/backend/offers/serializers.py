@@ -182,3 +182,36 @@ class CreateOfferSerializer(serializers.ModelSerializer):
             image_serializer.save()
 
         return offer
+
+    # serializers.py
+    from rest_framework import serializers
+    from .models import Offers
+
+class OfferCardSerializer(serializers.ModelSerializer):
+    type = serializers.CharField(source='offer_type.name')
+    city = serializers.CharField(source='offerlocation.city')
+    country = serializers.CharField(source='offerlocation.country')
+    img_url = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Offers
+        fields = [
+            'id',
+            'title',
+            'type',
+            'price_per_night',
+            'rating',
+            'city',
+            'country',
+            'img_url',
+        ]
+
+    def get_img_url(self, obj):
+        img = obj.offerimages_set.filter(is_main=True).first()
+        url = img.image.url if img else ''
+        request = self.context.get('request')
+        return request.build_absolute_uri(url) if request else url
+
+    def get_rating(self, obj):
+        return 4.6  #TODO hardcoded
