@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): add offer cards grid">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(api): add offer load enpoint and serializer">
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746366277738</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="feat(api): add offer load enpoint and serializer">
+      <option name="closed" value="true" />
+      <created>1746387505611</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1746387505611</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,6 +284,7 @@
     <MESSAGE value="feat(fix): offer card type fix" />
     <MESSAGE value="feat(design): add footer on main page" />
     <MESSAGE value="feat(design): add offer cards grid" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(design): add offer cards grid" />
+    <MESSAGE value="feat(api): add offer load enpoint and serializer" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(api): add offer load enpoint and serializer" />
   </component>
 </project>

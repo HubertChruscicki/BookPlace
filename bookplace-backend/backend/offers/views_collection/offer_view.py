@@ -125,7 +125,7 @@ class OfferViewAPI(ReadOnlyModelViewSet):
     )
     @action(detail=False, methods=['get'], url_path='load-offers',
             pagination_class=OfferCardPagination)
-    def cards(self, request):
+    def loead(self, request):
         qs = Offers.objects.filter(is_active=True)
         params = request.query_params
 

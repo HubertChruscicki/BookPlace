@@ -208,9 +208,14 @@ class OfferCardSerializer(serializers.ModelSerializer):
         ]
 
     def get_img_url(self, obj):
+        request = self.context.get('request', None)
         img = obj.offerimages_set.filter(is_main=True).first()
-        url = img.image.url if img else ''
-        request = self.context.get('request')
+        if not img or not img.image:
+            return None
+        try:
+            url = img.image.url
+        except ValueError:
+            return None
         return request.build_absolute_uri(url) if request else url
 
     def get_rating(self, obj):
