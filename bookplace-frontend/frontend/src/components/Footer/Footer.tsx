@@ -1,7 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Link, Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import {colors} from "../../theme/colors.ts";
 
 const Footer: React.FC = () => {
     const year = new Date().getFullYear();

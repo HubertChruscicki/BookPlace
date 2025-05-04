@@ -2,6 +2,7 @@ import {AppBar, Box, Toolbar, InputBase, styled} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
+import Divider from "@mui/material/Divider";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -42,6 +43,7 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
                         justifyContent: "space-between",
                         alignItems: "center",
                         width: "100%",
+                        py: 2
                     }}
                 >
                     <Box
@@ -62,6 +64,12 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
 
                     <ProfileBlock/>
                 </Toolbar>
+                <Divider
+                    sx={{
+                        ml: "-40px",
+                        mr: "-40px",
+                    }}
+                />
             </AppBar>
         </>
     );
