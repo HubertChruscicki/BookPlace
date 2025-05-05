@@ -9,7 +9,7 @@ export interface IUserCredntials {
     firstName: string;
     lastName: string;
     phone: string;
-    roles: string[];
+    role: string;
 }
 
 export interface IAuth {

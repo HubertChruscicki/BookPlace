@@ -31,6 +31,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({children}
         }
     }, []);
 
+    useEffect(() => {
+        if (authCredentials.token && authCredentials.user) {
+            localStorage.setItem('token', authCredentials.token);
+            localStorage.setItem('user', JSON.stringify(authCredentials.user));
+        } else {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+        }
+    }, [authCredentials]);
+
     return (
         <AuthContext.Provider value={{
             auth: authCredentials,
