@@ -1,11 +1,14 @@
 from django.db import models
-from users.models import Users
 from offers.models import Offers
 from django.core.validators import MinValueValidator
-
+from django.conf import settings
 
 class Reservations(models.Model):
-    user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='reservations'
+    )
     offer_id = models.ForeignKey(Offers, on_delete=models.CASCADE)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)

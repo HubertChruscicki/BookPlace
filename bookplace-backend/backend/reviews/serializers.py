@@ -1,37 +1,21 @@
 from rest_framework import serializers
-
+from users.models import User
+from offers.models import Offers
 from .models import Reviews
+
 class ReviewsSerializer(serializers.ModelSerializer):
+
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True
+    )
+    offer_id = serializers.PrimaryKeyRelatedField(
+        queryset=Offers.objects.all()
+    )
     class Meta:
         model = Reviews
-        fields = [
-            'id',
-            'user_id',
-            'offer_id',
-            'rating',
-            'comment',
-            'created_at'
-        ]
-    def validate_user_id(self, value):
-        if not value:
-            raise serializers.ValidationError("User ID is required.")
-        return value
+        fields = ['id', 'user', 'offer_id', 'rating', 'comment', 'created_at']
+        read_only_fields = ['id', 'created_at', 'user']
 
-    def validate_offer_id(self, value):
-        if not value:
-            raise serializers.ValidationError("Offer ID is required.")
-        return value
-    def validate_rating(self, value):
-        if value < 1 or value > 5:
-            raise serializers.ValidationError("Rating must be between 1 and 5.")
-        return value
-
-    def validate_comment(self, value):
-        if not value:
-            raise serializers.ValidationError("Comment is required.")
-        return value
-
-
-
-
-
+    def create(self, validated_data):
+        user = self.context['request'].user
+        return Reviews.objects.create(user=user, **validated_data)

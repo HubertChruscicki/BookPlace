@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from users.serializers import RegisterSerializer, UserSerializer, LoginSerializer, LoginResponseSerializer, RegisterResponseSerializer, RefreshTokenRequestSerializer, RefreshTokenResponseSerializer
 from users.authentication import JWTAuthentication
-from users.models import Users
+from users.models import User
 from django.contrib.auth.hashers import check_password
 from rest_framework.permissions import AllowAny
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiTypes
@@ -45,7 +45,7 @@ class LoginView(APIView):
         if not email or not password:
             return Response({"error": "Missing credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = Users.objects.filter(email=email).first()
+        user = User.objects.filter(email=email).first()
         if not user or not check_password(password, user.password):
             return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 

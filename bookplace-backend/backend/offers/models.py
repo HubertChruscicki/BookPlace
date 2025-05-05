@@ -1,14 +1,19 @@
 from django.db import models
-from users.models import Users
 from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime
 import os
+from django.conf import settings
+
 
 class OfferTypes(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
 class Offers(models.Model):
-    landlord = models.ForeignKey(Users, on_delete=models.CASCADE)
+    landlord = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='offers'
+    )
     offer_type = models.ForeignKey(OfferTypes, on_delete=models.PROTECT, null=True)
     title = models.CharField(max_length=100, default='')
     description = models.CharField(max_length=3000, default='')

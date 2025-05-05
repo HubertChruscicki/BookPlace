@@ -5,38 +5,49 @@ from django.contrib.auth import get_user_model
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed, ParseError
 import jwt
+import logging
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 class JWTAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        jwt_token = request.META.get('HTTP_AUTHORIZATION')
-        print("AUTH HEADER:", jwt_token)
+        auth_header = request.META.get('HTTP_AUTHORIZATION')
+        logger.debug("RAW AUTH HEADER: %r", auth_header)
 
-        if jwt_token is None:
+        if auth_header is None:
             return None
 
-        jwt_token = JWTAuthentication.get_the_token_from_header(jwt_token)
+        token = JWTAuthentication.get_the_token_from_header(auth_header)
+        logger.debug("STRIPPED TOKEN: %s", token)
 
         try:
-            payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms=['HS256'])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            logger.debug("DECODED PAYLOAD: %r", payload)
         except jwt.ExpiredSignatureError:
+            logger.debug("Token expired")
             raise AuthenticationFailed('Token has expired')
         except jwt.InvalidSignatureError:
+            logger.debug("Invalid signature")
             raise AuthenticationFailed('Invalid signature')
         except jwt.DecodeError:
+            logger.debug("Malformed token")
             raise AuthenticationFailed('Invalid token')
 
         user_id = payload.get('user_id')
-        if user_id  is None:
+        logger.debug("Looking up User with id = %s", user_id)
+        if user_id is None:
+            logger.debug("No user_id in payload")
             raise AuthenticationFailed('User ID not found in token')
 
         user = User.objects.filter(id=user_id).first()
-        if user is None:
+        if not user:
+            logger.debug("No User found for id = %s", user_id)
             raise AuthenticationFailed('User not found')
 
-        request.user = user
-        return user, payload
+        logger.debug("Authenticated user: %s", user)
+        return (user, token)
+
 
     def authenticate_header(self, request):
         return 'Bearer'

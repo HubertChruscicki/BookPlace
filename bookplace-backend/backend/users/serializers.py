@@ -1,39 +1,49 @@
 from rest_framework import serializers
-from users.models import Users, UserRole
+from users.models import User
 import re
-class UserSerializer(serializers.ModelSerializer):
-    roles = serializers.SerializerMethodField()
-    class Meta:
-        model = Users
-        fields = ['id', 'email', 'first_name', 'last_name', 'phone', 'roles']
 
-    def get_roles(self, obj):
-        return list(obj.roles.values_list('name', flat=True))
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'phone', 'role']
+
 
 class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
-        model = Users
+        model = User
         fields = ['email', 'password', 'first_name', 'last_name', 'phone']
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'last_name': {'required': True},
+            'phone': {'required': True},
+        }
+
     def create(self, validated_data):
-        from django.contrib.auth.hashers import make_password
-        validated_data['password'] = make_password(validated_data['password'])
-        user = super().create(validated_data)
-        default_role, created = UserRole.objects.get_or_create(name="user")
-        user.roles.add(default_role)
+        password = validated_data.pop('password')
+        user = User.objects.create_user(
+            email=validated_data['email'],
+            password=password,
+            first_name=validated_data.get('first_name', ''),
+            last_name=validated_data.get('last_name', ''),
+            phone=validated_data.get('phone', ''),
+        )
         return user
+
     def validate_email(self, value):
-        if Users.objects.filter(email=value).exists():
+        if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email already exists")
         return value
+
     def validate_phone(self, value):
         pattern = r'^\+?\d{9,15}$'
         if not re.match(pattern, value):
             raise serializers.ValidationError(
                 "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
             )
-        if Users.objects.filter(phone=value).exists():
+        if User.objects.filter(phone=value).exists():
             raise serializers.ValidationError("Phone number already exists")
-
         return value
 
     def validate_password(self, value):
@@ -48,23 +58,28 @@ class RegisterSerializer(serializers.ModelSerializer):
         if not re.search(r'[@$!%*?&]', value):
             raise serializers.ValidationError("Password must contain at least one special character")
         return value
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+
 class RegisterResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
     user = UserSerializer()
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Users
-        fields = ['email', 'password']
+
+
 class LoginResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
     user = UserSerializer()
 
+
 class RefreshTokenRequestSerializer(serializers.Serializer):
     refresh = serializers.CharField()
+
+
 class RefreshTokenResponseSerializer(serializers.Serializer):
     token = serializers.CharField()
-
-
-

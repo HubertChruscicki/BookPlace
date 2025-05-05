@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Offers, OfferLocation, OfferDetails, OfferImages, OfferTypes, OfferAmenities
-from users.models import Users
+from users.models import User
 from datetime import datetime
 from django.core.files.base import ContentFile
 import base64
@@ -75,7 +75,7 @@ class OfferTypesSerializer(serializers.ModelSerializer):
 
 class LandlordBasicSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
+        model = User
         fields = [
             'id',
             'first_name'
@@ -156,13 +156,14 @@ class CreateOfferSerializer(serializers.ModelSerializer):
             'max_guests': {'required': True},
         }
     def create(self, validated_data):
+        #TODO nowe
+        request = self.context.get('request')
+        landlord = request.user
         location_data = validated_data.pop('location')
         details_data = validated_data.pop('details')
         amenities_data = validated_data.pop('amenities')
         images_data = validated_data.pop('images')
 
-        #TODO change for logged landlord for now HARDOCODED
-        landlord = Users.objects.get(id=2)
 
         offer = Offers.objects.create(
             landlord=landlord,

@@ -6,10 +6,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import AllowAny
-from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from users.permissions import IsLandlord
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.exceptions import ParseError
+import logging
+from users.authentication     import JWTAuthentication
 
 
 from ..serializers import (
@@ -23,14 +25,8 @@ class OfferCardPagination(LimitOffsetPagination):
     max_limit = 100
 
 
-@action(
-    detail=False,
-    methods=['post'],
-    url_path='add-offer',
-    parser_classes=[MultiPartParser, FormParser]
-)
-def add_offer(self, request):
-    ...
+logger = logging.getLogger(__name__) #todo delete
+
 
 class OfferViewAPI(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
@@ -64,9 +60,18 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         responses={
             201: OpenApiResponse(response=CreateOfferSerializer),
             400: OpenApiResponse(description="Validation errors"),
-        }
+        },
+
     )
-    @action (detail=False, methods=['post'], url_path='add-offer') #TODO DODAC OPIS IMAGE MA BYC BASE 64
+    @action(
+        detail=False,
+        methods=['post'],
+        url_path='add-offer',
+        parser_classes=[MultiPartParser, FormParser],
+        authentication_classes=[JWTAuthentication],  # (opcjonalnie, jeśli chcesz nadpisać domyślne)
+        permission_classes=[IsAuthenticated, IsLandlord],  # << tutaj
+    )
+    #TODO DODAC OPIS IMAGE MA BYC BASE 64
     def add_offer(self, request):
         """
         #### Example Request:
@@ -74,7 +79,17 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         POST /api/v1/offers/add-offer/
         ```
         """
-        serializer = CreateOfferSerializer(data=request.data)
+
+        #TODO DELETE
+        logger.debug("Headers: %s", dict(request.headers))
+        # pokaż body JSON / form-data
+        logger.debug("Body data: %s", request.data)
+        # pokaż user / token
+        logger.debug("User: %s, Auth: %s", request.user, request.auth)
+
+
+
+        serializer = CreateOfferSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -71,7 +71,7 @@ REST_FRAMEWORK = {
         'users.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'users.permissions.IsUser',
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 
@@ -97,6 +97,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+
+AUTH_USER_MODEL = 'users.User'
 
 
 # Database
@@ -135,6 +137,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'handlers': {
+    'console': {'class': 'logging.StreamHandler'},
+  },
+  'loggers': {
+    # 'users.authentication' bo __name__ w tamtym module prawdopodobnie 'users.authentication'
+    'users.authentication': {
+      'handlers': ['console'],
+      'level': 'DEBUG',
+      'propagate': False,
+    },
+  },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
