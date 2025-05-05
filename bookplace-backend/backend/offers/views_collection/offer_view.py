@@ -67,9 +67,8 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         detail=False,
         methods=['post'],
         url_path='add-offer',
-        parser_classes=[MultiPartParser, FormParser],
-        authentication_classes=[JWTAuthentication],  # (opcjonalnie, jeśli chcesz nadpisać domyślne)
-        permission_classes=[IsAuthenticated, IsLandlord],  # << tutaj
+        authentication_classes=[JWTAuthentication],
+        permission_classes=[IsAuthenticated, IsLandlord],
     )
     #TODO DODAC OPIS IMAGE MA BYC BASE 64
     def add_offer(self, request):
