@@ -10,6 +10,8 @@ const AddOfferPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const { auth } = useAuth();
     const userRole = auth.user?.role;
+    const [checkedAuthFlag, setCheckedAuthFlag] = useState(false);
+
 
     useEffect(() => {
         if (!userRole) {
@@ -19,6 +21,7 @@ const AddOfferPage: React.FC = () => {
         } else {
             setError(null);
         }
+        setCheckedAuthFlag(true);
     }, [userRole]);
 
     const handleAddOffer = async (offer: OfferModel) => {
@@ -35,10 +38,15 @@ const AddOfferPage: React.FC = () => {
         }
     }
 
+    if (!checkedAuthFlag) {
+        return null; //TODO SKELETON
+    }
 
-    return error
-        ? <ErrorPage message={error} />
-        : <AddOfferForm onSubmit={handleAddOffer} />;
+    if (error) {
+        return <ErrorPage message={error} />;
+    }
+
+    return <AddOfferForm onSubmit={handleAddOffer} />;
 
 };
 
