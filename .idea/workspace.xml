@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="api(reservations): created get endpoints">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
@@ -153,7 +153,7 @@
       <workItem from="1746048912162" duration="574000" />
       <workItem from="1746195454750" duration="12672000" />
       <workItem from="1746394138024" duration="14007000" />
-      <workItem from="1746485318681" duration="21243000" />
+      <workItem from="1746485318681" duration="23655000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -323,7 +323,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746558040274</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter">
+      <option name="closed" value="true" />
+      <created>1746568068897</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1746568068897</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -351,6 +359,7 @@
     <MESSAGE value="feat(auth): added permissions for reservation actions" />
     <MESSAGE value="refact(reservations): changed model and serializers" />
     <MESSAGE value="api(reservations): created get endpoints" />
-    <option name="LAST_COMMIT_MESSAGE" value="api(reservations): created get endpoints" />
+    <MESSAGE value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
   </component>
 </project>

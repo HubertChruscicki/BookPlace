@@ -3,6 +3,8 @@ from offers.models import Offers
 from .models import Reservations, ReservationStatus
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
+
 
 User = get_user_model()
 class ReservationSerializer(serializers.ModelSerializer):
@@ -85,6 +87,47 @@ class ReservationListFilterSerializer(serializers.Serializer):
                 raise serializers.ValidationError(errors)
 
         return data
+
+class ReservationCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservations
+        fields = ['start_date', 'end_date', 'guests_number']
+
+    def validate(self, data):
+        start = data['start_date']
+        end = data['end_date']
+        today = timezone.now()
+
+        if start >= end:
+            raise serializers.ValidationError("start_date must be before end_date")
+
+        if start < today:
+            raise serializers.ValidationError("start_date cannot be in the past")
+
+        offer_pk = self.context['view'].kwargs['offer_pk']
+        confirmed  = get_object_or_404(ReservationStatus, name='confirmed')
+        overlap_exists = Reservations.objects.filter(
+            offer_id=offer_pk,
+            status_id=confirmed,
+            start_date__lt=end,
+            end_date__gt=start
+        ).exists()
+        if overlap_exists:
+            raise serializers.ValidationError("This time slot is already booked")
+
+        return data
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        offer = get_object_or_404(Offers, pk=self.context['view'].kwargs['offer_pk'])
+        confirmed_status = ReservationStatus.objects.get(name='confirmed')
+
+        return Reservations.objects.create(
+            user=user,
+            offer_id=offer,
+            status_id=confirmed_status,
+            **validated_data
+        )
 
 class ReservationAvalibilitySerializer(serializers.Serializer):
     """

@@ -4,13 +4,16 @@ from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiResponse
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 
-
+from offers.models import Offers
 from ..models import Reservations, ReservationStatus
-from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer
+from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, ReservationCreateSerializer
 from ..permissions import CanAccessReservation
+
+User = get_user_model()
 
 class ReservationViewAPI(
         mixins.ListModelMixin,
@@ -20,10 +23,16 @@ class ReservationViewAPI(
 
     permission_classes = [IsAuthenticated, CanAccessReservation]
 
+    serializer_class = ReservationSerializer
+    serializer_action_classes = {
+        'list': ReservationInfoSerializer,
+        'info': ReservationInfoSerializer,
+        'landlord': ReservationInfoSerializer,
+        'make_reservation': ReservationCreateSerializer,
+    }
+
     def get_serializer_class(self):
-        if self.action in ('list', 'info'):
-            return ReservationInfoSerializer
-        return ReservationSerializer
+        return self.serializer_action_classes.get(self.action, self.serializer_class)
 
     def get_queryset(self):
         offer_pk = self.kwargs['offer_pk']
@@ -131,3 +140,46 @@ class ReservationViewAPI(
         serializer = ReservationInfoSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+#TODO THINK ABOUT PENDING PAYMENT ETC.
+    @extend_schema(
+        summary="Make a new reservation",
+        description=(
+                "Creates a new reservation with status `confirmed`."
+                " **Admins** may not create reservations."
+                " **Landlords** cant book their own offers."
+        ),
+        request=ReservationCreateSerializer,
+        responses={
+            201: ReservationSerializer,
+            403: OpenApiResponse(description="Forbidden"),
+            400: OpenApiResponse(description="Validation error"),
+        },
+    )
+    @action(detail=False, methods=['post'], url_path='make-reservation')
+    def make_reservation(self, request, offer_pk=None):
+        user = request.user
+
+        if user.role == User.ROLE_ADMIN:
+            return Response(
+                {"detail": "Admins are not allowed to create reservations."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        if user.role == User.ROLE_LANDLORD:
+            offer = get_object_or_404(Offers, pk=offer_pk)
+            if getattr(offer, 'owner_id', None) == user.id:
+                return Response(
+                    {"detail": "You cannot make a reservation on your own offer."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+        serializer = self.get_serializer(
+            data=request.data,
+            context={'request': request, 'view': self}
+        )
+        serializer.is_valid(raise_exception=True)
+
+        reservation = serializer.save()
+        out_ser = ReservationSerializer(reservation)
+        return Response(out_ser.data, status=status.HTTP_201_CREATED)
