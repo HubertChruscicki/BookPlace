@@ -5,10 +5,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
-from django.db.models import Q
+from django.utils import timezone
+
 
 from ..models import Reservations, ReservationStatus
-from ..serializers import ReservationSerializer, ReservationInfoSerializer
+from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer
 from ..permissions import CanAccessReservation
 
 class ReservationViewAPI(
@@ -32,44 +33,62 @@ class ReservationViewAPI(
 
         if user.role == user.ROLE_ADMIN:
             queryset = base_queryset
-        elif user.role == user.ROLE_LANDLORD:
-            queryset = base_queryset.filter(
-                Q(user=user) | Q(offer_id__owner=user)
-            )
         else:
             queryset = base_queryset.filter(user=user)
 
-        if self.action == 'list':
-            confirmed = ReservationStatus.objects.get(name='confirmed')
-            queryset = queryset.upcoming().filter(status_id=confirmed)
         return queryset
 
     @extend_schema(
-        summary="List reservations minimal info for an offer",
+        summary="List of reservations minimal info",
         description=(
-            "Returns list that contains "
-            " **only** id, start/end dates, and status name "
-            "for confirmed & upcoming reservations"
+            "Returns list that contains **only** id, start/end dates, and status name "
+            "for confirmed & upcoming reservations — or past/all when you specify timeframe"
         ),
         parameters=[
-            OpenApiParameter("date_from", OpenApiTypes.DATE, description="`end_date` ≥ date_from"),
-            OpenApiParameter("date_to", OpenApiTypes.DATE, description="`start_date` ≤ date_to"),
-            OpenApiParameter("status", OpenApiTypes.STR,  description="Filter by status name"),
+            OpenApiParameter(
+                name='timeframe',
+                enum=['upcoming', 'past', 'all'],
+                description="Which dates to include: upcoming | past | all",
+                required=False,
+                default='upcoming',
+            ),
+            OpenApiParameter(
+                name='date_from',
+                description="Filter: end_date ≥ date_from",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='date_to',
+                description="Filter: start_date ≤ date_to",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='status',
+                description="Filter by status name",
+                required=False,
+            ),
         ],
         responses={200: ReservationSerializer(many=True)},
     )
     def list(self, request, offer_pk=None):
-        queryset = self.get_queryset()
 
-        if date_from := parse_date(request.query_params.get('date_from') or ''):
+        filter_serializer = ReservationListFilterSerializer(data=request.query_params)
+        filter_serializer.is_valid(raise_exception=True)
+        params = filter_serializer.validated_data
+
+        confirmed = ReservationStatus.objects.get(name='confirmed')
+        queryset = self.get_queryset().filter(status_id=confirmed)
+
+        today = timezone.localdate()
+
+        if date_from := params.get('date_from'):
             queryset = queryset.filter(end_date__date__gte=date_from)
-        if date_to := parse_date(request.query_params.get('date_to') or ''):
+        if date_to := params.get('date_to'):
             queryset = queryset.filter(start_date__date__lte=date_to)
-        if status_name := request.query_params.get('status'):
+        if status_name := params.get('status'):
             queryset = queryset.filter(status_id__name__iexact=status_name)
 
         return Response(self.get_serializer(queryset, many=True).data, status=status.HTTP_200_OK)
-
 
     @extend_schema(
         summary="Retrieve a full reservation info",
@@ -92,4 +111,23 @@ class ReservationViewAPI(
         obj = get_object_or_404(self.get_queryset(), pk=pk)
         self.check_object_permissions(request, obj)
         return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
+
+    @extend_schema(
+        summary="Retrieve reservations of landlords offers ",
+        description="Retrieves only: `id`, `start_date`, `end_date` i `status`.",
+        responses={200: ReservationInfoSerializer()},
+    )
+    @action(detail=False, methods=['get'], url_path='landlord')
+    def landlord(self, request, offer_pk=None):
+        user = request.user
+
+        queryset = Reservations.objects.filter(
+            offer_id__owner=user
+        )
+
+        confirmed = ReservationStatus.objects.get(name='confirmed')
+        queryset = queryset.upcoming().filter(status_id=confirmed)
+
+        serializer = ReservationInfoSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
