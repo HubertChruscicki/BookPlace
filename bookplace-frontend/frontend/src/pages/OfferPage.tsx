@@ -5,9 +5,18 @@ import OfferInfo from "../components/Offer/OfferInfo.tsx";
 import OfferSummary from "../components/Offer/OfferSummary.tsx";
 import {OfferProvider, useOffer} from "../components/Offer/OfferContext.tsx";
 import Header from "../components/Header/Header.tsx";
+import { useSearchParams } from 'react-router-dom';
+import {useEffect, useState} from "react";
+import dayjs, {Dayjs} from "dayjs";
+
 
 const OfferContent = () => {
     const {offer, isLoading, error} = useOffer();
+    const [searchParams] = useSearchParams();
+    const inParam  = searchParams.get('checkIn');
+    const outParam = searchParams.get('checkOut');
+    const [checkIn,  setCheckIn]  = useState<Dayjs | null>(inParam ? dayjs(inParam) : null);
+    const [checkOut, setCheckOut] = useState<Dayjs | null>(outParam? dayjs(outParam): null);
 
     if (isLoading) {
         return null; //TODO SCELETON
@@ -16,7 +25,7 @@ const OfferContent = () => {
     if (error || !offer) {
         return (
             <Box sx={{p: 4}}>
-                <Typography variant="h5" color="error">
+                <Typography variant="h5" color="error   ">
                     {`404 page to implement, ERROR: ${error}`}
                 </Typography>
             </Box>
@@ -42,7 +51,12 @@ const OfferContent = () => {
                     justifyContent: "space-between"
                 }}>
                     <OfferInfo/>
-                    <OfferSummary/>
+                    <OfferSummary
+                        checkIn={checkIn}
+                        checkOut={checkOut}
+                        onChangeCheckIn={setCheckIn}
+                        onChangeCheckOut={setCheckOut}
+                    />
                 </Box>
             </Box>
         );

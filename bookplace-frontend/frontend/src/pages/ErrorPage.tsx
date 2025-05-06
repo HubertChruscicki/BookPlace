@@ -15,6 +15,7 @@ const ErrorPage: React.FC<ErrorPageProps> = ({message}) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "",
                 p: "0px 40px",
             }}
         >

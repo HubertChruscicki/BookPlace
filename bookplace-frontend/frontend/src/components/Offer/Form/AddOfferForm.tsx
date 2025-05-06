@@ -10,6 +10,7 @@ import StepLocation from './Steps/StepLocation.tsx';
 import StepSummary from "./Steps/StepSummary.tsx";
 import StepType from "./Steps/StepType.tsx";
 import StepAmenities from "./Steps/StepAmenities.tsx";
+import Header from "../../Header/Header.tsx";
 
 export interface OfferFormProps {
     onSubmit: (offer: OfferModel) => Promise<void>;
@@ -182,7 +183,6 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
                     )}
                 </Box>
             </Box>
-
         </FormProvider>
     )
 

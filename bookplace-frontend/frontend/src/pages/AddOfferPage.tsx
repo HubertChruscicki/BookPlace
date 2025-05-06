@@ -1,7 +1,7 @@
 import {OfferModel} from "../models/OfferModel.ts";
 import api from "../api/axiosApi.ts";
 import AddOfferForm from "../components/Offer/Form/AddOfferForm.tsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ErrorPage from "./ErrorPage.tsx";
 import {useAuth} from "../Auth/useAuth.ts";
 
@@ -46,7 +46,9 @@ const AddOfferPage: React.FC = () => {
         return <ErrorPage message={error} />;
     }
 
-    return <AddOfferForm onSubmit={handleAddOffer} />;
+    return (
+        <AddOfferForm onSubmit={handleAddOffer} />
+    );
 
 };
 

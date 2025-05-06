@@ -1,15 +1,40 @@
-import React from 'react';
-import {Box, Button, Select, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Button, MenuItem, Select, Typography} from "@mui/material";
 import Divider from '@mui/material/Divider';
 import {DatePicker} from "@mui/x-date-pickers";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import {useOffer} from "./OfferContext.tsx";
 
+interface OfferSummaryProps {
+    checkIn: Dayjs | null;
+    checkOut: Dayjs | null;
+    onChangeCheckIn: (d: Dayjs | null) => void;
+    onChangeCheckOut: (d: Dayjs | null) => void;
+}
 
-const OfferSummary: React.FC = () => {
+const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, onChangeCheckOut, onChangeCheckIn}) => {
 
+    const { offer, isLoading, error } = useOffer();
+    const [amountOfDays, setAmountOfDays] = useState(0);
+    const [price, setPrice] = useState(0);
+    const [fee, setFee] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
 
-  return (
+    useEffect(() => {
+        const newDaysAmmount= checkOut?.diff(checkIn, 'day') ?? 0;
+        const newPrice = (offer?.price_per_night ?? 0) * (newDaysAmmount ?? 0);
+        const newFee   = newPrice * 0.1;
+        const newTotal = newPrice + newFee;
+
+        setAmountOfDays(newDaysAmmount);
+        setPrice(newPrice);
+        setFee(newFee);
+        setTotalPrice(newTotal);
+    }, [checkIn, checkOut]);
+
+    return (
     <Box
         sx={{
             display: "flex",
@@ -22,16 +47,37 @@ const OfferSummary: React.FC = () => {
         }}
     >
         <Typography>
-            160zl noc
+            {`$${offer?.price_per_night} night`}
         </Typography>
 
         <Box sx={{display: "flex", flexDirection: "row"}}>
            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker label="Check in" />
-                <DatePicker label="Check out" />
+                <DatePicker
+                    label="Check in"
+                    disablePast
+                    value={checkIn}
+                    onChange={onChangeCheckIn}
+                    format="DD.MM.YYYY"
+                />
+                <DatePicker
+                    label="Check out"
+                    value={checkOut}
+                    disablePast
+                    minDate={checkIn?.add(1, "day") ?? dayjs().add(1, "day").startOf('day')}
+                    onChange={onChangeCheckOut}
+                    format="DD.MM.YYYY"
+                />
             </LocalizationProvider>
         </Box>
-        <Select>
+        <Select
+            labelId="select-label"
+            label="Geust number"
+        >
+            {Array.from({ length: (offer?.max_guests ?? 1) }, (_v, i) => i + 1).map(opt => (
+                <MenuItem key={opt} value={opt}>
+                    {opt}
+                </MenuItem>
+            ))}
         </Select>
 
         <Button
@@ -44,19 +90,19 @@ const OfferSummary: React.FC = () => {
 
         <Box sx={{display: "flex", justifyContent: "space-between"}}>
             <Typography>
-                350zl x 5 day
+                {`$${offer?.price_per_night} x ${amountOfDays} days`}
             </Typography>
             <Typography>
-                1750zl
+                {`$${price}`}
             </Typography>
         </Box>
 
         <Box sx={{display: "flex", justifyContent: "space-between"}}>
             <Typography>
-                350zl x 5 day
+                {"BookPlace service fee"}
             </Typography>
             <Typography>
-                1750zl
+                {`$${fee}`}
             </Typography>
         </Box>
         <Divider orientation="vertical" flexItem />
@@ -65,11 +111,9 @@ const OfferSummary: React.FC = () => {
                 Total
             </Typography>
             <Typography sx={{fontWeight: "bold"}}>
-                1750zl
+                {`$${totalPrice}`}
             </Typography>
         </Box>
-
-
 
     </Box>
 
