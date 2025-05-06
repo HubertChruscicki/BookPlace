@@ -1,61 +1,95 @@
-from rest_framework.viewsets import ViewSet
+from django.shortcuts import get_object_or_404
+from django.utils.dateparse import parse_date
+from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import action
-class ReservationViewAPI(ViewSet):
-    @action(detail=False, methods=['get'], url_path='user/(?P<user_id>[^/.]+)')
-    def user_reservations(self, request, user_id=None):
-        if user_id == "1":
-            mock_data = [
-                {"id": "10", "user_id": "1", "offer_id": "2", "check_in": "2025-06-01", "check_out": "2025-06-10"},
-                {"id": "11", "user_id": "1", "offer_id": "3", "check_in": "2025-07-15", "check_out": "2025-07-20"}
-            ]
-            return Response(mock_data, status=status.HTTP_200_OK)
+from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+from django.db.models import Q
 
-        return Response({"detail": "No reservations found."}, status=status.HTTP_404_NOT_FOUND)
+from ..models import Reservations, ReservationStatus
+from ..serializers import ReservationSerializer, ReservationInfoSerializer
+from ..permissions import CanAccessReservation
 
-    @action(detail=False, methods=['get'], url_path='offer/(?P<offer_id>[^/.]+)')
-    def offer_reservations(self, request, offer_id=None):
-        mock_data = [
-            {"id": "10", "user_id": "1", "offer_id": "1", "check_in": "2025-06-01", "check_out": "2025-06-10"},
-            {"id": "12", "user_id": "2", "offer_id": "1", "check_in": "2025-08-05", "check_out": "2025-08-12"}
-        ]
-        filtered_reservations = [res for res in mock_data if res["offer_id"] == offer_id]
+class ReservationViewAPI(
+        mixins.ListModelMixin,
+        mixins.RetrieveModelMixin,
+        viewsets.GenericViewSet
+    ):
 
-        if not filtered_reservations:
-            return Response({"detail": "No reservations found for this offer."}, status=status.HTTP_404_NOT_FOUND)
+    permission_classes = [IsAuthenticated, CanAccessReservation]
 
-        return Response(filtered_reservations, status=status.HTTP_200_OK)
+    def get_serializer_class(self):
+        if self.action in ('list', 'info'):
+            return ReservationInfoSerializer
+        return ReservationSerializer
 
-    @action(detail=False, methods=['post'], url_path='book')
-    def book_reservation(self, request):
-        try:
-            data = request.data
-            if not isinstance(data.get("user_id"), int) or not isinstance(data.get("offer_id"), int):
-                raise ValueError("Invalid format. 'user_id' and 'offer_id' must be integers.")
+    def get_queryset(self):
+        offer_pk = self.kwargs['offer_pk']
+        user = self.request.user
 
-            if not isinstance(data.get("check_in"), str) or not isinstance(data.get("check_out"), str):
-                raise ValueError("Invalid format. 'check_in' and 'check_out' must be date strings.")
+        base_queryset = Reservations.objects.filter(offer_id=offer_pk)
 
-            return Response({"message": "Reservation created successfully"}, status=status.HTTP_201_CREATED)
+        if user.role == user.ROLE_ADMIN:
+            queryset = base_queryset
+        elif user.role == user.ROLE_LANDLORD:
+            queryset = base_queryset.filter(
+                Q(user=user) | Q(offer_id__owner=user)
+            )
+        else:
+            queryset = base_queryset.filter(user=user)
 
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if self.action == 'list':
+            confirmed = ReservationStatus.objects.get(name='confirmed')
+            queryset = queryset.upcoming().filter(status_id=confirmed)
+        return queryset
+
+    @extend_schema(
+        summary="List reservations minimal info for an offer",
+        description=(
+            "Returns list that contains "
+            " **only** id, start/end dates, and status name "
+            "for confirmed & upcoming reservations"
+        ),
+        parameters=[
+            OpenApiParameter("date_from", OpenApiTypes.DATE, description="`end_date` ≥ date_from"),
+            OpenApiParameter("date_to", OpenApiTypes.DATE, description="`start_date` ≤ date_to"),
+            OpenApiParameter("status", OpenApiTypes.STR,  description="Filter by status name"),
+        ],
+        responses={200: ReservationSerializer(many=True)},
+    )
+    def list(self, request, offer_pk=None):
+        queryset = self.get_queryset()
+
+        if date_from := parse_date(request.query_params.get('date_from') or ''):
+            queryset = queryset.filter(end_date__date__gte=date_from)
+        if date_to := parse_date(request.query_params.get('date_to') or ''):
+            queryset = queryset.filter(start_date__date__lte=date_to)
+        if status_name := request.query_params.get('status'):
+            queryset = queryset.filter(status_id__name__iexact=status_name)
+
+        return Response(self.get_serializer(queryset, many=True).data, status=status.HTTP_200_OK)
 
 
-#
-# test 201
-# {
-#     "user_id": 1,
-#     "offer_id": 2,
-#     "check_in": "2025-06-01",
-#     "check_out": "2025-06-10"
-# }
-#
-# test 500
-# {
-#     "user_id": "abc",
-#     "offer_id": 2,
-#     "check_in": "2025-06-01",
-#     "check_out": "2025-06-10"
-# }
+    @extend_schema(
+        summary="Retrieve a full reservation info",
+        description="Retrieves **full** reservation data.",
+        responses={200: ReservationSerializer()},
+    )
+    def retrieve(self, request, offer_pk=None, pk=None):
+        obj = get_object_or_404(self.get_queryset(), pk=pk)
+        self.check_object_permissions(request, obj)
+        return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
+
+
+    @extend_schema(
+        summary="Retrieve minimal reservation info",
+        description="Retrieves only: `id`, `start_date`, `end_date` i `status`.",
+        responses={200: ReservationInfoSerializer()},
+    )
+    @action(detail=True, methods=['get'], url_path='info')
+    def info(self, request, offer_pk=None, pk=None):
+        obj = get_object_or_404(self.get_queryset(), pk=pk)
+        self.check_object_permissions(request, obj)
+        return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
+
