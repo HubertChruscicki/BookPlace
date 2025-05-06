@@ -2,6 +2,12 @@ from django.db import models
 from offers.models import Offers
 from django.core.validators import MinValueValidator
 from django.conf import settings
+from django.utils import timezone
+
+class ReservationQuerySet(models.QuerySet):
+    def upcoming(self):
+        today = timezone.localdate()
+        return self.filter(end_date__gte=today)
 
 class Reservations(models.Model):
     user = models.ForeignKey(
@@ -18,6 +24,7 @@ class Reservations(models.Model):
     )
     guests_number = models.IntegerField(default=1)
     status_id = models.ForeignKey('ReservationStatus', on_delete=models.CASCADE)
+    objects = ReservationQuerySet.as_manager()
 
 class ReservationStatus(models.Model):
     name = models.CharField(max_length=100, default='')
