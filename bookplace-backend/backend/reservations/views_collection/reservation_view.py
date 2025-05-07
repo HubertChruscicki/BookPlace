@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiResponse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from rest_framework.pagination import LimitOffsetPagination
 
 from offers.models import Offers
 from ..models import Reservations, ReservationStatus
@@ -15,20 +16,28 @@ from ..permissions import CanAccessReservation
 
 User = get_user_model()
 
+class ReservationPagination(LimitOffsetPagination):
+    default_limit = 10
+    max_limit = 100
+
 class ReservationViewAPI(
         mixins.ListModelMixin,
         mixins.RetrieveModelMixin,
         viewsets.GenericViewSet
     ):
 
+    pagination_class = ReservationPagination
+
     permission_classes = [IsAuthenticated, CanAccessReservation]
 
     serializer_class = ReservationSerializer
+
     serializer_action_classes = {
         'list': ReservationInfoSerializer,
         'info': ReservationInfoSerializer,
         'landlord': ReservationInfoSerializer,
         'make_reservation': ReservationCreateSerializer,
+        'landlord_retrieve': ReservationSerializer,
     }
 
     def get_serializer_class(self):
@@ -77,7 +86,7 @@ class ReservationViewAPI(
                 required=False,
             ),
         ],
-        responses={200: ReservationSerializer(many=True)},
+        responses={200: ReservationInfoSerializer(many=True)},
     )
     def list(self, request, offer_pk=None):
 
@@ -90,6 +99,12 @@ class ReservationViewAPI(
 
         today = timezone.localdate()
 
+        timeframe = params.get('timeframe', 'upcoming')
+        if timeframe == 'upcoming':
+            queryset = queryset.filter(end_date__date__gte=today)
+        elif timeframe == 'past':
+            queryset = queryset.filter(end_date__date__lt=today)
+
         if date_from := params.get('date_from'):
             queryset = queryset.filter(end_date__date__gte=date_from)
         if date_to := params.get('date_to'):
@@ -97,7 +112,10 @@ class ReservationViewAPI(
         if status_name := params.get('status'):
             queryset = queryset.filter(status_id__name__iexact=status_name)
 
-        return Response(self.get_serializer(queryset, many=True).data, status=status.HTTP_200_OK)
+        page = self.paginate_queryset(queryset)
+        return self.get_paginated_response(
+            ReservationInfoSerializer(page, many=True).data
+        )
 
     @extend_schema(
         summary="Retrieve a full reservation info",
@@ -122,23 +140,104 @@ class ReservationViewAPI(
         return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
 
     @extend_schema(
-        summary="Retrieve reservations of landlords offers ",
-        description="Retrieves only: `id`, `start_date`, `end_date` i `status`.",
-        responses={200: ReservationInfoSerializer()},
+        summary="Retrieve landlord’s reservations minimal info",
+        description=(
+                "Returns a paginated list containing **only** id, start/end dates, and status name "
+                "for reservations on offers owned by the requesting landlord. Supports the same filters "
+                "as the guest list endpoint plus pagination."
+        ),
+        parameters=[
+            OpenApiParameter(
+                name='timeframe',
+                enum=['upcoming', 'past', 'all'],
+                description="Which dates to include: upcoming | past | all",
+                required=False,
+                default='upcoming',
+            ),
+            OpenApiParameter(
+                name='date_from',
+                description="Filter: end_date ≥ date_from (YYYY-MM-DD)",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='date_to',
+                description="Filter: start_date ≤ date_to (YYYY-MM-DD)",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='status',
+                description="Filter by status name (case-insensitive)",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='limit',
+                description="Maximum number of results to return",
+                required=False,
+            ),
+            OpenApiParameter(
+                name='offset',
+                description="Index of the first result to return",
+                required=False,
+            )
+        ],
+        responses={200: ReservationInfoSerializer(many=True)}
     )
-    @action(detail=False, methods=['get'], url_path='landlord')
+    @action(detail=False, methods=['get'], url_path='landlord', pagination_class=ReservationPagination)
     def landlord(self, request, offer_pk=None):
-        user = request.user
 
-        queryset = Reservations.objects.filter(
-            offer_id__owner=user
-        )
+        filter_serializer = ReservationListFilterSerializer(data=request.query_params)
+        filter_serializer.is_valid(raise_exception=True)
+        params = filter_serializer.validated_data
+
+        queryset = Reservations.objects.filter(offer_id__owner=request.user)
 
         confirmed = ReservationStatus.objects.get(name='confirmed')
         queryset = queryset.upcoming().filter(status_id=confirmed)
 
-        serializer = ReservationInfoSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        today = timezone.localdate()
+        timeframe = params.get('timeframe', 'upcoming')
+        if timeframe == 'upcoming':
+            queryset = queryset.filter(end_date__date__gte=today)
+        elif timeframe == 'past':
+            queryset = queryset.filter(end_date__date__lt=today)
+
+        if date_from := params.get('date_from'):
+            queryset = queryset.filter(end_date__date__gte=date_from)
+        if date_to := params.get('date_to'):
+            queryset = queryset.filter(start_date__date__lte=date_to)
+
+        if status_name := params.get('status'):
+            queryset = queryset.filter(status_id__name__iexact=status_name)
+
+        page = self.paginate_queryset(queryset)
+        return self.get_paginated_response(
+            ReservationInfoSerializer(page, many=True).data
+        )
+
+    @extend_schema(
+        summary="Retrieve single reservation of landlord offer",
+        description="Retrieves **full** single reservation data.",
+        responses={200: ReservationSerializer(), 404: OpenApiResponse(description="Not found")},
+    )
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path=r'landlord/(?P<id>[^/.]+)'
+    )
+    def landlord_retrieve(self, request, offer_pk=None, id=None):
+
+        user = request.user
+
+        reservation = get_object_or_404(
+            Reservations.objects.upcoming().filter(
+                offer_id__owner=user,
+                status_id__name='confirmed'
+            ),
+            pk=id,
+            offer_id=offer_pk
+        )
+        serializer = ReservationSerializer(reservation)
+        return Response(serializer.data, status=200)
 
 
 #TODO THINK ABOUT PENDING PAYMENT ETC.
