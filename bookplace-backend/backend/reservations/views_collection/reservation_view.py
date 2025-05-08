@@ -36,6 +36,7 @@ class ReservationViewAPI(
         'list': ReservationInfoSerializer,
         'info': ReservationInfoSerializer,
         'landlord': ReservationInfoSerializer,
+        'landlord_retrieve': ReservationSerializer,
         'make_reservation': ReservationCreateSerializer,
         'landlord_retrieve': ReservationSerializer,
     }
@@ -189,7 +190,7 @@ class ReservationViewAPI(
         filter_serializer.is_valid(raise_exception=True)
         params = filter_serializer.validated_data
 
-        queryset = Reservations.objects.filter(offer_id__owner=request.user)
+        queryset = Reservations.objects.filter(offer_id__landlord=request.user)
 
         confirmed = ReservationStatus.objects.get(name='confirmed')
         queryset = queryset.upcoming().filter(status_id=confirmed)
@@ -215,29 +216,23 @@ class ReservationViewAPI(
         )
 
     @extend_schema(
-        summary="Retrieve single reservation of landlord offer",
-        description="Retrieves **full** single reservation data.",
+        summary="Landlord: retrieve full info for one reservation",
         responses={200: ReservationSerializer(), 404: OpenApiResponse(description="Not found")},
     )
     @action(
         detail=False,
         methods=['get'],
-        url_path=r'landlord/(?P<id>[^/.]+)'
+        url_path=r'landlord/(?P<pk>\d+)'
     )
-    def landlord_retrieve(self, request, offer_pk=None, id=None):
-
-        user = request.user
-
-        reservation = get_object_or_404(
-            Reservations.objects.upcoming().filter(
-                offer_id__owner=user,
-                status_id__name='confirmed'
-            ),
-            pk=id,
-            offer_id=offer_pk
+    def landlord_retrieve(self, request, pk=None):
+        confirmed = get_object_or_404(ReservationStatus, name='confirmed')
+        queryset = Reservations.objects.filter(
+            offer_id__landlord=request.user,
+            status_id=confirmed
         )
-        serializer = ReservationSerializer(reservation)
-        return Response(serializer.data, status=200)
+        reservation = get_object_or_404(queryset, pk=pk)
+        return Response(ReservationSerializer(reservation).data)
+
 
 
 #TODO THINK ABOUT PENDING PAYMENT ETC.
@@ -267,7 +262,7 @@ class ReservationViewAPI(
 
         if user.role == User.ROLE_LANDLORD:
             offer = get_object_or_404(Offers, pk=offer_pk)
-            if getattr(offer, 'owner_id', None) == user.id:
+            if getattr(offer, 'landlord', None) == user.id:
                 return Response(
                     {"detail": "You cannot make a reservation on your own offer."},
                     status=status.HTTP_403_FORBIDDEN

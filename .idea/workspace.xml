@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list">
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/tests/test_reservation_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +92,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
       </set>
     </attachedChunks>
   </component>
@@ -153,7 +156,10 @@
       <workItem from="1746048912162" duration="574000" />
       <workItem from="1746195454750" duration="12672000" />
       <workItem from="1746394138024" duration="14007000" />
-      <workItem from="1746485318681" duration="23655000" />
+      <workItem from="1746485318681" duration="25631000" />
+      <workItem from="1746651789326" duration="10856000" />
+      <workItem from="1746711938825" duration="5000" />
+      <workItem from="1746712019090" duration="4550000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -331,7 +337,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746568068897</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="api(reservations): added make-reservation endpoint and proper serializer with validation">
+      <option name="closed" value="true" />
+      <created>1746572882570</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1746572882570</updated>
+    </task>
+    <task id="LOCAL-00024" summary="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list">
+      <option name="closed" value="true" />
+      <created>1746657665595</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1746657665595</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -360,6 +382,8 @@
     <MESSAGE value="refact(reservations): changed model and serializers" />
     <MESSAGE value="api(reservations): created get endpoints" />
     <MESSAGE value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
+    <MESSAGE value="api(reservations): added make-reservation endpoint and proper serializer with validation" />
+    <MESSAGE value="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list" />
+    <option name="LAST_COMMIT_MESSAGE" value="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list" />
   </component>
 </project>
