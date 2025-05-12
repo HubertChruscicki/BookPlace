@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiResponse
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiResponse, OpenApiTypes
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from ..models import Offers, OfferImages, OfferTypes
 from rest_framework import status
@@ -12,6 +12,8 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.exceptions import ParseError
 import logging
 from users.authentication     import JWTAuthentication
+from django.utils.dateparse import parse_datetime
+from urllib.parse import urlencode
 
 
 from ..serializers import (
@@ -116,6 +118,8 @@ class OfferViewAPI(ReadOnlyModelViewSet):
                Supports offset/limit and filters on beds, guests, all amenities, city, country.
            """,
         parameters=[
+            OpenApiParameter("start_date", type=OpenApiTypes.DATETIME,description="Filter out offers busy on/after this date (YYYY-MM-DD)"),
+            OpenApiParameter("end_date", type=OpenApiTypes.DATETIME, description="Filter out offers busy before this date (YYYY-MM-DD)"),
             OpenApiParameter("offset", type=int, description="Offset"),
             OpenApiParameter("limit", type=int, description="Max items"),
             OpenApiParameter("type", type=int, description="Filter by offer type ID"),
@@ -144,6 +148,19 @@ class OfferViewAPI(ReadOnlyModelViewSet):
     def load(self, request):
         queryset = Offers.objects.filter(is_active=True)
         params = request.query_params
+        all_params = params.copy()
+
+        start_str = params.get('start_date')
+        end_str = params.get('end_date')
+        if start_str and end_str:
+            start = parse_datetime(start_str)
+            end = parse_datetime(end_str)
+            if not start or not end:
+                raise ParseError("start_date and end_date must be YYYY-MM-DD")
+            if start >= end:
+                raise ParseError("start_date must be before end_date")
+
+            queryset = queryset.available(start, end)
         def get_int(name):
             field_value = params.get(name)
             if field_value is None:
@@ -206,13 +223,15 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         limit = get_int('limit') or OfferCardPagination.default_limit
         limit = min(limit, OfferCardPagination.max_limit)
 
-        if offset >= total:
-            offset = 0
-
         page_queryset = queryset[offset:offset + limit]
         base = request.build_absolute_uri(request.path)
-        def gen_enpoint(offset):
-            return f"{base}?limit={limit}&offset={offset}" if 0 <= offset < total else None
+
+        def gen_endpoint(new_offset):
+            if new_offset < 0 or new_offset >= total:
+                return None
+            all_params['offset'] = new_offset
+            all_params['limit'] = limit
+            return f"{base}?{urlencode(all_params)}"
 
         next_offset = offset + limit
         prev_offset = offset - limit
@@ -220,8 +239,8 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         serializer = OfferCardSerializer(page_queryset, many=True, context={'request': request})
         return Response({
             'count': total,
-            'next': gen_enpoint(next_offset),
-            'previous': gen_enpoint(prev_offset),
+            'next': gen_endpoint(next_offset),
+            'previous': gen_endpoint(prev_offset),
             'results': serializer.data
         })
 

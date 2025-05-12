@@ -3,8 +3,15 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from datetime import datetime
 import os
 from django.conf import settings
-
-
+class OffersQuerySet(models.QuerySet):
+    def available(self, start_date, end_date):
+        from reservations.models import ReservationStatus
+        confirmed = ReservationStatus.objects.get(name='confirmed')
+        return self.exclude(
+            reservations__status_id=confirmed,
+            reservations__start_date__lt=end_date,
+            reservations__end_date__gt=start_date
+        )
 class OfferTypes(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -23,6 +30,7 @@ class Offers(models.Model):
     )
     max_guests = models.IntegerField(default=1)
     is_active = models.BooleanField(default=True)
+    objects = OffersQuerySet.as_manager()
 
 class OfferLocation(models.Model):
     offer_id = models.OneToOneField(Offers, on_delete=models.CASCADE)
