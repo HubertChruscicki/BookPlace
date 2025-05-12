@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.utils.dateparse import parse_date
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -8,11 +7,12 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes,
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from rest_framework.pagination import LimitOffsetPagination
-
 from offers.models import Offers
 from ..models import Reservations, ReservationStatus
 from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, ReservationCreateSerializer
 from ..permissions import CanAccessReservation
+
+
 
 User = get_user_model()
 
@@ -38,24 +38,17 @@ class ReservationViewAPI(
         'landlord': ReservationInfoSerializer,
         'landlord_retrieve': ReservationSerializer,
         'make_reservation': ReservationCreateSerializer,
-        'landlord_retrieve': ReservationSerializer,
     }
 
     def get_serializer_class(self):
         return self.serializer_action_classes.get(self.action, self.serializer_class)
 
     def get_queryset(self):
-        offer_pk = self.kwargs['offer_pk']
         user = self.request.user
-
-        base_queryset = Reservations.objects.filter(offer_id=offer_pk)
-
-        if user.role == user.ROLE_ADMIN:
-            queryset = base_queryset
-        else:
-            queryset = base_queryset.filter(user=user)
-
-        return queryset
+        qureyset = Reservations.objects.all()
+        if user.role != user.ROLE_ADMIN:
+            qureyset = qureyset.filter(user=user)
+        return qureyset
 
     @extend_schema(
         summary="List of reservations minimal info",
@@ -89,7 +82,7 @@ class ReservationViewAPI(
         ],
         responses={200: ReservationInfoSerializer(many=True)},
     )
-    def list(self, request, offer_pk=None):
+    def list(self, request):
 
         filter_serializer = ReservationListFilterSerializer(data=request.query_params)
         filter_serializer.is_valid(raise_exception=True)
@@ -118,27 +111,18 @@ class ReservationViewAPI(
             ReservationInfoSerializer(page, many=True).data
         )
 
+
+    #TODO NIE DIZLAA
     @extend_schema(
         summary="Retrieve a full reservation info",
         description="Retrieves **full** reservation data.",
         responses={200: ReservationSerializer()},
     )
-    def retrieve(self, request, offer_pk=None, pk=None):
+    def retrieve(self, request, pk=None):
         obj = get_object_or_404(self.get_queryset(), pk=pk)
         self.check_object_permissions(request, obj)
         return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
 
-
-    @extend_schema(
-        summary="Retrieve minimal reservation info",
-        description="Retrieves only: `id`, `start_date`, `end_date` i `status`.",
-        responses={200: ReservationInfoSerializer()},
-    )
-    @action(detail=True, methods=['get'], url_path='info')
-    def info(self, request, offer_pk=None, pk=None):
-        obj = get_object_or_404(self.get_queryset(), pk=pk)
-        self.check_object_permissions(request, obj)
-        return Response(self.get_serializer(obj).data, status=status.HTTP_200_OK)
 
     @extend_schema(
         summary="Retrieve landlord’s reservations minimal info",
@@ -249,6 +233,33 @@ class ReservationViewAPI(
             403: OpenApiResponse(description="Forbidden"),
             400: OpenApiResponse(description="Validation error"),
         },
+        parameters=[
+            OpenApiParameter(
+                name='offer_pk',
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.PATH,
+                description="ID of the offer to book",
+                required=True
+            ),
+            OpenApiParameter(
+                name='start_date',
+                type=OpenApiTypes.DATE,
+                description="Start date of the reservation (YYYY-MM-DD)",
+                required=True
+            ),
+            OpenApiParameter(
+                name='end_date',
+                type=OpenApiTypes.DATE,
+                description="End date of the reservation (YYYY-MM-DD)",
+                required=True
+            ),
+            OpenApiParameter(
+                name='guests_number',
+                type=OpenApiTypes.INT,
+                description="Number of guests",
+                required=True
+            )
+        ],
     )
     @action(detail=False, methods=['post'], url_path='make-reservation')
     def make_reservation(self, request, offer_pk=None):
@@ -260,14 +271,6 @@ class ReservationViewAPI(
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        if user.role == User.ROLE_LANDLORD:
-            offer = get_object_or_404(Offers, pk=offer_pk)
-            if getattr(offer, 'landlord', None) == user.id:
-                return Response(
-                    {"detail": "You cannot make a reservation on your own offer."},
-                    status=status.HTTP_403_FORBIDDEN
-                )
-
         serializer = self.get_serializer(
             data=request.data,
             context={'request': request, 'view': self}
@@ -275,5 +278,7 @@ class ReservationViewAPI(
         serializer.is_valid(raise_exception=True)
 
         reservation = serializer.save()
-        out_ser = ReservationSerializer(reservation)
-        return Response(out_ser.data, status=status.HTTP_201_CREATED)
+        return Response(
+            ReservationSerializer(reservation).data,
+            status=status.HTTP_201_CREATED
+        )

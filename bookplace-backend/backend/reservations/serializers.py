@@ -89,9 +89,14 @@ class ReservationListFilterSerializer(serializers.Serializer):
         return data
 
 class ReservationCreateSerializer(serializers.ModelSerializer):
+    offer_id = serializers.PrimaryKeyRelatedField(
+        queryset=Offers.objects.all(),
+        write_only=True,
+        help_text="ID of the offer to book"
+    )
     class Meta:
         model = Reservations
-        fields = ['start_date', 'end_date', 'guests_number']
+        fields = ['offer_id', 'start_date', 'end_date', 'guests_number']
 
     def validate(self, data):
         start = data['start_date']
@@ -104,10 +109,18 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
         if start < today:
             raise serializers.ValidationError("start_date cannot be in the past")
 
-        offer_pk = self.context['view'].kwargs['offer_pk']
+        offer = data['offer_id']
+
+        if data['guests_number'] > offer.max_guests:
+            raise serializers.ValidationError("guests_number exceeds offer's max_guests")
+
+        user = self.context['request'].user
+        if user == offer.landlord:
+            raise serializers.ValidationError("Landlord cannot book their own offer")
+
         confirmed  = get_object_or_404(ReservationStatus, name='confirmed')
         overlap_exists = Reservations.objects.filter(
-            offer_id=offer_pk,
+            offer_id=offer,
             status_id=confirmed,
             start_date__lt=end,
             end_date__gt=start
@@ -119,15 +132,19 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user
-        offer = get_object_or_404(Offers, pk=self.context['view'].kwargs['offer_pk'])
-        confirmed_status = ReservationStatus.objects.get(name='confirmed')
+        offer = validated_data.pop('offer_id')
+        confirmed_status = get_object_or_404(ReservationStatus, name='confirmed')
 
-        return Reservations.objects.create(
+        reservation = Reservations(
             user=user,
             offer_id=offer,
             status_id=confirmed_status,
             **validated_data
         )
+
+        reservation.total_price = reservation.calculate_total_price()
+        reservation.save()
+        return reservation
 
 class ReservationAvalibilitySerializer(serializers.Serializer):
     """
