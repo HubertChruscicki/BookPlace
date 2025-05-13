@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import {useOffer} from "./OfferContext.tsx";
+import AvailableDatePicker from "./AvailableDatePicker.tsx";
 
 interface OfferSummaryProps {
     checkIn: Dayjs | null;
@@ -52,25 +53,23 @@ const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, onChangeC
 
         <Box sx={{display: "flex", flexDirection: "row"}}>
            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    label="Check in"
-                    disablePast
+               <AvailableDatePicker
+                    label={"Check in"}
+                    offerID={offer?.id}
                     value={checkIn}
                     onChange={onChangeCheckIn}
-                    format="DD.MM.YYYY"
-                />
-                <DatePicker
-                    label="Check out"
+               />
+               <AvailableDatePicker
+                    label={"Check out"}
+                    offerID={offer?.id}
                     value={checkOut}
-                    disablePast
-                    minDate={checkIn?.add(1, "day") ?? dayjs().add(1, "day").startOf('day')}
                     onChange={onChangeCheckOut}
-                    format="DD.MM.YYYY"
-                />
+                    minDate={checkIn?.add(1, "day") ?? dayjs().add(1, "day").startOf('day')}
+               />
             </LocalizationProvider>
         </Box>
         <Select
-            labelId="select-label"
+            labelId="select-label"a
             label="Geust number"
         >
             {Array.from({ length: (offer?.max_guests ?? 1) }, (_v, i) => i + 1).map(opt => (
