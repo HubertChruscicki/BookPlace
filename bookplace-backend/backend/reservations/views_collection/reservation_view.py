@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes, OpenApiResponse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -11,6 +11,10 @@ from offers.models import Offers
 from ..models import Reservations, ReservationStatus
 from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, ReservationCreateSerializer
 from ..permissions import CanAccessReservation
+import calendar
+from datetime import date
+from datetime import timedelta
+
 
 
 
@@ -282,3 +286,73 @@ class ReservationViewAPI(
             ReservationSerializer(reservation).data,
             status=status.HTTP_201_CREATED
         )
+
+    @extend_schema(
+        summary="Retrieve unavailable dates for an offer in particular month",
+        description=(
+                "Returns a list containing **only** unavailable dates, "
+                "in particular selected month. "
+        ),
+        parameters=[
+            OpenApiParameter(
+                name='month',
+                type=OpenApiTypes.INT,
+                description="index of month to check (1-12)",
+                required=True
+            ),
+            OpenApiParameter(
+                name='year',
+                type=OpenApiTypes.INT,
+                description="year eg. 2025",
+                required=True
+            ),
+
+        ],
+        responses={200: OpenApiResponse(description="List of unavailable dates as strings")}
+    )
+    @action(detail=True, methods=['get'], url_path='unavailable-dates', permission_classes=[AllowAny])
+    def unavailable_dates(self, request, pk=None):
+
+        offer = get_object_or_404(Offers, pk=pk)
+        confirmed = ReservationStatus.objects.get(name='confirmed')
+        try:
+            year = int(request.query_params['year'])
+            month = int(request.query_params['month'])
+            if not 1 <= month <= 12:
+                raise ValueError
+        except (ValueError, KeyError):
+            return Response(
+                {"detail": "Both 'year' (int) and 'month' (1–12) are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        first_day = date(year, month, 1)
+        last_day = date(year, month, calendar.monthrange(year, month)[1])
+
+        reservations = Reservations.objects.filter(
+            offer_id=offer,
+            start_date__gte=first_day,
+            end_date__lte=last_day,
+            status_id=confirmed
+        )
+
+        unavailable_dates = set()
+        for reservation in reservations:
+            start_date = reservation.start_date
+            end_date = reservation.end_date
+            while start_date <= end_date:
+                unavailable_dates.add(start_date.strftime('%Y-%m-%d'))
+                start_date += timedelta(days=1)
+
+
+        result = sorted(unavailable_dates)
+        return Response(
+            result,
+            status=status.HTTP_200_OK
+        )
+
+
+
+
+
+
+

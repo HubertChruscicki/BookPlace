@@ -146,9 +146,3 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
         reservation.save()
         return reservation
 
-class ReservationAvalibilitySerializer(serializers.Serializer):
-    """
-      Read-only serializer return date range,
-    """
-    start_date = serializers.DateField()
-    end_date = serializers.DateField()

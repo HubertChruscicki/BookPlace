@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="fix(reservations): fixed make reservation">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="api(reservations): added date range filter to load + changing datetime for date">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,6 +160,8 @@
       <workItem from="1746712019090" duration="5795000" />
       <workItem from="1747045632014" duration="36000" />
       <workItem from="1747062353456" duration="7968000" />
+      <workItem from="1747089080463" duration="3170000" />
+      <workItem from="1747140654781" duration="6166000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -368,14 +371,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747066382425</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="api(reservations): added date range filter to load + changing datetime for date">
+      <option name="closed" value="true" />
+      <created>1747091471722</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1747091471723</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="gitignor update" />
     <MESSAGE value="feat(api): receving photos on frontend from server from path stored in db" />
     <MESSAGE value="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews" />
     <MESSAGE value="feat(api): add post endpoint for adding offer" />
@@ -400,6 +410,7 @@
     <MESSAGE value="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list" />
     <MESSAGE value="fix(reservations): fixed landlord list retrieve endpoints" />
     <MESSAGE value="fix(reservations): fixed make reservation" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(reservations): fixed make reservation" />
+    <MESSAGE value="api(reservations): added date range filter to load + changing datetime for date" />
+    <option name="LAST_COMMIT_MESSAGE" value="api(reservations): added date range filter to load + changing datetime for date" />
   </component>
 </project>
