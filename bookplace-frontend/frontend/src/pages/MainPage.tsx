@@ -5,7 +5,7 @@ import Footer from "../components/Footer/Footer";
 import {OfferCardModel, OfferModel} from "../models/OfferModel";
 import {useEffect, useState} from "react";
 import api from "../api/axiosApi.ts";
-import {useLocation} from "react-router-dom";
+import {colors} from "../theme/colors.ts";
 
 const MainPage: React.FC = () => {
 
@@ -36,6 +36,7 @@ const MainPage: React.FC = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 p: "0px 40px",
+                backgroundColor: `${colors.white[800]}`
             }}
         >
             <Header fullWidth />

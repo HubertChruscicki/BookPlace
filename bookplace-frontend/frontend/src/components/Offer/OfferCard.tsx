@@ -12,7 +12,8 @@ const Card = styled(Box)({
     width: 350,
     overflow: "hidden",
     borderRadius: 15,
-    border: "0.005px solid grey",
+    // border: "0.005px solid grey",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
 });
 
 const Media = styled(Box)({

@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Link, Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import {colors} from "../../theme/colors.ts";
 
 const Footer: React.FC = () => {
     const year = new Date().getFullYear();
@@ -8,15 +9,14 @@ const Footer: React.FC = () => {
     return (
         <AppBar
             component="footer"
-            position="fixed"      // fixed zamiast sticky
+            position="fixed"
             sx={{
                 top: "auto",
                 bottom: 0,
-                backgroundColor: "white",
                 color: "black",
                 boxShadow: "none",
-                width: "100%",       // wymusza pełną szerokość
-
+                width: "100%",
+                backgroundColor: `${colors.white[800]}`
             }}
         >
             <Divider

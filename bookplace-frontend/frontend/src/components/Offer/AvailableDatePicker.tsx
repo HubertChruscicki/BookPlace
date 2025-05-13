@@ -54,6 +54,7 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
         handleMonthChange(ref);
     };
 
+
     return (
         <DatePicker
             label={label}

@@ -8,6 +8,8 @@ import Header from "../components/Header/Header.tsx";
 import { useSearchParams } from 'react-router-dom';
 import {useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
+import {colors} from "../theme/colors.ts"
+
 
 
 const OfferContent = () => {
@@ -38,7 +40,8 @@ const OfferContent = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                p: "0px 40px"
+                p: "0px 40px",
+                backgroundColor: `${colors.white[800]}`
             }}>
                 <Header/>
                 <OfferHeader/>

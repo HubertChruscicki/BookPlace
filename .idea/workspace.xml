@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): added disabling unavailable dates on picker on offer summary">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="fix(offer summary): current month disable dates displaying error">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +164,7 @@
       <workItem from="1747062353456" duration="7968000" />
       <workItem from="1747089080463" duration="3170000" />
       <workItem from="1747140654781" duration="7328000" />
-      <workItem from="1747157167734" duration="8172000" />
+      <workItem from="1747157167734" duration="13009000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -393,14 +398,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747165627291</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="fix(offer summary): current month disable dates displaying error">
+      <option name="closed" value="true" />
+      <created>1747171285473</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1747171285473</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(api): add post endpoint for adding offer" />
     <MESSAGE value="feat(design): first mockup of navbar with profileblock" />
     <MESSAGE value="feat(design): login modal added" />
     <MESSAGE value="feat(auth): add login register based on jwt" />
@@ -425,6 +437,19 @@
     <MESSAGE value="api(reservations): added date range filter to load + changing datetime for date" />
     <MESSAGE value="api(reservations): added endpoint for checking busy dates" />
     <MESSAGE value="feat(design): added disabling unavailable dates on picker on offer summary" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(design): added disabling unavailable dates on picker on offer summary" />
+    <MESSAGE value="fix(offer summary): current month disable dates displaying error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(offer summary): current month disable dates displaying error" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx</url>
+          <line>6</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

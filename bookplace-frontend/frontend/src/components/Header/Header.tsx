@@ -4,6 +4,7 @@ import React from "react";
 import ProfileBlock from "./ProfileBlock.tsx";
 import Divider from "@mui/material/Divider";
 import {useNavigate} from "react-router-dom";
+import {colors} from "../../theme/colors.ts";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -35,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
         <>
             <AppBar position="sticky" elevation={0}
                 sx={{
-                    backgroundColor: "white",
+                    backgroundColor: `${colors.white[800]}`,
                     color: "black",
                     ...(fullWidth ? {} : { maxWidth: "1220px" })
                 }}
