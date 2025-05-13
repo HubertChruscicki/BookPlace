@@ -10,10 +10,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from users.permissions import IsLandlord
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.exceptions import ParseError
-import logging
+from reservations.models import Reservations, ReservationStatus
 from users.authentication     import JWTAuthentication
 from django.utils.dateparse import parse_datetime
 from urllib.parse import urlencode
+from django.shortcuts      import get_object_or_404
+
 
 
 from ..serializers import (
@@ -25,10 +27,6 @@ from ..serializers import (
 class OfferCardPagination(LimitOffsetPagination):
     default_limit = 48
     max_limit = 100
-
-
-logger = logging.getLogger(__name__) #todo delete
-
 
 class OfferViewAPI(ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
@@ -244,4 +242,65 @@ class OfferViewAPI(ReadOnlyModelViewSet):
             'results': serializer.data
         })
 
+    @extend_schema(
+        summary="Check if an offer is available in a date range",
+        description=(
+                "Returns `available: true` if there are no *confirmed* reservations "
+                "overlapping `[start, end)`; you may book on the exact day another ends."
+        ),
+        parameters=[
+            OpenApiParameter(
+                "pk",
+                location=OpenApiParameter.PATH,
+                type=OpenApiTypes.INT,
+                description="Offer ID",
+                required=True
+            ),
+            OpenApiParameter(
+                "start",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+                description="Desired start date (inclusive), e.g. 2025-07-01",
+                required=True
+            ),
+            OpenApiParameter(
+                "end",
+                location=OpenApiParameter.QUERY,
+                type=OpenApiTypes.DATE,
+                description="Desired end date (exclusive), e.g. 2025-07-05",
+                required=True
+            ),
+        ],
+        responses={
+            200: OpenApiResponse(
+                description="{'available': true | false}"
+            ),
+            400: OpenApiResponse(description="Invalid or missing dates")
+        }
+    )
+    @action(detail=True, methods=['get'], url_path='check-availability', permission_classes=[AllowAny])
+    def check_availability(self, request, pk=None):
+        offer = get_object_or_404(Offers, pk=pk)
+        start_str = request.query_params.get('start')
+        end_str = request.query_params.get('end')
+        if not start_str or not end_str:
+            raise ParseError("Both start and end dates are required")
+
+        start = parse_datetime(start_str)
+        end = parse_datetime(end_str)
+        if not start or not end:
+            raise ParseError("Invalid date format. Use YYYY-MM-DD")
+
+        if start >= end:
+            raise ParseError("Start date must be before end date")
+
+        confirmed = ReservationStatus.objects.get(name='confirmed')
+        is_reservation_possible = Reservations.objects.filter(
+            offer_id=offer,
+            status_id=confirmed,
+            start_date__lt=end,
+            end_date__gt=start
+        ).exists()
+
+        return Response({'available': not is_reservation_possible}, status=status.HTTP_200_OK)
 

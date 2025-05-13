@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="api(reservations): added endpoint for checking busy dates">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(design): added disabling unavailable dates on picker on offer summary">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +161,7 @@
       <workItem from="1747062353456" duration="7968000" />
       <workItem from="1747089080463" duration="3170000" />
       <workItem from="1747140654781" duration="7328000" />
-      <workItem from="1747157167734" duration="6279000" />
+      <workItem from="1747157167734" duration="7670000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -387,14 +387,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747156343718</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="feat(design): added disabling unavailable dates on picker on offer summary">
+      <option name="closed" value="true" />
+      <created>1747165627291</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1747165627291</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(api): add model,view, serializer, add endoint, and frontend form  for reviews" />
     <MESSAGE value="feat(api): add post endpoint for adding offer" />
     <MESSAGE value="feat(design): first mockup of navbar with profileblock" />
     <MESSAGE value="feat(design): login modal added" />
@@ -419,6 +426,7 @@
     <MESSAGE value="fix(reservations): fixed make reservation" />
     <MESSAGE value="api(reservations): added date range filter to load + changing datetime for date" />
     <MESSAGE value="api(reservations): added endpoint for checking busy dates" />
-    <option name="LAST_COMMIT_MESSAGE" value="api(reservations): added endpoint for checking busy dates" />
+    <MESSAGE value="feat(design): added disabling unavailable dates on picker on offer summary" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(design): added disabling unavailable dates on picker on offer summary" />
   </component>
 </project>
