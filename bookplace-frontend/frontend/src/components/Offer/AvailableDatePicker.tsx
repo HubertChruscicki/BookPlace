@@ -1,4 +1,4 @@
-import {Dayjs} from "dayjs";
+import dayjs, {Dayjs} from "dayjs";
 import React, {useCallback, useEffect, useState} from "react";
 import api from "../../api/axiosApi.ts";
 import {DatePicker} from "@mui/x-date-pickers";
@@ -49,6 +49,11 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
     }, [minDate, handleMonthChange]);
 
 
+    const handleOpen = () => {
+        const ref = value ?? minDate ?? dayjs();
+        handleMonthChange(ref);
+    };
+
     return (
         <DatePicker
             label={label}
@@ -56,6 +61,7 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
             disablePast
             minDate={minDate}
             onChange={onChange}
+            onOpen={handleOpen}
             onMonthChange={handleMonthChange}
             shouldDisableDate={date =>
                 blocked.includes(date.format('YYYY-MM-DD'))
