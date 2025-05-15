@@ -9,12 +9,11 @@ interface AvailableDatePickerProps {
     onChange: (value: Dayjs | null) => void;
     label: string;
     minDate?: Dayjs;
+    onSetDateRangeError: (error: string | null) => void;
 }
 
-const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value, onChange, label, minDate}) => {
+const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value, onChange, label, minDate, onSetDateRangeError}) => {
     const [blocked, setBlocked] = useState<string[]>([])
-    const [error, setError] = useState<string | null>(null)
-
     const handleGetUnavailableDates = useCallback(async (month: number, year: number) => {
         try {
             const res = await api.get<string[]>(
@@ -22,10 +21,10 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
                 { params: { month, year } }
             )
             setBlocked(res.data)
-            setError(null)
+            onSetDateRangeError(null)
         } catch (err) {
             console.error(err)
-            setError('Could not load unavailable dates')
+            onSetDateRangeError('Could not load unavailable dates')
             setBlocked([])
         }
     }, [offerID])
@@ -68,6 +67,13 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
                 blocked.includes(date.format('YYYY-MM-DD'))
             }
             format="DD.MM.YYYY"
+            onError={(reason) => {
+                if (reason) {
+                    onSetDateRangeError(`Date range error`);
+                } else {
+                    onSetDateRangeError(null)
+                }
+            }}
         />
     )
 }

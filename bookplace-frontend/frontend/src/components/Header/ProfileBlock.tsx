@@ -97,7 +97,7 @@ const ProfileBlock: React.FC = () => {
                 </Typography>
                 <Avatar
                     alt="Remy Sharp"
-                    sx={{ width: 36, height: 36, mr: 1 }}
+                    sx={{ width: 36, height: 36, mr: 1, backgroundColor: `${colors.blue[300]}` }}
                 />
 
             </IconButton>

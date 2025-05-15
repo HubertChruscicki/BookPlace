@@ -4,12 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="fix(offer summary): current month disable dates displaying error">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="design(colors): changing colors shadows">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCheckoutSummary.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -92,7 +96,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+        <option value="bundled-python-sdk-d68999036c7f-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.14475.56" />
       </set>
     </attachedChunks>
   </component>
@@ -164,7 +168,8 @@
       <workItem from="1747062353456" duration="7968000" />
       <workItem from="1747089080463" duration="3170000" />
       <workItem from="1747140654781" duration="7328000" />
-      <workItem from="1747157167734" duration="13009000" />
+      <workItem from="1747157167734" duration="16365000" />
+      <workItem from="1747315884582" duration="7162000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -406,14 +411,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747171285473</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="design(colors): changing colors shadows">
+      <option name="closed" value="true" />
+      <created>1747176282350</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1747176282350</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(design): first mockup of navbar with profileblock" />
     <MESSAGE value="feat(design): login modal added" />
     <MESSAGE value="feat(auth): add login register based on jwt" />
     <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
@@ -438,7 +450,8 @@
     <MESSAGE value="api(reservations): added endpoint for checking busy dates" />
     <MESSAGE value="feat(design): added disabling unavailable dates on picker on offer summary" />
     <MESSAGE value="fix(offer summary): current month disable dates displaying error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(offer summary): current month disable dates displaying error" />
+    <MESSAGE value="design(colors): changing colors shadows" />
+    <option name="LAST_COMMIT_MESSAGE" value="design(colors): changing colors shadows" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -446,7 +459,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx</url>
           <line>6</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

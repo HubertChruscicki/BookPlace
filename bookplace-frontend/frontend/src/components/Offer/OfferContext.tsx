@@ -41,6 +41,7 @@ export const OfferProvider: React.FC<{ children: React.ReactNode }> = ({children
     }, [id]);
 
     return (
+
         <OfferContext.Provider value={{offer, isLoading, error}}>
             {children}
         </OfferContext.Provider>

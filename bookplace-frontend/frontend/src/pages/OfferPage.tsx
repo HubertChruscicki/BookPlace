@@ -5,12 +5,12 @@ import OfferInfo from "../components/Offer/OfferInfo.tsx";
 import OfferSummary from "../components/Offer/OfferSummary.tsx";
 import {OfferProvider, useOffer} from "../components/Offer/OfferContext.tsx";
 import Header from "../components/Header/Header.tsx";
-import { useSearchParams } from 'react-router-dom';
-import {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {useCallback, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {colors} from "../theme/colors.ts"
-
-
+import {useAuth} from "../Auth/useAuth.ts";
+import api from "../api/axiosApi.ts";
 
 const OfferContent = () => {
     const {offer, isLoading, error} = useOffer();
@@ -19,6 +19,36 @@ const OfferContent = () => {
     const outParam = searchParams.get('checkOut');
     const [checkIn,  setCheckIn]  = useState<Dayjs | null>(inParam ? dayjs(inParam) : null);
     const [checkOut, setCheckOut] = useState<Dayjs | null>(outParam? dayjs(outParam): null);
+    const [guestsNumber, setGuestsNumber] = useState<number>(0);
+    const navigate = useNavigate();
+    const { auth, openAuthModal } = useAuth()
+    const [bookButtonActive, setBookButtonActive] = useState<boolean>(false);
+
+    const goToCheckOut = () => {
+        if (error){
+            console.log("error handle") //TODO
+            return;
+        }
+        if(checkIn && checkOut && guestsNumber){
+            if (!auth.token) {
+                openAuthModal('login')
+                return
+            } else {
+                navigate(
+                    `/checkout/${offer!.id}` +
+                    `?checkIn=${checkIn.format('YYYY-MM-DD')}` +
+                    `&checkOut=${checkOut.format('YYYY-MM-DD')}` +
+                    `&guests=${guestsNumber}`
+                );
+            }
+        }
+    }
+
+    useEffect(() => {
+
+        setBookButtonActive(!(checkIn && checkOut && guestsNumber));
+    }, [guestsNumber, checkIn, checkOut]);
+
 
     if (isLoading) {
         return null; //TODO SCELETON
@@ -57,8 +87,11 @@ const OfferContent = () => {
                     <OfferSummary
                         checkIn={checkIn}
                         checkOut={checkOut}
+                        bookButtonActive={bookButtonActive}
                         onChangeCheckIn={setCheckIn}
                         onChangeCheckOut={setCheckOut}
+                        onSetGuestsNumber={setGuestsNumber}
+                        onCheckout={()=> goToCheckOut()}
                     />
                 </Box>
             </Box>
