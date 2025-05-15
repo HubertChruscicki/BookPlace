@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/CheckoutDetailsBlock.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/CheckoutOfferDetail.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="design(checkout): added checkout details block">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/public/mastercard_logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/public/visa_logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/CheckoutCancelInfo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/PaymentBlock.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/ReservationModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCheckoutSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/OfferCheckoutSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/views_collection/offer_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FormStack.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/OfferCheckoutSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/OfferCheckoutSummary.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,30 +59,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/FortPublish&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;copyright&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/huber/Desktop/BookPlace/BookPlace/bookplace-frontend/frontend/public",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Database",
+    "ts.external.directory.path": "C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\public" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Common" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\pages" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
@@ -164,7 +172,7 @@
       <workItem from="1747089080463" duration="3170000" />
       <workItem from="1747140654781" duration="7328000" />
       <workItem from="1747157167734" duration="16365000" />
-      <workItem from="1747315884582" duration="10840000" />
+      <workItem from="1747315884582" duration="17797000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -430,14 +438,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747324679654</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="design(checkout): added checkout details block">
+      <option name="closed" value="true" />
+      <created>1747327127985</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1747327127986</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
     <MESSAGE value="feat(design): offer card added" />
     <MESSAGE value="feat(fix): offer card type fix" />
     <MESSAGE value="feat(design): add footer on main page" />
@@ -462,7 +477,8 @@
     <MESSAGE value="design(colors): changing colors shadows" />
     <MESSAGE value="feat(checkout): add checkout page and checkout summary" />
     <MESSAGE value="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage" />
+    <MESSAGE value="design(checkout): added checkout details block" />
+    <option name="LAST_COMMIT_MESSAGE" value="design(checkout): added checkout details block" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

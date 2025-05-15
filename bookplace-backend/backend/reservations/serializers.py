@@ -101,7 +101,7 @@ class ReservationCreateSerializer(serializers.ModelSerializer):
     def validate(self, data):
         start = data['start_date']
         end = data['end_date']
-        today = timezone.now()
+        today = timezone.localdate()
 
         if start >= end:
             raise serializers.ValidationError("start_date must be before end_date")

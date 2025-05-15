@@ -31,8 +31,8 @@ class Reservations(models.Model):
     objects = ReservationQuerySet.as_manager()
 
     def calculate_total_price(self):
-        nights = (self.end_date.date() - self.start_date.date()).days or 0
-        return nights * self.offer_id.price_per_night
+        nights = (self.end_date - self.start_date).days
+        return max(nights, 0) * self.offer_id.price_per_night
 
 class ReservationStatus(models.Model):
     name = models.CharField(max_length=100, default='')

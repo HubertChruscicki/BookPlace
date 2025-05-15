@@ -5,12 +5,13 @@ import { colors } from '../../theme/colors';
 
 interface FormStackProps {
   children: React.ReactNode;
+  spacing?: number;
 }
 
-const FormStack: React.FC<FormStackProps> = ({ children }) => {
+const FormStack: React.FC<FormStackProps> = ({ children, spacing }) => {
   return (
     <Stack
-      spacing={-2}
+      spacing={spacing ? spacing : -2}
       sx={{
         '& .MuiTextField-root': {
           borderRadius: '8px',

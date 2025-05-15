@@ -79,15 +79,6 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         ```
         """
 
-        #TODO DELETE
-        logger.debug("Headers: %s", dict(request.headers))
-        # pokaż body JSON / form-data
-        logger.debug("Body data: %s", request.data)
-        # pokaż user / token
-        logger.debug("User: %s, Auth: %s", request.user, request.auth)
-
-
-
         serializer = CreateOfferSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()

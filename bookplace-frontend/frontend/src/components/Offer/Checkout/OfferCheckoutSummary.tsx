@@ -17,7 +17,7 @@ const CheckoutSummaryCard = styled(Box)({
     padding: "36px 24px",
     gap: 10,
     backgroundColor: `${colors.white[800]}`,
-    marginTop: 20
+    marginTop: 30
 })
 
 const OfferInfoBox = styled(Box)({
