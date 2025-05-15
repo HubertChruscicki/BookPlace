@@ -17,9 +17,10 @@ const OfferContent = () => {
     const [searchParams] = useSearchParams();
     const inParam  = searchParams.get('checkIn');
     const outParam = searchParams.get('checkOut');
+    const guestsParm = searchParams.get('guests');
     const [checkIn,  setCheckIn]  = useState<Dayjs | null>(inParam ? dayjs(inParam) : null);
     const [checkOut, setCheckOut] = useState<Dayjs | null>(outParam? dayjs(outParam): null);
-    const [guestsNumber, setGuestsNumber] = useState<number>(0);
+    const [guestsNumber, setGuestsNumber] = useState<number>(guestsParm? parseInt(guestsParm) : 1);
     const navigate = useNavigate();
     const { auth, openAuthModal } = useAuth()
     const [bookButtonActive, setBookButtonActive] = useState<boolean>(false);
@@ -87,6 +88,7 @@ const OfferContent = () => {
                     <OfferSummary
                         checkIn={checkIn}
                         checkOut={checkOut}
+                        guests={guestsNumber}
                         bookButtonActive={bookButtonActive}
                         onChangeCheckIn={setCheckIn}
                         onChangeCheckOut={setCheckOut}

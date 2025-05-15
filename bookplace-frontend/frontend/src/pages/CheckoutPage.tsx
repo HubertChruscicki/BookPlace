@@ -20,6 +20,7 @@ const Row = styled(Box)<{ justify?: string, align?: string }>(({ justify, align 
     width: "100%",
 }));
 
+
 const CheckoutPageContent: React.FC = () => {
     const {offer, isLoading, error} = useOffer();
     const [search] = useSearchParams();
@@ -49,7 +50,7 @@ const CheckoutPageContent: React.FC = () => {
                 <Box>
                     <Row sx={{mt: 5}}>
                         <IconButton
-                            onClick={()=>{navigate(`/offer/${offer?.id}?checkIn=${checkIn}&checkout=${checkOut}`)}}
+                            onClick={()=>{navigate(`/offer/${offer?.id}?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`)}}
                             size="large"
                             sx={{
                                 borderRadius: 2,
@@ -70,6 +71,7 @@ const CheckoutPageContent: React.FC = () => {
     )
 };
 
+//TODO CHECK IF POSSIBLE RESERVATION BY ENDPOINT THEN DISPLAY PAGECONTENT OR ERRROR
 const CheckoutPage: React.FC = () => {
     return(
         <OfferProvider>

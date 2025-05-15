@@ -40,6 +40,7 @@ const Text = styled(Typography)<{ weight?: string }>(({ weight }) => ({
 interface OfferSummaryProps {
     checkIn: Dayjs | null;
     checkOut: Dayjs | null;
+    guests: number | null;
     bookButtonActive: boolean;
     onChangeCheckIn: (d: Dayjs | null) => void;
     onChangeCheckOut: (d: Dayjs | null) => void;
@@ -47,7 +48,7 @@ interface OfferSummaryProps {
     onCheckout: () => void;
 }
 
-const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, onChangeCheckOut, onChangeCheckIn, onSetGuestsNumber, onCheckout, bookButtonActive}) => {
+const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, guests, onChangeCheckOut, onChangeCheckIn, onSetGuestsNumber, onCheckout, bookButtonActive}) => {
 
     const { offer, isLoading, error } = useOffer();
     const [amountOfDays, setAmountOfDays] = useState(0);
@@ -55,8 +56,7 @@ const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, onChangeC
     const [fee, setFee] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [dateRangeError, setDateRangeError] = useState<string | null>(null);
-
-
+    console.log(guests);
     useEffect(() => {
         const newDaysAmmount= checkOut?.diff(checkIn, 'day') ?? 0;
         const newPrice = (offer?.price_per_night ?? 0) * (newDaysAmmount ?? 0);
@@ -102,6 +102,7 @@ const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, onChangeC
         <Select
             labelId="select-label"
             label="Geust number"
+            value={guests ?? 1}
             onChange={(e)=>{
                 const val = Number((e.target as HTMLInputElement).value);
                 onSetGuestsNumber(val);

@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="design(colors): changing colors shadows">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCheckoutSummary.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(checkout): add checkout page and checkout summary">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/CheckoutPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,7 +163,7 @@
       <workItem from="1747089080463" duration="3170000" />
       <workItem from="1747140654781" duration="7328000" />
       <workItem from="1747157167734" duration="16365000" />
-      <workItem from="1747315884582" duration="7162000" />
+      <workItem from="1747315884582" duration="8240000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -419,14 +413,21 @@
       <option name="project" value="LOCAL" />
       <updated>1747176282350</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="feat(checkout): add checkout page and checkout summary">
+      <option name="closed" value="true" />
+      <created>1747323413700</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1747323413700</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(design): login modal added" />
     <MESSAGE value="feat(auth): add login register based on jwt" />
     <MESSAGE value="feat(auth): skeleton of new global accesible authmodal" />
     <MESSAGE value="feat(design): offer card added" />
@@ -451,7 +452,8 @@
     <MESSAGE value="feat(design): added disabling unavailable dates on picker on offer summary" />
     <MESSAGE value="fix(offer summary): current month disable dates displaying error" />
     <MESSAGE value="design(colors): changing colors shadows" />
-    <option name="LAST_COMMIT_MESSAGE" value="design(colors): changing colors shadows" />
+    <MESSAGE value="feat(checkout): add checkout page and checkout summary" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(checkout): add checkout page and checkout summary" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
