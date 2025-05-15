@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Box, Rating, styled, Typography} from "@mui/material";
 import Divider from '@mui/material/Divider';
 import { Dayjs } from 'dayjs';
-import {useOffer} from "./OfferContext.tsx";
-import {colors} from "../../theme/colors.ts"
+import {useOffer} from "../OfferContext.tsx";
+import {colors} from "../../../theme/colors.ts"
 
 const CheckoutSummaryCard = styled(Box)({
     display: "flex",

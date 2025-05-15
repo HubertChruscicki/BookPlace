@@ -3,15 +3,11 @@ import Header from "../components/Header/Header.tsx";
 import {Box, IconButton, styled, Typography} from "@mui/material";
 import Footer from "../components/Footer/Footer.tsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import OfferCheckoutSummary from "../components/Offer/OfferCheckoutSummary.tsx";
+import OfferCheckoutSummary from "../components/Offer/Checkout/OfferCheckoutSummary.tsx";
 import dayjs from "dayjs";
 import {OfferProvider, useOffer} from "../components/Offer/OfferContext.tsx";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-const Text = styled(Typography)<{ weight?: string }>(({ weight }) => ({
-    fontWeight: weight ?? "400",
-    fontSize: "1.3rem",
-}));
+import CheckoutDetailsBlock from "../components/Offer/Checkout/CheckoutDetailsBlock.tsx";
 
 const Row = styled(Box)<{ justify?: string, align?: string }>(({ justify, align  }) => ({
     display: "flex",
@@ -47,7 +43,7 @@ const CheckoutPageContent: React.FC = () => {
                 maxWidth: "1220px",
                 justifyContent: "space-between"
             }}>
-                <Box>
+                <Box sx={{width: "50%"}}>
                     <Row sx={{mt: 5}}>
                         <IconButton
                             onClick={()=>{navigate(`/offer/${offer?.id}?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`)}}
@@ -59,10 +55,16 @@ const CheckoutPageContent: React.FC = () => {
                         >
                             <ArrowBackIosIcon/>
                         </IconButton>
-                        <Typography sx={{fontWeight: "bold", fontSize: "2rem"}}>
+                        <Typography sx={{fontWeight: "bold", fontSize: "2.5rem"}}>
                             Ask for reservation
                         </Typography>
                     </Row>
+
+                    <CheckoutDetailsBlock checkIn={dayjs(checkIn)} checkOut={dayjs(checkOut)} guests={guests} />
+
+
+
+
                 </Box>
                 <OfferCheckoutSummary checkIn={dayjs(checkIn)} checkOut={dayjs(checkOut)} />
             </Box>
@@ -71,7 +73,8 @@ const CheckoutPageContent: React.FC = () => {
     )
 };
 
-//TODO CHECK IF POSSIBLE RESERVATION BY ENDPOINT THEN DISPLAY PAGECONTENT OR ERRROR
+//TODO CHECK IF POSSIBLE RESERVATION BY ENDPOINT THEN DISPLAY PAGECONTENT OR ERRROR TODO CHECK LOGGIN BEFORE RESERV
+//TODO CHECK DATA CHECKOUT PO CHECKIN JAK NIE TO TERROR
 const CheckoutPage: React.FC = () => {
     return(
         <OfferProvider>
