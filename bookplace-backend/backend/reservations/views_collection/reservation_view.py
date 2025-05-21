@@ -14,6 +14,8 @@ from ..permissions import CanAccessReservation
 import calendar
 from datetime import date
 from datetime import timedelta
+from notifications.tasks import send_template_email
+from django.conf import settings
 
 
 
@@ -282,6 +284,21 @@ class ReservationViewAPI(
         serializer.is_valid(raise_exception=True)
 
         reservation = serializer.save()
+
+        send_template_email.delay(
+            to_email=reservation.user.email,
+            template_id=settings.BREVO_RESERVATION_CONFIRM_TEMPLATE_ID,
+            merge_data={
+                "first_name": reservation.user.first_name,
+                "reservation_id": reservation.pk,
+                "title": reservation.offer_id.title,
+                "city": reservation.offer_id.offerlocation.city,
+                "country": reservation.offer_id.offerlocation.country,
+                "checkin_date": reservation.start_date.isoformat(),
+                "checkout_date": reservation.end_date.isoformat(),
+            }
+        )
+
         return Response(
             ReservationSerializer(reservation).data,
             status=status.HTTP_201_CREATED

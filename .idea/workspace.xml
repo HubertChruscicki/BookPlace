@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(checkout): checkout working with backend and finished design">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(anymail): added anymail">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/.env" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -79,11 +80,11 @@
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Checkout" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\Auth" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Auth" />
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -168,6 +169,14 @@
       <workItem from="1747598924943" duration="677000" />
       <workItem from="1747599653174" duration="1640000" />
       <workItem from="1747666973290" duration="574000" />
+      <workItem from="1747668251281" duration="6505000" />
+      <workItem from="1747675464017" duration="594000" />
+      <workItem from="1747746397573" duration="40000" />
+      <workItem from="1747767575136" duration="607000" />
+      <workItem from="1747820016587" duration="2170000" />
+      <workItem from="1747830240404" duration="102000" />
+      <workItem from="1747830488048" duration="9540000" />
+      <workItem from="1747853682904" duration="3149000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -449,16 +458,48 @@
       <option name="project" value="LOCAL" />
       <updated>1747336529771</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="feat(celery): configuration celery">
+      <option name="closed" value="true" />
+      <created>1747669928113</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1747669928113</updated>
+    </task>
+    <task id="LOCAL-00037" summary="feat(celery): added worker conf">
+      <option name="closed" value="true" />
+      <created>1747670508813</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1747670508813</updated>
+    </task>
+    <task id="LOCAL-00038" summary="feat(anymail): added anymail">
+      <option name="closed" value="true" />
+      <created>1747835639766</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1747835639766</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(fix): offer card type fix" />
-    <MESSAGE value="feat(design): add footer on main page" />
-    <MESSAGE value="feat(design): add offer cards grid" />
     <MESSAGE value="feat(api): add offer load enpoint and serializer" />
     <MESSAGE value="feat(api): load endpoint fix" />
     <MESSAGE value="feat(api): load endpoint improvments + type filter" />
@@ -481,6 +522,9 @@
     <MESSAGE value="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage" />
     <MESSAGE value="design(checkout): added checkout details block" />
     <MESSAGE value="feat(checkout): checkout working with backend and finished design" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(checkout): checkout working with backend and finished design" />
+    <MESSAGE value="feat(celery): configuration celery" />
+    <MESSAGE value="feat(celery): added worker conf" />
+    <MESSAGE value="feat(anymail): added anymail" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(anymail): added anymail" />
   </component>
 </project>
