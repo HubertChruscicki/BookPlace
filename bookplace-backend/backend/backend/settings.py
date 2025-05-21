@@ -14,11 +14,23 @@ import os
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+import environ # type: ignore
+
 
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENVIRONMENT = 'local'
+env = environ.Env()
+env_file = BASE_DIR / '.env'
+
+if env_file.exists():
+    environ.Env.read_env(str(env_file))
+    BASE_URL = env('BASE_URL', default="http://localhost:8000")
+    BREVO_API_KEY = env('BREVO_API_KEY')
+    DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+    BREVO_RESERVATION_CONFIRM_TEMPLATE_ID = env.int('BREVO_RESERVATION_CONFIRM_TEMPLATE_ID')
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +62,10 @@ INSTALLED_APPS = [
     'offers',
     'reservations',
     'reviews',
+    "notifications",
+    "anymail",
+    "django_celery_results",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -97,6 +113,14 @@ TEMPLATES = [
     },
 ]
 
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+ANYMAIL = {
+    "BREVO_API_KEY": BREVO_API_KEY,
+}
+DEFAULT_FROM_EMAIL = DEFAULT_FROM_EMAIL
+
+
+
 TEST_MODE = "pytest" in sys.modules
 
 WSGI_APPLICATION = 'backend.wsgi.application'
@@ -140,20 +164,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# settings.py (dodaj lub rozbuduj swój LOGGING)
 LOGGING = {
-  'version': 1,
-  'disable_existing_loggers': False,
-  'handlers': {
-    'console': {'class': 'logging.StreamHandler'},
-  },
-  'loggers': {
-    # 'users.authentication' bo __name__ w tamtym module prawdopodobnie 'users.authentication'
-    'users.authentication': {
-      'handlers': ['console'],
-      'level': 'DEBUG',
-      'propagate': False,
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
     },
-  },
+    "loggers": {
+        # Logger dla Twojego modułu taska
+        "notifications.tasks": {
+            "handlers": ["console"],
+            "level": "INFO",    # albo DEBUG, jeśli chcesz jeszcze więcej
+            "propagate": False,
+        },
+        # Logger dla Anymail – już powinien być, ale upewnij się:
+        "anymail": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
 }
 
 # Internationalization
@@ -184,4 +215,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS: True
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
 

@@ -24,3 +24,5 @@ dist-ssr
 *.sln
 *.sw?
 bookplace-backend/backend/media/images/
+bookplace-backend/backend/.gitignore
+.env
