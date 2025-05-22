@@ -14,6 +14,9 @@ const Card = styled(Box)({
     borderRadius: 15,
     // border: "0.005px solid grey",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    "&:hover": {
+        boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
+    }
 });
 
 const Media = styled(Box)({
