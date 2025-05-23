@@ -9,16 +9,14 @@ from django.contrib.auth import get_user_model
 from rest_framework.pagination import LimitOffsetPagination
 from offers.models import Offers
 from ..models import Reservations, ReservationStatus
-from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, ReservationCreateSerializer
+from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, \
+    ReservationCreateSerializer, ReservationFullInfoSerializer
 from ..permissions import CanAccessReservation
 import calendar
 from datetime import date
 from datetime import timedelta
 from notifications.tasks import send_template_email
 from django.conf import settings
-
-
-
 
 User = get_user_model()
 
@@ -33,14 +31,12 @@ class ReservationViewAPI(
     ):
 
     pagination_class = ReservationPagination
-
     permission_classes = [IsAuthenticated, CanAccessReservation]
-
     serializer_class = ReservationSerializer
 
     serializer_action_classes = {
         'list': ReservationInfoSerializer,
-        'info': ReservationInfoSerializer,
+        'info': ReservationFullInfoSerializer,
         'landlord': ReservationInfoSerializer,
         'landlord_retrieve': ReservationSerializer,
         'make_reservation': ReservationCreateSerializer,
@@ -101,22 +97,20 @@ class ReservationViewAPI(
 
         timeframe = params.get('timeframe', 'upcoming')
         if timeframe == 'upcoming':
-            queryset = queryset.filter(end_date__date__gte=today)
+            queryset = queryset.filter(end_date__gte=today)
         elif timeframe == 'past':
-            queryset = queryset.filter(end_date__date__lt=today)
+            queryset = queryset.filter(end_date__lt=today)
 
         if date_from := params.get('date_from'):
-            queryset = queryset.filter(end_date__date__gte=date_from)
+            queryset = queryset.filter(end_date__gte=date_from)
         if date_to := params.get('date_to'):
-            queryset = queryset.filter(start_date__date__lte=date_to)
+            queryset = queryset.filter(start_date__lte=date_to)
         if status_name := params.get('status'):
             queryset = queryset.filter(status_id__name__iexact=status_name)
 
         page = self.paginate_queryset(queryset)
-        return self.get_paginated_response(
-            ReservationInfoSerializer(page, many=True).data
-        )
-
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     #TODO NIE DIZLAA
     @extend_schema(

@@ -4,7 +4,7 @@ from .models import Reservations, ReservationStatus
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-
+from offers.serializers import OfferReservationInfoSerializer
 
 User = get_user_model()
 class ReservationSerializer(serializers.ModelSerializer):
@@ -26,6 +26,20 @@ class ReservationSerializer(serializers.ModelSerializer):
         ]
 
 class ReservationInfoSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source='status_id.name', read_only=True)
+    offer = OfferReservationInfoSerializer(source='offer_id', read_only=True)
+    class Meta:
+        model  = Reservations
+        fields = [
+            'id',
+            'start_date',
+            'end_date',
+            'status',
+            'offer',
+        ]
+
+
+class ReservationFullInfoSerializer(serializers.ModelSerializer):
 
     status = serializers.CharField(source='status_id.name', read_only=True)
     class Meta:
@@ -35,6 +49,10 @@ class ReservationInfoSerializer(serializers.ModelSerializer):
             'start_date',
             'end_date',
             'status',
+            'title',
+            'city',
+            'country',
+            'image',
         ]
 
 class ReservationListFilterSerializer(serializers.Serializer):

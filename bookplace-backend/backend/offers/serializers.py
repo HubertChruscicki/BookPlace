@@ -65,6 +65,19 @@ class OfferGetImagesSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.image.url)
         return obj.image.url
 
+class OfferMainImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = Offers
+        fields = ['image']
+    def get_image(self, obj):
+        main = obj.offerimages_set.filter(is_main=True).first()
+        if not main or not main.image:
+            return None
+        request = self.context.get('request', None)
+        url = main.image.url
+        return request.build_absolute_uri(url) if request else url
+
 class OfferTypesSerializer(serializers.ModelSerializer):
     class Meta:
         model = OfferTypes
@@ -193,6 +206,7 @@ class OfferCardSerializer(serializers.ModelSerializer):
     city = serializers.CharField(source='offerlocation.city')
     country = serializers.CharField(source='offerlocation.country')
     img_url = serializers.SerializerMethodField()
+
     rating = serializers.SerializerMethodField()
 
     class Meta:
@@ -207,17 +221,29 @@ class OfferCardSerializer(serializers.ModelSerializer):
             'country',
             'img_url',
         ]
+    def get_image(self, obj):
+        serializer = OfferMainImageSerializer(obj.offer_id, context=self.context)
+        return serializer.data.get('image')
 
-    def get_img_url(self, obj):
-        request = self.context.get('request', None)
-        img = obj.offerimages_set.filter(is_main=True).first()
-        if not img or not img.image:
-            return None
-        try:
-            url = img.image.url
-        except ValueError:
-            return None
-        return request.build_absolute_uri(url) if request else url
 
     def get_rating(self, obj):
         return 4.6  #TODO hardcoded
+
+class OfferReservationInfoSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(read_only=True)
+    city = serializers.CharField(source='offerlocation.city', read_only=True)
+    country = serializers.CharField(source='offerlocation.country', read_only=True)
+    img_url = serializers.SerializerMethodField()
+    class Meta:
+        model = Offers
+        fields = [
+            'id',
+            'title',
+            'city',
+            'country',
+            'img_url',
+        ]
+    def get_img_url(self, obj):
+        serializer = OfferMainImageSerializer(obj, context=self.context)
+        return serializer.data.get('image')
+
