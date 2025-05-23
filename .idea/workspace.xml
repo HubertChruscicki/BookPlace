@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(anymail): added anymail">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(email): email sending logic">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/.env" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,6 +175,7 @@
       <workItem from="1747830240404" duration="102000" />
       <workItem from="1747830488048" duration="9540000" />
       <workItem from="1747853682904" duration="3149000" />
+      <workItem from="1747859255301" duration="994000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -482,7 +481,23 @@
       <option name="project" value="LOCAL" />
       <updated>1747835639766</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="feat(email): added anymail, docker additional conf">
+      <option name="closed" value="true" />
+      <created>1747859471617</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1747859471617</updated>
+    </task>
+    <task id="LOCAL-00040" summary="feat(email): email sending logic">
+      <option name="closed" value="true" />
+      <created>1747859482882</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1747859482882</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -500,8 +515,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(api): add offer load enpoint and serializer" />
-    <MESSAGE value="feat(api): load endpoint fix" />
     <MESSAGE value="feat(api): load endpoint improvments + type filter" />
     <MESSAGE value="refactor(auth): changed own user for django wrapper" />
     <MESSAGE value="fix(api): fixed incorrect format of data of adding offer" />
@@ -525,6 +538,8 @@
     <MESSAGE value="feat(celery): configuration celery" />
     <MESSAGE value="feat(celery): added worker conf" />
     <MESSAGE value="feat(anymail): added anymail" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(anymail): added anymail" />
+    <MESSAGE value="feat(email): added anymail, docker additional conf" />
+    <MESSAGE value="feat(email): email sending logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(email): email sending logic" />
   </component>
 </project>

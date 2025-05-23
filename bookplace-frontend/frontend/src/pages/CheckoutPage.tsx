@@ -14,7 +14,6 @@ import CheckoutCancelInfo from "../components/Offer/Checkout/CheckoutCancelInfo.
 import { theme } from "../theme/theme.ts";
 import api from "../api/axiosApi.ts";
 import {makeReservationModel} from "../models/ReservationModel.ts";
-import {useAuth} from "../Auth/useAuth.ts";
 
 const Row = styled(Box)<{ justify?: string, align?: string }>(({ justify, align  }) => ({
     display: "flex",

@@ -12,6 +12,7 @@ import {
     VpnKeyOutlined as RegisterIcon,
 } from "@mui/icons-material";
 import { useAuth } from "../../Auth/useAuth.ts";
+import {useNavigate} from "react-router-dom";
 
 const iconStyles = {
     padding: '4px',
@@ -25,7 +26,9 @@ const ProfileBlock: React.FC = () => {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const { auth, setAuth, openAuthModal } = useAuth();
     const isLogged = Boolean(auth.token);
-    const roles = auth.user?.roles ?? [];
+    const role = auth.user?.role ?? "";
+    const navigate = useNavigate();
+
 
     const settings: { label: string; icon: JSX.Element }[] = [];
 
@@ -39,19 +42,17 @@ const ProfileBlock: React.FC = () => {
             { label: "My account", icon: <AccountIcon sx={iconStyles} /> }
         );
 
-        if (roles.includes("landlord")) {
+        if (role === "landlord") {
             settings.push({ label: "My offers", icon: <OffersIcon sx={iconStyles} /> });
         }
 
         settings.push(
             { label: "Reservations", icon: <ReservationsIcon sx={iconStyles} /> },
-            { label: "Reviews",      icon: <ReviewsIcon      sx={iconStyles} /> },
-            { label: "Saved",        icon: <SavedIcon        sx={iconStyles} /> },
+            { label: "Reviews", icon: <ReviewsIcon sx={iconStyles} /> },
+            { label: "Saved", icon: <SavedIcon sx={iconStyles} /> },
             { label: "Logout", icon: <LogoutIcon sx={iconStyles} /> }
         );
     }
-
-
 
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -71,6 +72,9 @@ const ProfileBlock: React.FC = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('refresh');
             localStorage.removeItem('user');
+        }
+        if (label === "Reservations") {
+            navigate("/reservations");
         }
     };
 

@@ -10,6 +10,7 @@ import AddOfferPage from "./pages/AddOfferPage.tsx";
 import AddReviewPage from "./pages/AddReviewPage.tsx";
 import {AuthProvider} from "./Auth/AuthProvider.tsx";
 import CheckoutPage from "./pages/CheckoutPage.tsx";
+import ReservationPage from "./pages/ReservationPage.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                       <Route path="/addReview/:id" element={<AddReviewPage/>} />
                       <Route path="/offer/:id/*" element={<OfferPage/>}/>
                       <Route path="/checkout/:id" element={<CheckoutPage/>} />
+                      <Route path="/reservations" element={<ReservationPage/>} />
                   </Routes>
               </AuthProvider>
           </BrowserRouter>

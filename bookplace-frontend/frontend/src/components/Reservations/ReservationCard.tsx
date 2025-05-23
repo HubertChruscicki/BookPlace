@@ -41,10 +41,10 @@ export interface ReservationCardProps {
         title: string;
         city: string;
         country: string;
-        price: number;
         image: string;
         start_date: string;
         end_date: string;
+        status: string;
     };
 }
 
