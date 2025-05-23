@@ -12,7 +12,7 @@ const FilterButton = styled(Button)<{active?: boolean}>(({ active }) => ({
     margin: "0 8px",
     border: `1px solid ${colors.blue[500]}`,
     '&:hover': {
-        backgroundColor: active ? colors.blue[600] : colors.blue[50],
+        backgroundColor: active ? colors.blue[600] : colors.blue[100],
     }
 }));
 
@@ -25,7 +25,7 @@ interface ReservationFiltersProps {
 
 const ReservationFilters: React.FC<ReservationFiltersProps> = ({ activeFilter, onChangeFilter }) => {
     return (
-        <Box sx={{ display: "flex", mb: 4 }}>
+        <Box sx={{ display: "flex"}}>
 
             <FilterButton
                 active={activeFilter === "archive"}

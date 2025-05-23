@@ -17,7 +17,7 @@ const ReservationsPageContent: React.FC = () => {
                 marginTop: "40px",
             }}
         >
-            <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", mb: 4 }}>
+            <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", mb: 4, ml: 1 }}>
                 My reservations
             </Typography>
             <Box
