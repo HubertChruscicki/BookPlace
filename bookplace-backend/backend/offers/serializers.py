@@ -221,8 +221,8 @@ class OfferCardSerializer(serializers.ModelSerializer):
             'country',
             'img_url',
         ]
-    def get_image(self, obj):
-        serializer = OfferMainImageSerializer(obj.offer_id, context=self.context)
+    def get_img_url(self, obj):
+        serializer = OfferMainImageSerializer(obj, context=self.context)
         return serializer.data.get('image')
 
 

@@ -56,58 +56,39 @@ class ReservationViewAPI(
         summary="List of reservations minimal info",
         description=(
             "Returns list that contains **only** id, start/end dates, and status name "
-            "for confirmed & upcoming reservations — or past/all when you specify timeframe"
+            "for confirmed reservations — or archive canceled when you specify status"
         ),
         parameters=[
             OpenApiParameter(
-                name='timeframe',
-                enum=['upcoming', 'past', 'all'],
-                description="Which dates to include: upcoming | past | all",
-                required=False,
-                default='upcoming',
-            ),
-            OpenApiParameter(
-                name='date_from',
-                description="Filter: end_date ≥ date_from",
-                required=False,
-            ),
-            OpenApiParameter(
-                name='date_to',
-                description="Filter: start_date ≤ date_to",
-                required=False,
-            ),
-            OpenApiParameter(
                 name='status',
-                description="Filter by status name",
+                description="Filter by status name:  confirmed | archive | canceled",
                 required=False,
+                default='confirmed'
+            ),
+            OpenApiParameter(
+                name='limit',
+                description="Maximum number of results to return",
+                required=False,
+                default=10
+            ),
+            OpenApiParameter(
+                name='offset',
+                description="Index of the first result to return",
+                required=False,
+                default=0
             ),
         ],
         responses={200: ReservationInfoSerializer(many=True)},
     )
     def list(self, request):
-
-        filter_serializer = ReservationListFilterSerializer(data=request.query_params)
-        filter_serializer.is_valid(raise_exception=True)
-        params = filter_serializer.validated_data
-
-        confirmed = ReservationStatus.objects.get(name='confirmed')
-        queryset = self.get_queryset().filter(status_id=confirmed)
-
-        today = timezone.localdate()
-
-        timeframe = params.get('timeframe', 'upcoming')
-        if timeframe == 'upcoming':
-            queryset = queryset.filter(end_date__gte=today)
-        elif timeframe == 'past':
-            queryset = queryset.filter(end_date__lt=today)
-
-        if date_from := params.get('date_from'):
-            queryset = queryset.filter(end_date__gte=date_from)
-        if date_to := params.get('date_to'):
-            queryset = queryset.filter(start_date__lte=date_to)
-        if status_name := params.get('status'):
-            queryset = queryset.filter(status_id__name__iexact=status_name)
-
+        status = request.query_params.get('status', 'confirmed').lower()
+        valid_statuses = ['confirmed', 'archive', 'cancelled']
+        if status not in valid_statuses:
+            return Response(
+                {"detail": f"Invalid status. Valid options are: {', '.join(valid_statuses)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        queryset = self.get_queryset().filter(status_id__name__iexact=status)
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
