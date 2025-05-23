@@ -7,3 +7,15 @@ export interface makeReservationModel {
 }
 
 
+export interface ReservationInfoModel {
+    id: number,
+    title: string,
+    city: string,
+    country: string,
+    image: string,
+    start_date: string,
+    end_date: string,
+    status: string
+}
+
+
