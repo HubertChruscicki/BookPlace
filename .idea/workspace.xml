@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(auth): auth improvments on component mounitng">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(reservations): endpoint pinned to reservations page for upcoming ones">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/OtherReservationsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/OtherReservationsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationFilters.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationList.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationsPageContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationsPageContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/UpcomingReservationsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/UpcomingReservationsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/ReservationPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/ReservationPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -534,7 +531,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748109580618</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="feat(reservations): endpoint pinned to reservations page for upcoming ones">
+      <option name="closed" value="true" />
+      <created>1748110250773</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1748110250773</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -564,7 +569,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(auth): added permissions for reservation actions" />
     <MESSAGE value="refact(reservations): changed model and serializers" />
     <MESSAGE value="api(reservations): created get endpoints" />
     <MESSAGE value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
@@ -589,6 +593,7 @@
     <MESSAGE value="refactor(reservations): added fields to list reservation endpoint" />
     <MESSAGE value="refactor(reservations): reduced parms and change the filters" />
     <MESSAGE value="refactor(auth): auth improvments on component mounitng" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(auth): auth improvments on component mounitng" />
+    <MESSAGE value="feat(reservations): endpoint pinned to reservations page for upcoming ones" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(reservations): endpoint pinned to reservations page for upcoming ones" />
   </component>
 </project>

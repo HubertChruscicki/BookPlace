@@ -4,39 +4,35 @@ import { Box } from "@mui/material";
 import { ReservationInfoModel } from "../../models/ReservationModel.ts";
 import ReservationPagination from "./ReservationPagination.tsx";
 import api from "../../api/axiosApi.ts";
-import {useAuth} from "../../Auth/useAuth.ts";
 
 const UpcomingReservationList: React.FC = () => {
     const [reservations, setReservations] = useState<ReservationInfoModel[]>([]);
-    const [filteredReservations, setFilteredReservations] = useState<ReservationInfoModel[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { auth } = useAuth();
     const [page, setPage] = useState(0);
     const itemsPerPage = 3;
 
-    useEffect(() => {
-        if (!auth.token) return;
+    const getReservations = async () => {
         setIsLoading(true);
-        api.get("/reservations/")
-            .then(res => setReservations(res.data.results))
-            .catch(err => console.error(err))
-            .finally(() => setIsLoading(false));
-    }, [auth.token]);
+        try {
+            const res = await api.get("/reservations/");
+            setReservations(res?.data?.results?.filter((r: ReservationInfoModel) => r.status === "pending" || r.status === "confirmed"));
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
-    // //TODO MAYBE ZMIANA
     useEffect(() => {
-        const filtered = reservations.filter(
-            res => res.status === "pending" || res.status === "confirmed"
-        );
-        setFilteredReservations(filtered);
-    }, [reservations]);
+        getReservations();
+    }, []);
 
-    const paginatedReservations = filteredReservations.slice(
+    const paginatedReservations = reservations.slice(
         page * itemsPerPage,
         (page + 1) * itemsPerPage
     );
 
-    const maxPages = Math.ceil(filteredReservations.length / itemsPerPage);
+    const maxPages = Math.ceil(reservations.length / itemsPerPage);
 
     const handlePrevPage = () => {
         setPage(prev => (prev > 0 ? prev - 1 : prev));
@@ -60,7 +56,7 @@ const UpcomingReservationList: React.FC = () => {
                     maxPages={maxPages}
                     onPrevPage={handlePrevPage}
                     onNextPage={handleNextPage}
-                    disabled={isLoading || filteredReservations.length === 0}
+                    disabled={isLoading || reservations.length === 0}
                 />
             </Box>
             <ReservationList

@@ -14,7 +14,7 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations, isLoadi
             {isLoading ? (
                 <Box sx={{ p: 4, textAlign: "center", width: "100%" }}>
                     <Typography variant="h6" color="text.secondary">
-                        Ładowanie rezerwacji...
+                        Loading...
                     </Typography>
                 </Box>
             ) : reservations.length > 0 ? (
@@ -26,7 +26,7 @@ const ReservationList: React.FC<ReservationListProps> = ({ reservations, isLoadi
             ) : (
                 <Box sx={{ p: 4, textAlign: "center", width: "100%" }}>
                     <Typography variant="h6" color="text.secondary">
-                        Brak rezerwacji w tej kategorii
+                        Nothing found
                     </Typography>
                 </Box>
             )}

@@ -4,7 +4,6 @@ import UpcomingReservationsList from "./UpcomingReservationsList.tsx";
 import OtherReservationsList from "./OtherReservationsList.tsx";
 
 const ReservationsPageContent: React.FC = () => {
-    console.log(localStorage.getItem("token"))
 
     return (
         <Box
@@ -15,10 +14,10 @@ const ReservationsPageContent: React.FC = () => {
                 width: "100%",
                 maxWidth: "1220px",
                 height: "100%",
-                marginTop: "40px",
+                marginTop: "30px",
             }}
         >
-            <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", mb: 4, ml: 1 }}>
+            <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", mb: 3, ml: 1 }}>
                 My reservations
             </Typography>
             <Box
@@ -26,7 +25,7 @@ const ReservationsPageContent: React.FC = () => {
                     display: "flex",
                     flexDirection: "column",
 
-                      gap: 7
+                      gap: 3
                     }}
             >
                 <UpcomingReservationsList/>

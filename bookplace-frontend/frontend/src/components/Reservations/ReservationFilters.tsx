@@ -16,7 +16,7 @@ const FilterButton = styled(Button)<{active?: boolean}>(({ active }) => ({
     }
 }));
 
-export type FilterType = "archive" | "canceled";
+export type FilterType = "archive" | "cancelled";
 
 interface ReservationFiltersProps {
     activeFilter: FilterType;
@@ -34,10 +34,10 @@ const ReservationFilters: React.FC<ReservationFiltersProps> = ({ activeFilter, o
                 Archive
             </FilterButton>
             <FilterButton
-                active={activeFilter === "canceled"}
-                onClick={() => onChangeFilter("canceled")}
+                active={activeFilter === "cancelled"}
+                onClick={() => onChangeFilter("cancelled")}
             >
-                Canceled
+                Cancelled
             </FilterButton>
         </Box>
     );
