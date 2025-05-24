@@ -56,6 +56,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def create_jwt(cls, user):
         payload = {
             'user_id': user.id,
+            'role': user.role,
             'exp': int((datetime.now() + timedelta(
                 hours=getattr(settings, 'JWT_CONFIG', {}).get('TOKEN_LIFETIME_HOURS', 1))).timestamp()),
             'iat': datetime.now().timestamp()

@@ -56,7 +56,7 @@ api.interceptors.response.use(
                     throw new Error("Refresh token is missing");
                 }
                 const response = await axios.post(`${BASE_API_URL}/auth/refresh/`, {
-                    refresh_token: refreshToken
+                    refresh: refreshToken
                 })
                 const newToken = response.data.token;
                 localStorage.setItem("token", newToken);
