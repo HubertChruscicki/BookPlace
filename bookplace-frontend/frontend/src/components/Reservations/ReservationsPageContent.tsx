@@ -4,6 +4,7 @@ import UpcomingReservationsList from "./UpcomingReservationsList.tsx";
 import OtherReservationsList from "./OtherReservationsList.tsx";
 
 const ReservationsPageContent: React.FC = () => {
+    console.log(localStorage.getItem("token"))
 
     return (
         <Box

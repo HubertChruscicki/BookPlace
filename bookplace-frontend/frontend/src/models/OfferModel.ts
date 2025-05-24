@@ -72,3 +72,11 @@ export interface OfferCardModel {
   country: string;
   img_url: string;
 }
+
+export interface OfferReservationInfoModel {
+  id: number;
+  title: string;
+  city: string;
+  country: string;
+  img_url: string;
+}

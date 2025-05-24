@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography, styled } from "@mui/material";
 import {colors} from "../../theme/colors.ts";
+import { ReservationInfoModel } from "../../models/ReservationModel.ts";
 
 const Card = styled(Box)({
     display: "flex",
@@ -35,23 +36,14 @@ const Content = styled(Box)({
     padding: 24,
 });
 
-export interface ReservationCardProps {
-    reservation: {
-        id: number;
-        title: string;
-        city: string;
-        country: string;
-        image: string;
-        start_date: string;
-        end_date: string;
-        status: string;
-    };
+interface ReservationCardProps {
+    reservation: ReservationInfoModel
 }
 
 const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
     return (
         <Card>
-            <Media style={{ backgroundImage: `url(${reservation.image})` }} />
+            <Media style={{ backgroundImage: `url(${reservation?.offer?.img_url})` }} />
             <Content>
                 <Box sx={{width: "100%",}}>
                     <Typography
@@ -59,10 +51,10 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
                         fontSize="1.1rem"
                         noWrap
                     >
-                        {reservation.title}
+                        {reservation?.offer?.title}
                     </Typography>
                     <Typography color="text.secondary">
-                        {reservation.city}, {reservation.country}
+                        {reservation?.offer?.city}, {reservation?.offer?.country}
                     </Typography>
                     <Typography sx={{ mt: 1, fontWeight: 500, color: `${colors.black[900]}` }}>
                         {reservation.start_date} - {reservation.end_date}

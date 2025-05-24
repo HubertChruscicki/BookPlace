@@ -5,9 +5,7 @@ import Footer from "../components/Footer/Footer.tsx";
 import ReservationsPageContent from "../components/Reservations/ReservationsPageContent.tsx";
 import {colors} from "../theme/colors.ts";
 
-
 const ReservationPage: React.FC = () => {
-
     return (
         <Box
             sx={{

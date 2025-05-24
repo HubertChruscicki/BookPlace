@@ -13,6 +13,7 @@ const MainPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+
     useEffect(() => {
         setIsLoading(true);
         api.get("/offers/load-offers/?limit=48&offset=0")

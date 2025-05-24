@@ -17,7 +17,7 @@ const AddOfferPage: React.FC = () => {
         if (!userRole) {
             setError("You must be logged as landlord to add an offer.");
         } else if (userRole !== "landlord") {
-            setError("403 – You don't have permission to perform this action.");
+            setError("403 – You don't have permission to perform this action."); //TODO POGOARNIAC 403
         } else {
             setError(null);
         }
@@ -47,6 +47,7 @@ const AddOfferPage: React.FC = () => {
     }
 
     return (
+        //TODO navigate for offer page
         <AddOfferForm onSubmit={handleAddOffer} />
     );
 

@@ -25,6 +25,7 @@ const OfferContent = () => {
     const { auth, openAuthModal } = useAuth()
     const [bookButtonActive, setBookButtonActive] = useState<boolean>(false);
 
+
     const goToCheckOut = () => {
         if (error){
             console.log("error handle") //TODO
