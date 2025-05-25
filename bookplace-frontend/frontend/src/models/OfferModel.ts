@@ -49,7 +49,7 @@ export interface OfferImage {
 
 export interface OfferModel {
   id: number ;
-  landlord_id: Landlord;
+  landlord: Landlord;
   offer_type: number | null;
   title: string;
   description: string;

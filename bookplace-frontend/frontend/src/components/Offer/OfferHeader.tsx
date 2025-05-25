@@ -21,7 +21,6 @@ const OfferHeader: React.FC = () => {
             maxWidth: '1220px',
             alignItems: "flex-end",
             m: "25px 0",
-            mt: "80px",
             minHeight: "50px",
 
         }}>

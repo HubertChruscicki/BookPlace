@@ -3,8 +3,6 @@ from ..serializers import OfferTypesSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.exceptions import NotFound
 from django.http import Http404
-
-
 class OfferTypeViewAPI(ModelViewSet):
     serializer_class = OfferTypesSerializer
     def get_queryset(self):
