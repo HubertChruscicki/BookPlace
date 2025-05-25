@@ -10,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-
     class Meta:
         model = User
         fields = ['email', 'password', 'first_name', 'last_name', 'phone']
@@ -64,22 +63,24 @@ class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
-
 class RegisterResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
     user = UserSerializer()
-
 
 class LoginResponseSerializer(serializers.Serializer):
     access = serializers.CharField()
     refresh = serializers.CharField()
     user = UserSerializer()
 
-
 class RefreshTokenRequestSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
-
 class RefreshTokenResponseSerializer(serializers.Serializer):
     token = serializers.CharField()
+
+#TODO IMG URL ADD
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'phone']

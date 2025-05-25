@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(reservations): endpoint pinned to reservations page for upcoming ones">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refacotr(pre-loading): added pre-loading and extracted hook for fetching">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/OtherReservationsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/OtherReservationsList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationFilters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationFilters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationsPageContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/ReservationsPageContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/UpcomingReservationsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/UpcomingReservationsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/serializers.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,6 +185,7 @@
       <workItem from="1748004592065" duration="103000" />
       <workItem from="1748004710704" duration="34000" />
       <workItem from="1748004761262" duration="12771000" />
+      <workItem from="1748176499239" duration="3424000" />
     </task>
     <task id="LOCAL-00001" summary="added models according to db">
       <option name="closed" value="true" />
@@ -539,7 +539,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748110250773</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="fix(reservations): fix endpoint handling">
+      <option name="closed" value="true" />
+      <created>1748113502298</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1748113502298</updated>
+    </task>
+    <task id="LOCAL-00046" summary="refacotr(pre-loading): added pre-loading and extracted hook for fetching">
+      <option name="closed" value="true" />
+      <created>1748130761190</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1748130761190</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -569,8 +585,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="refact(reservations): changed model and serializers" />
-    <MESSAGE value="api(reservations): created get endpoints" />
     <MESSAGE value="refactor(reservations): added to list endpoint timeframe (upcoming, past, all) parameter" />
     <MESSAGE value="api(reservations): added make-reservation endpoint and proper serializer with validation" />
     <MESSAGE value="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list" />
@@ -594,6 +608,8 @@
     <MESSAGE value="refactor(reservations): reduced parms and change the filters" />
     <MESSAGE value="refactor(auth): auth improvments on component mounitng" />
     <MESSAGE value="feat(reservations): endpoint pinned to reservations page for upcoming ones" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(reservations): endpoint pinned to reservations page for upcoming ones" />
+    <MESSAGE value="fix(reservations): fix endpoint handling" />
+    <MESSAGE value="refacotr(pre-loading): added pre-loading and extracted hook for fetching" />
+    <option name="LAST_COMMIT_MESSAGE" value="refacotr(pre-loading): added pre-loading and extracted hook for fetching" />
   </component>
 </project>

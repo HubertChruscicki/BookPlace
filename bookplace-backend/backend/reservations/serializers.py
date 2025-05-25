@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from offers.serializers import OfferReservationInfoSerializer
+from users.serializers import UserInfoSerializer
 
 User = get_user_model()
 class ReservationSerializer(serializers.ModelSerializer):
@@ -38,9 +39,9 @@ class ReservationInfoSerializer(serializers.ModelSerializer):
             'offer',
         ]
 
-
-class ReservationFullInfoSerializer(serializers.ModelSerializer):
-
+class ReservationLandlordSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer(read_only=True)
+    offer = OfferReservationInfoSerializer(source='offer_id', read_only=True)
     status = serializers.CharField(source='status_id.name', read_only=True)
     class Meta:
         model  = Reservations
@@ -48,11 +49,11 @@ class ReservationFullInfoSerializer(serializers.ModelSerializer):
             'id',
             'start_date',
             'end_date',
+            'total_price',
+            'guests_number',
             'status',
-            'title',
-            'city',
-            'country',
-            'image',
+            'user',
+            'offer',
         ]
 
 class ReservationListFilterSerializer(serializers.Serializer):
@@ -106,6 +107,7 @@ class ReservationListFilterSerializer(serializers.Serializer):
 
         return data
 
+#TODO doesnt check the pending status
 class ReservationCreateSerializer(serializers.ModelSerializer):
     offer_id = serializers.PrimaryKeyRelatedField(
         queryset=Offers.objects.all(),

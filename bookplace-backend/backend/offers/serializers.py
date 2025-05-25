@@ -246,4 +246,3 @@ class OfferReservationInfoSerializer(serializers.ModelSerializer):
     def get_img_url(self, obj):
         serializer = OfferMainImageSerializer(obj, context=self.context)
         return serializer.data.get('image')
-
