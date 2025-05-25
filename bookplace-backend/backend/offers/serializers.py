@@ -169,7 +169,6 @@ class CreateOfferSerializer(serializers.ModelSerializer):
             'max_guests': {'required': True},
         }
     def create(self, validated_data):
-        #TODO nowe
         request = self.context.get('request')
         landlord = request.user
         location_data = validated_data.pop('location')

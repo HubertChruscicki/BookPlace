@@ -10,7 +10,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from offers.models import Offers
 from ..models import Reservations, ReservationStatus
 from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, \
-    ReservationCreateSerializer, ReservationLandlordSerializer
+    ReservationCreateSerializer, ReservationLandlordSerializer, ReservationUserSerializer
 from ..permissions import CanAccessReservation
 import calendar
 from datetime import date
@@ -36,6 +36,7 @@ class ReservationViewAPI(
 
     serializer_action_classes = {
         'list': ReservationInfoSerializer,
+        'retrieve': ReservationUserSerializer,
         'info': ReservationLandlordSerializer,
         'landlord': ReservationInfoSerializer,
         'landlord_retrieve': ReservationLandlordSerializer,
@@ -93,11 +94,10 @@ class ReservationViewAPI(
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
 
-    #TODO NIE DIZLAA
     @extend_schema(
         summary="Retrieve a full reservation info",
         description="Retrieves **full** reservation data.",
-        responses={200: ReservationSerializer()},
+        responses={200: ReservationUserSerializer()},
     )
     def retrieve(self, request, pk=None):
         obj = get_object_or_404(self.get_queryset(), pk=pk)

@@ -40,7 +40,7 @@ class ReservationInfoSerializer(serializers.ModelSerializer):
         ]
 
 class ReservationLandlordSerializer(serializers.ModelSerializer):
-    user = UserInfoSerializer(read_only=True)
+    user = UserInfoSerializer(source='landlord_id', read_only=True)
     offer = OfferReservationInfoSerializer(source='offer_id', read_only=True)
     status = serializers.CharField(source='status_id.name', read_only=True)
     class Meta:
@@ -53,6 +53,23 @@ class ReservationLandlordSerializer(serializers.ModelSerializer):
             'guests_number',
             'status',
             'user',
+            'offer',
+        ]
+
+class ReservationUserSerializer(serializers.ModelSerializer):
+    landlord = UserInfoSerializer(source='offer_id.landlord',read_only=True)
+    offer = OfferReservationInfoSerializer(source='offer_id', read_only=True)
+    status = serializers.CharField(source='status_id.name', read_only=True)
+    class Meta:
+        model = Reservations
+        fields = [
+            'id',
+            'start_date',
+            'end_date',
+            'total_price',
+            'guests_number',
+            'status',
+            'landlord',
             'offer',
         ]
 
