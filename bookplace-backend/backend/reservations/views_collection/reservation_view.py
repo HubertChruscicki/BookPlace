@@ -9,8 +9,9 @@ from django.contrib.auth import get_user_model
 from rest_framework.pagination import LimitOffsetPagination
 from offers.models import Offers
 from ..models import Reservations, ReservationStatus
-from ..serializers import ReservationSerializer, ReservationInfoSerializer, ReservationListFilterSerializer, \
-    ReservationCreateSerializer, ReservationLandlordSerializer, ReservationUserSerializer
+from ..serializers import ReservationSerializer, ReservationInfoSerializer, \
+    ReservationCreateSerializer, ReservationLandlordSerializer, ReservationUserSerializer, \
+    ReservationLandlordFilterSerializer
 from ..permissions import CanAccessReservation
 import calendar
 from datetime import date
@@ -114,11 +115,9 @@ class ReservationViewAPI(
         ),
         parameters=[
             OpenApiParameter(
-                name='timeframe',
-                enum=['upcoming', 'past', 'all'],
-                description="Which dates to include: upcoming | past | all",
+                name='offer_id',
+                description="Filter by a single offer ID",
                 required=False,
-                default='upcoming',
             ),
             OpenApiParameter(
                 name='date_from',
@@ -151,29 +150,19 @@ class ReservationViewAPI(
     @action(detail=False, methods=['get'], url_path='landlord', pagination_class=ReservationPagination)
     def landlord(self, request, offer_pk=None):
 
-        filter_serializer = ReservationListFilterSerializer(data=request.query_params)
+        filter_serializer = ReservationLandlordFilterSerializer(data=request.query_params)
         filter_serializer.is_valid(raise_exception=True)
         params = filter_serializer.validated_data
-
         queryset = Reservations.objects.filter(offer_id__landlord=request.user)
 
-        confirmed = ReservationStatus.objects.get(name='confirmed')
-        queryset = queryset.upcoming().filter(status_id=confirmed)
-
-        today = timezone.localdate()
-        timeframe = params.get('timeframe', 'upcoming')
-        if timeframe == 'upcoming':
-            queryset = queryset.filter(end_date__date__gte=today)
-        elif timeframe == 'past':
-            queryset = queryset.filter(end_date__date__lt=today)
-
-        if date_from := params.get('date_from'):
-            queryset = queryset.filter(end_date__date__gte=date_from)
-        if date_to := params.get('date_to'):
-            queryset = queryset.filter(start_date__date__lte=date_to)
-
-        if status_name := params.get('status'):
-            queryset = queryset.filter(status_id__name__iexact=status_name)
+        if 'offer_id' in params:
+            queryset = queryset.filter(offer_id__id=params['offer_id'])
+        if 'status' in params:
+            queryset = queryset.filter(status_id__name__in=params['status'])
+        if 'date_from' in params:
+            queryset = queryset.filter(end_date__gte=params['date_from'])
+        if 'date_to' in params:
+            queryset = queryset.filter(start_date__lte=params['date_to'])
 
         page = self.paginate_queryset(queryset)
         return self.get_paginated_response(

@@ -73,11 +73,13 @@ class ReservationUserSerializer(serializers.ModelSerializer):
             'offer',
         ]
 
-class ReservationListFilterSerializer(serializers.Serializer):
-    timeframe = serializers.ChoiceField(
-        choices=['upcoming', 'past', 'all'],
-        default='upcoming',
-        help_text="Filter by time frame: 'upcoming', 'past', or 'all'"
+class ReservationLandlordFilterSerializer(serializers.Serializer):
+
+    offer_id = serializers.IntegerField(required=False, help_text="Offer ID")
+    status = serializers.ListField(
+        child=serializers.CharField(
+        help_text="List of reservation status names (e.g. confirmed, cancelled, archive"),
+        required=False,
     )
     date_from = serializers.DateField(
         required=False,
@@ -87,14 +89,16 @@ class ReservationListFilterSerializer(serializers.Serializer):
         required=False,
         help_text="Return reservations with start_date <= date_to"
     )
-    status = serializers.CharField(
-        required=False,
-        help_text="Filter by status name"
-    )
+    def validate_status(self, value):
+        valid = set(ReservationStatus.objects.values_list('name', flat=True))
+        invalid = [s for s in value if s not in valid]
+        if invalid:
+            raise serializers.ValidationError(
+                f"Invalid status names: {', '.join(invalid)}"
+            )
+        return value
 
     def validate(self, data):
-        today = timezone.localdate()
-        timeframe = data.get('timeframe')
         date_from = data.get('date_from')
         date_to = data.get('date_to')
 
@@ -103,24 +107,6 @@ class ReservationListFilterSerializer(serializers.Serializer):
                 'date_from': "date_from must be before date_to",
                 'date_to':   "date_to must after date_from",
             })
-
-        if timeframe == 'past':
-            errors = {}
-            if date_from and date_from > today:
-                errors['date_from'] = "For 'past', date_from cannot be in the future"
-            if date_to and date_to > today:
-                errors['date_to'] = "For 'past', date_to cannot be in the future"
-            if errors:
-                raise serializers.ValidationError(errors)
-
-        if timeframe == 'upcoming':
-            errors = {}
-            if date_from and date_from < today:
-                errors['date_from'] = "For 'upcoming', date_from cannot be in the past"
-            if date_to and date_to < today:
-                errors['date_to'] = "For 'upcoming', date_to cannot be in the past"
-            if errors:
-                raise serializers.ValidationError(errors)
 
         return data
 
