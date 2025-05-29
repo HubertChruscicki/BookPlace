@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refacotr(reservations): landlord retrieve modify">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(reservations): landlord endpoind refactored">
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/pytest.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/tests/test_auth_view.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/offers/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/conftest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/test_cos.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/routers.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/routers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/users/views_collection/user_view.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,30 +58,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/huber/Desktop/FortPublish",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.statistic.project.settings",
-    "ts.external.directory.path": "C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/BookPlace/BookPlace/bookplace-backend/backend/backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.statistic.project.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\huber\\Desktop\\BookPlace\\BookPlace\\bookplace-frontend\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\public" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Common" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\pages" />
@@ -82,16 +90,41 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Checkout" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\Auth" />
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Auth" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="test_serializers" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="BookPlace" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bookplace-backend/backend/users/tests/test_serializers.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-c69650fc56ca-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.15619.17" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
       </set>
     </attachedChunks>
   </component>
@@ -184,15 +217,11 @@
       <workItem from="1748004592065" duration="103000" />
       <workItem from="1748004710704" duration="34000" />
       <workItem from="1748004761262" duration="12771000" />
-      <workItem from="1748176499239" duration="4740000" />
-    </task>
-    <task id="LOCAL-00001" summary="added models according to db">
-      <option name="closed" value="true" />
-      <created>1743101005016</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1743101005016</updated>
+      <workItem from="1748176499239" duration="17643000" />
+      <workItem from="1748259780197" duration="48000" />
+      <workItem from="1748462431065" duration="4210000" />
+      <workItem from="1748537153233" duration="4442000" />
+      <workItem from="1748554917446" duration="2493000" />
     </task>
     <task id="LOCAL-00002" summary="gitignor update">
       <option name="closed" value="true" />
@@ -562,7 +591,31 @@
       <option name="project" value="LOCAL" />
       <updated>1748180459203</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="refacotr(reservations): user retrieve modify">
+      <option name="closed" value="true" />
+      <created>1748182459006</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1748182459007</updated>
+    </task>
+    <task id="LOCAL-00049" summary="fix(offert): pinned title from response">
+      <option name="closed" value="true" />
+      <created>1748185806952</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1748185806952</updated>
+    </task>
+    <task id="LOCAL-00050" summary="refactor(reservations): landlord endpoind refactored">
+      <option name="closed" value="true" />
+      <created>1748202429286</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1748202429290</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -592,9 +645,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="api(reservations): added make-reservation endpoint and proper serializer with validation" />
-    <MESSAGE value="api(reservations): added landlord/id reservations endpoint + pagination to landlord and list" />
-    <MESSAGE value="fix(reservations): fixed landlord list retrieve endpoints" />
     <MESSAGE value="fix(reservations): fixed make reservation" />
     <MESSAGE value="api(reservations): added date range filter to load + changing datetime for date" />
     <MESSAGE value="api(reservations): added endpoint for checking busy dates" />
@@ -617,6 +667,12 @@
     <MESSAGE value="fix(reservations): fix endpoint handling" />
     <MESSAGE value="refacotr(pre-loading): added pre-loading and extracted hook for fetching" />
     <MESSAGE value="refacotr(reservations): landlord retrieve modify" />
-    <option name="LAST_COMMIT_MESSAGE" value="refacotr(reservations): landlord retrieve modify" />
+    <MESSAGE value="refacotr(reservations): user retrieve modify" />
+    <MESSAGE value="fix(offert): pinned title from response" />
+    <MESSAGE value="refactor(reservations): landlord endpoind refactored" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(reservations): landlord endpoind refactored" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/BookPlace$test_serializers.coverage" NAME="test_serializers Coverage Results" MODIFIED="1748204098260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />
   </component>
 </project>
