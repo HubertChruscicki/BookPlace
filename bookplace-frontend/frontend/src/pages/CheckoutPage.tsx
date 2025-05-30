@@ -61,7 +61,7 @@ const CheckoutPageContent: React.FC = () => {
                         'Accept': 'application/json',
                     }
                 });
-                navigate('/myReservations');
+                navigate('/reservations');
             } catch (error) {
                 console.error('Error adding offer:', error);
                 // setError(error); TODO DO ERROR
