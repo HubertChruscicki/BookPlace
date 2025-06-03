@@ -6,11 +6,10 @@ import OfferSummary from "../components/Offer/OfferSummary.tsx";
 import {OfferProvider, useOffer} from "../components/Offer/OfferContext.tsx";
 import Header from "../components/Header/Header.tsx";
 import {useNavigate, useSearchParams} from 'react-router-dom';
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
 import {colors} from "../theme/colors.ts"
 import {useAuth} from "../Auth/useAuth.ts";
-import api from "../api/axiosApi.ts";
 
 const OfferContent = () => {
     const {offer, isLoading, error} = useOffer();
