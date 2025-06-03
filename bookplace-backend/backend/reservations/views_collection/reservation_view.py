@@ -165,9 +165,8 @@ class ReservationViewAPI(
             queryset = queryset.filter(start_date__lte=params['date_to'])
 
         page = self.paginate_queryset(queryset)
-        return self.get_paginated_response(
-            ReservationInfoSerializer(page, many=True).data
-        )
+        serializer = ReservationInfoSerializer(page, many=True, context={'request': request})
+        return self.get_paginated_response(serializer.data)
 
     @extend_schema(
         summary="Landlord: retrieve full info for one reservation",
