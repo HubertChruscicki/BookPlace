@@ -133,7 +133,6 @@ const AddOfferForm: React.FC<OfferFormProps> = ({onSubmit}) => {
             images: formattedImages,
         };
 
-        console.log("🟢 Data to send (with base64):", finalData);
         await onSubmit(finalData);
     });
 

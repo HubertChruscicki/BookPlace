@@ -5,6 +5,7 @@ import ProfileBlock from "./ProfileBlock.tsx";
 import Divider from "@mui/material/Divider";
 import {useNavigate} from "react-router-dom";
 import {colors} from "../../theme/colors.ts";
+import NavigationBar from "./NavigationBar.tsx";
 
 const SearchContainer = styled("div")(({ theme }) => ({
     position: "relative",
@@ -26,12 +27,12 @@ const SearchInput = styled(InputBase)(({ theme }) => ({
 
 export interface HeaderProps {
     fullWidth?: boolean;
+    landlordMode?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({fullWidth}) => {
+const Header: React.FC<HeaderProps> = ({fullWidth, landlordMode}) => {
 
     const navigate = useNavigate();
-
     return (
         <>
             <AppBar position="sticky" elevation={0}
@@ -64,12 +65,16 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
                         onClick={()=>navigate("/")}
                     />
 
-                    <SearchContainer>
-                        <SearchIcon color="action" />
-                        <SearchInput placeholder="Search..." />
-                    </SearchContainer>
+                    {landlordMode ?
+                       <NavigationBar/>
+                        :
+                        <SearchContainer>
+                            <SearchIcon color="action"/>
+                            <SearchInput placeholder="Search..."/>
+                        </SearchContainer>
+                    }
 
-                    <ProfileBlock/>
+                    <ProfileBlock landlordMode={landlordMode}/>
                 </Toolbar>
                 <Divider
                     sx={{
@@ -81,5 +86,6 @@ const Header: React.FC<HeaderProps> = ({fullWidth}) => {
         </>
     );
 };
+
 
 export default Header;

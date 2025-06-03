@@ -10,11 +10,6 @@ const OfferHeader: React.FC = () => {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const { offer, isLoading, error } = useOffer();
 
-    useEffect(() => {
-        console.log(offer)
-    }, [offer]);
-
-
   return (
     <Box sx={{display: "flex", flexDirection: "row", justifyContent: "space-between",
             width: '100%',

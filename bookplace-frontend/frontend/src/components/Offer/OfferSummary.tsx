@@ -56,7 +56,6 @@ const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, guests, o
     const [fee, setFee] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
     const [dateRangeError, setDateRangeError] = useState<string | null>(null);
-    console.log(guests);
     useEffect(() => {
         const newDaysAmmount= checkOut?.diff(checkIn, 'day') ?? 0;
         const newPrice = (offer?.price_per_night ?? 0) * (newDaysAmmount ?? 0);

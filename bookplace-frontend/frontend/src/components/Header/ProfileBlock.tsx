@@ -21,7 +21,11 @@ const iconStyles = {
     borderRadius: '50%',
 };
 
-const ProfileBlock: React.FC = () => {
+interface profileBlockProps {
+    landlordMode?: boolean;
+}
+
+const ProfileBlock: React.FC<profileBlockProps> = ({landlordMode}) => {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const { auth, setAuth, openAuthModal } = useAuth();
@@ -32,6 +36,8 @@ const ProfileBlock: React.FC = () => {
 
     const settings: { label: string; icon: JSX.Element }[] = [];
 
+
+
     if (!isLogged) {
         settings.push(
             { label: "Login", icon: <LoginIcon sx={iconStyles} /> },
@@ -41,17 +47,27 @@ const ProfileBlock: React.FC = () => {
         settings.push(
             { label: "My account", icon: <AccountIcon sx={iconStyles} /> }
         );
-
-        if (role === "landlord") {
-            settings.push({ label: "My offers", icon: <OffersIcon sx={iconStyles} /> });
+        if (landlordMode) {
+            settings.push(
+                { label: "User panel", icon: <AccountIcon sx={iconStyles} /> }
+            );
+        } else {
+            if (role === "landlord") {
+                settings.push({ label: "Landlord panel", icon: <OffersIcon sx={iconStyles} /> });
+            }
+            settings.push(
+                { label: "Reservations", icon: <ReservationsIcon sx={iconStyles} /> },
+                { label: "Reviews", icon: <ReviewsIcon sx={iconStyles} /> },
+                { label: "Saved", icon: <SavedIcon sx={iconStyles} /> },
+            );
         }
-
         settings.push(
-            { label: "Reservations", icon: <ReservationsIcon sx={iconStyles} /> },
-            { label: "Reviews", icon: <ReviewsIcon sx={iconStyles} /> },
-            { label: "Saved", icon: <SavedIcon sx={iconStyles} /> },
             { label: "Logout", icon: <LogoutIcon sx={iconStyles} /> }
         );
+
+
+
+
     }
 
 
@@ -75,6 +91,12 @@ const ProfileBlock: React.FC = () => {
         }
         if (label === "Reservations") {
             navigate("/reservations");
+        }
+        if (label === "Landlord panel") {
+            navigate("/landlord/reservations");
+        }
+        if (label === "User panel") {
+            navigate("/");
         }
     };
 

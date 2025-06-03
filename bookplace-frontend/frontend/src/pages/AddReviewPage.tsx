@@ -20,11 +20,6 @@ const AddReviewPage: React.FC = () => {
         }
     }
 
-
-    useEffect(() => {
-        console.log(offer_id)
-    },[offer_id]);
-
     return(
         <AddReviewForm onSubmit={handleAddReview}/>
     );

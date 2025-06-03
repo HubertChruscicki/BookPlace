@@ -63,10 +63,7 @@ const OfferCheckoutSummary: React.FC<OfferCheckoutSummaryProps> = ({checkIn, che
         setTotalPrice(newTotal);
     }, [checkIn, checkOut]);
 
-
-
     const mainImage = offer?.images.find(img => img.is_main)?.image ?? null;
-    console.log(mainImage);
 
     return (
 

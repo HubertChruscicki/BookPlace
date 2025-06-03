@@ -27,7 +27,6 @@ const StepAmenities: React.FC = () => {
                     label: item.name,
                 }));
                 setOptions(mapped);
-                console.log(mapped);
                 setError(null);
             })
             .catch(err => {

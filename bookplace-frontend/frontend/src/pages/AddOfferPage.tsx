@@ -4,6 +4,7 @@ import AddOfferForm from "../components/Offer/Form/AddOfferForm.tsx";
 import React, {useEffect, useState} from "react";
 import ErrorPage from "./ErrorPage.tsx";
 import {useAuth} from "../Auth/useAuth.ts";
+import {useNavigate} from "react-router-dom";
 
 const AddOfferPage: React.FC = () => {
 
@@ -11,6 +12,7 @@ const AddOfferPage: React.FC = () => {
     const { auth } = useAuth();
     const userRole = auth.user?.role;
     const [checkedAuthFlag, setCheckedAuthFlag] = useState(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -32,6 +34,7 @@ const AddOfferPage: React.FC = () => {
                     'Accept': 'application/json',
                 }
             });
+            navigate(`/landlord/reservations`);
         } catch (error) {
             console.error('Error adding offer:', error);
             setError(error);
