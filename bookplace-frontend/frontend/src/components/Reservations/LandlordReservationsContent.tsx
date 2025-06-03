@@ -1,12 +1,13 @@
 import {Box, Button, Typography} from "@mui/material";
 import { colors } from "../../theme/colors.ts";
 import Divider from "@mui/material/Divider";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {ReservationInfoModel} from "../../models/ReservationModel.ts";
+import {LandlordReservationsModel, ReservationInfoModel} from "../../models/ReservationModel.ts";
 import LandlordReservationsTable from "./LandlordReservationsTable.tsx";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {QueryFunctionContext, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import api from "../../api/axiosApi.ts";
+import {PaginatedResponse} from "../../models/ResponseModel.ts";
 
 interface LandlordReservationsContentProps {
     activeTab: string;
@@ -14,7 +15,7 @@ interface LandlordReservationsContentProps {
 
 const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = ({activeTab}) => {
     const queryClient = useQueryClient();
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = useState(1);
     const rowsPerPage = 8;
 
     const tabs = [
@@ -26,24 +27,19 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
 
     const getStatusParam = (tabStatus: string) => {
         switch (tabStatus) {
-            case 'upcoming':
-                return 'confirmed';
-            case 'archive':
-                return 'archive';
-            case 'canceled':
-                return 'cancelled';
-            case 'all':
-                return ['confirmed', 'archive', 'cancelled'];
-            default:
-                return 'confirmed';
+            case 'upcoming': return 'confirmed';
+            case 'archive':  return 'archive';
+            case 'canceled': return 'cancelled';
+            case 'all':      return ['confirmed', 'archive', 'cancelled'];
+            default:         return 'confirmed';
         }
     };
 
-    const fetchReservations = async ({ queryKey }: { queryKey: [string, string, number] }) => {
+    const fetchReservations = async ({queryKey,}: QueryFunctionContext<[string, string, number]>):
+        Promise<PaginatedResponse<LandlordReservationsModel>> => {
         const [_, status, currentPage] = queryKey;
         const statusParam = getStatusParam(status);
         const response = await api.get('/reservations/landlord/', {
-            //TODO ALL TABLE
             params: {
                 status: statusParam,
                 offset: (currentPage-1) * rowsPerPage,
@@ -52,11 +48,17 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
         });
         return response.data;
     };
-    const { data, isLoading } = useQuery({
-        queryKey: ['reservations', activeTab, page],
-        queryFn: fetchReservations,
-        staleTime: 60 * 1000,
-        keepPreviousData: true,
+    const {data, isLoading,}: UseQueryResult<PaginatedResponse<ReservationInfoModel>, Error> =
+        useQuery<
+            PaginatedResponse<ReservationInfoModel>,
+            Error,
+            PaginatedResponse<ReservationInfoModel>,
+            [string, string, number]
+        >({
+            queryKey: ["reservations", activeTab, page],
+            queryFn: fetchReservations,
+            staleTime: 60 * 1000,
+            placeholderData: (oldData) => oldData,
     });
 
     useEffect(() => {
@@ -85,7 +87,7 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
         setPage(1);
     }, [activeTab]);
 
-    const handlePageChange = (_, newPage) => {
+    const handlePageChange = (_: unknown, newPage: number) => {
         setPage(newPage);
     };
 

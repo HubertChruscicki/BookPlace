@@ -15,4 +15,12 @@ export interface ReservationInfoModel {
     offer: OfferReservationInfoModel
 }
 
+export interface LandlordReservationsModel {
+    id: number,
+    start_date: string,
+    end_date: string,
+    status: string
+    offer: OfferReservationInfoModel
+}
+
 

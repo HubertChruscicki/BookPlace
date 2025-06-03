@@ -1,16 +1,4 @@
-import React, { useState } from "react";
-import {
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-    Avatar,
-    TablePagination, Pagination
-} from "@mui/material";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Avatar, Pagination} from "@mui/material";
 import { ReservationInfoModel } from "../../models/ReservationModel.ts";
 import { colors } from "../../theme/colors.ts";
 

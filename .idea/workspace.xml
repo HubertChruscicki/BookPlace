@@ -4,34 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="tests(reservations): add reservations tests">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/NavigationBar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsTable.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/reservationsMock.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordCalnedarPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordMessagesPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordOffersPage.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordReservationsPage.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="design(reservations): added landlord panel and the reservation table">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/ResponseModel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-backend/backend/reservations/views_collection/reservation_view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/RequireAuth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/Auth/RequireAuth.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/ProfileBlock.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/OfferCheckoutSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Checkout/OfferCheckoutSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/AddOfferForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/AddOfferForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepAmenities.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/Form/Steps/StepAmenities.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddOfferPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddReviewPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddReviewPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/AddUserPage.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/colors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/.eslintrc.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/.eslintrc.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationList.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsTable.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/ReservationModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/models/ReservationModel.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -244,23 +226,7 @@
       <workItem from="1748876164831" duration="1487000" />
       <workItem from="1748879238201" duration="70000" />
       <workItem from="1748893332143" duration="1348000" />
-      <workItem from="1748894745746" duration="15344000" />
-    </task>
-    <task id="LOCAL-00005" summary="feat(api): add post endpoint for adding offer">
-      <option name="closed" value="true" />
-      <created>1744722749041</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1744722749041</updated>
-    </task>
-    <task id="LOCAL-00006" summary="feat(design): first mockup of navbar with profileblock">
-      <option name="closed" value="true" />
-      <created>1745410695851</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1745410695851</updated>
+      <workItem from="1748894745746" duration="22258000" />
     </task>
     <task id="LOCAL-00007" summary="feat(design): login modal added">
       <option name="closed" value="true" />
@@ -638,7 +604,23 @@
       <option name="project" value="LOCAL" />
       <updated>1748620905296</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="fix(reservations): cahnge img_url for absolute path">
+      <option name="closed" value="true" />
+      <created>1748968514830</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1748968514831</updated>
+    </task>
+    <task id="LOCAL-00055" summary="design(reservations): added landlord panel and the reservation table">
+      <option name="closed" value="true" />
+      <created>1748968565017</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1748968565017</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -668,8 +650,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(design): added disabling unavailable dates on picker on offer summary" />
-    <MESSAGE value="fix(offer summary): current month disable dates displaying error" />
     <MESSAGE value="design(colors): changing colors shadows" />
     <MESSAGE value="feat(checkout): add checkout page and checkout summary" />
     <MESSAGE value="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage" />
@@ -693,7 +673,9 @@
     <MESSAGE value="tests(auth): add auth tests" />
     <MESSAGE value="tests(offers): add offers tests" />
     <MESSAGE value="tests(reservations): add reservations tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="tests(reservations): add reservations tests" />
+    <MESSAGE value="fix(reservations): cahnge img_url for absolute path" />
+    <MESSAGE value="design(reservations): added landlord panel and the reservation table" />
+    <option name="LAST_COMMIT_MESSAGE" value="design(reservations): added landlord panel and the reservation table" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BookPlace$test_serializers.coverage" NAME="test_serializers Coverage Results" MODIFIED="1748204098260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />
