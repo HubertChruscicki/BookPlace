@@ -1,25 +1,26 @@
-import {Box, Button, Typography} from "@mui/material";
-import {colors} from "../../theme/colors.ts";
-import React, {useState} from "react";
+import { useState, useRef, useEffect } from 'react';
+import { Box, Button, Typography } from "@mui/material";
+import { colors } from "../../theme/colors.ts";
 import Divider from "@mui/material/Divider";
-import {useOffer} from "./OfferContext.tsx";
-
-const description = `
-Dom nie jest wynajmowany 21.06 - 15.08. Rezerwacja jest czynna 9 miesięcy wcześniej.
-
-Willa z fantastyczną lokalizacją tuż przy plaży i panoramicznym widokiem na morze.
-Działka przyrodnicza z dużym drewnianym tarasem i miejscami do siedzenia/jadalni.
-Kuchnia, jadalnia i salon na planie otwartym.
-Odosobniony pokój telewizyjny (tylko streaming).
-3 sypialnie z podwójnymi łóżkami.
-Loft z 4 łóżkami (Uwaga: strome schody).
-2 łazienki, jedna z sauną i pralką.
-`;
-
+import { useOffer } from "./OfferContext.tsx";
+import OfferDescModal from "./OfferDescModal";
 
 const OfferDescPreview: React.FC = () => {
+    const { offer } = useOffer();
+    const displayDescription = offer?.description || "";
+    const textRef = useRef<HTMLDivElement>(null);
+    const [isOverflowing, setIsOverflowing] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { offer, isLoading, error } = useOffer();
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+
+    useEffect(() => {
+        const el = textRef.current;
+        if (el) {
+            setIsOverflowing(el.scrollHeight > el.clientHeight);
+        }
+    }, [displayDescription]);
 
     return (
         <Box>
@@ -29,32 +30,48 @@ const OfferDescPreview: React.FC = () => {
                     borderColor: colors.grey[300],
                 }}
             />
-            <Typography
-              sx={{
-                whiteSpace: 'pre-line',
-                display: '-webkit-box',
-                WebkitLineClamp: 8,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {offer?.description || description}
-            </Typography>
 
-            <Button
+            <Typography
+                ref={textRef}
                 sx={{
-                    color: colors.black[900],
-                    fontWeight: "bold",
-                    textDecoration: "underline",
-                    textTransform: "none",
+                    whiteSpace: 'pre-line',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 15,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                 }}
             >
-                {`Show more >`}
-            </Button>
+                {displayDescription}
+            </Typography>
+
+            {isOverflowing && (
+                <Button
+                    onClick={handleOpenModal}
+                    sx={{
+                        padding: "9px 16px",
+                        boxSizing: 'border-box',
+                        borderRadius: 2,
+                        border: `1px solid ${colors.black[900]}`,
+                        color: colors.black[900],
+                        fontWeight: "bold",
+                        textTransform: "none",
+                        fontSize: "0.9rem",
+                        mt: 2
+                    }}
+                >
+
+                    Show more
+                </Button>
+            )}
+
+            <OfferDescModal
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                description={displayDescription}
+            />
         </Box>
     );
-}
+};
 
 export default OfferDescPreview;
-

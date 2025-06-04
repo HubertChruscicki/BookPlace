@@ -26,3 +26,4 @@ const ReservationPage: React.FC = () => {
 }
 
 export default ReservationPage;
+//TODO RELOAD STRONY PRZY ZALOGOWANIU MUSI BYC
