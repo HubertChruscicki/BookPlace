@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(offer page): overflow description logic + added modal">
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(offers) changed offer card">
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FiltersButtonsGroup.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersTable.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferInfo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordOffersPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordOffersPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +61,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/nokia cwiczenie&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/huber/Desktop/BookPlace/BookPlace/bookplace-frontend/frontend/src/components/Offer&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -80,11 +79,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\pages" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Header" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\public" />
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Common" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
@@ -227,31 +226,7 @@
       <workItem from="1748879238201" duration="70000" />
       <workItem from="1748893332143" duration="1348000" />
       <workItem from="1748894745746" duration="28700000" />
-      <workItem from="1749049369426" duration="6064000" />
-    </task>
-    <task id="LOCAL-00010" summary="feat(design): offer card added">
-      <option name="closed" value="true" />
-      <created>1746364327510</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1746364327510</updated>
-    </task>
-    <task id="LOCAL-00011" summary="feat(fix): offer card type fix">
-      <option name="closed" value="true" />
-      <created>1746364471191</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1746364471191</updated>
-    </task>
-    <task id="LOCAL-00012" summary="feat(design): add footer on main page">
-      <option name="closed" value="true" />
-      <created>1746365879137</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1746365879137</updated>
+      <workItem from="1749049369426" duration="16312000" />
     </task>
     <task id="LOCAL-00013" summary="feat(design): add offer cards grid">
       <option name="closed" value="true" />
@@ -621,7 +596,31 @@
       <option name="project" value="LOCAL" />
       <updated>1748996140840</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="refactor(offer page): responsive improvments">
+      <option name="closed" value="true" />
+      <created>1749055750993</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1749055750994</updated>
+    </task>
+    <task id="LOCAL-00060" summary="feat(offers): add landlord offers list endpoint">
+      <option name="closed" value="true" />
+      <created>1749071523614</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1749071523615</updated>
+    </task>
+    <task id="LOCAL-00061" summary="refactor(offers) changed offer card">
+      <option name="closed" value="true" />
+      <created>1749074253061</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1749074253061</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -651,9 +650,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="design(checkout): added checkout details block" />
-    <MESSAGE value="feat(checkout): checkout working with backend and finished design" />
-    <MESSAGE value="feat(celery): configuration celery" />
     <MESSAGE value="feat(celery): added worker conf" />
     <MESSAGE value="feat(anymail): added anymail" />
     <MESSAGE value="feat(email): added anymail, docker additional conf" />
@@ -676,7 +672,10 @@
     <MESSAGE value="fix(reservations): prefetch improvments for lint errors" />
     <MESSAGE value="design(offer page): add amenities" />
     <MESSAGE value="refactor(offer page): overflow description logic + added modal" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(offer page): overflow description logic + added modal" />
+    <MESSAGE value="refactor(offer page): responsive improvments" />
+    <MESSAGE value="feat(offers): add landlord offers list endpoint" />
+    <MESSAGE value="refactor(offers) changed offer card" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(offers) changed offer card" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BookPlace$test_serializers.coverage" NAME="test_serializers Coverage Results" MODIFIED="1748204098260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />

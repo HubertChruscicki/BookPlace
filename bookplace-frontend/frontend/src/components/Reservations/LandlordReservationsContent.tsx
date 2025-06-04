@@ -1,13 +1,13 @@
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import { colors } from "../../theme/colors.ts";
-import Divider from "@mui/material/Divider";
 import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 import {LandlordReservationsModel, ReservationInfoModel} from "../../models/ReservationModel.ts";
 import LandlordReservationsTable from "./LandlordReservationsTable.tsx";
 import {QueryFunctionContext, useQuery, useQueryClient, UseQueryResult} from "@tanstack/react-query";
 import api from "../../api/axiosApi.ts";
 import {PaginatedResponse} from "../../models/ResponseModel.ts";
+import FiltersButtonGroup from "../Common/FiltersButtonsGroup.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface LandlordReservationsContentProps {
     activeTab: string;
@@ -17,6 +17,8 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
     const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const rowsPerPage = 8;
+    const navigate = useNavigate();
+
 
     const tabs = [
         { name: "upcoming", link: "/landlord/reservations/upcoming" },
@@ -91,6 +93,11 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
         setPage(newPage);
     };
 
+    const handleTabChange = (newTabLink: string) => {
+        navigate(newTabLink);
+    };
+
+
     const reservations: ReservationInfoModel[] = data?.results || [];
 
     return (
@@ -107,51 +114,10 @@ const LandlordReservationsContent: React.FC<LandlordReservationsContentProps> = 
             <Typography sx={{ fontWeight: "bold", fontSize: "2.5rem", mb: 3, ml: 1 }}>
                 Your reservations
             </Typography>
-
-            <Box>
-
-            </Box>
-
-            <Box sx={{ display: { xs: 'none', lg: "flex" }, alignItems: 'center', gap: '2rem' }}>
-                {tabs.map((tab) => (
-                    <Button
-                        key={tab.name}
-                        component={Link}
-                        to={tab.link}
-                        sx={{
-                            height: '100%',
-                            textTransform: 'capitalize',
-                            letterSpacing: '0.06rem',
-                            fontWeight: 400,
-                            fontSize: "1rem",
-                            position: 'relative',
-                            color: activeTab === tab.name ? colors.blue[600] : colors.black[900],
-                            "&:hover": {
-                                backgroundColor: 'transparent',
-                                color: colors.blue[600],
-                            },
-                            "&::after": {
-                                content: '""',
-                                position: 'absolute',
-                                bottom: 0,
-                                left: 0,
-                                width: activeTab === tab.name ? '100%' : '0',
-                                height: '2px',
-                                backgroundColor: colors.blue[600],
-                                transition: 'width 0.3s ease',
-                                borderRadius: '10px',
-                            }
-                        }}
-                    >
-                        {tab.name}
-                    </Button>
-                ))}
-            </Box>
-            <Divider
-                sx={{
-                    ml: "-40px",
-                    mr: "-40px",
-                }}
+            <FiltersButtonGroup
+                options={tabs}
+                selectedValue={`/landlord/reservations/${activeTab}`}
+                onChange={handleTabChange}
             />
             <LandlordReservationsTable
                 reservations={reservations}
