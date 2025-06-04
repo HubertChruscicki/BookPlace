@@ -294,4 +294,77 @@ class OfferViewAPI(ReadOnlyModelViewSet):
         ).exists()
 
         return Response({'available': not is_reservation_possible}, status=status.HTTP_200_OK)
+    @extend_schema(
+        summary="List landlord's own offers",
+        description="Returns paginated offers owned by the logged-in landlord (only active).",
+        parameters=[
+            OpenApiParameter("offset", type=int, description="Offset"),
+            OpenApiParameter("limit", type=int, description="Limit"),
+            OpenApiParameter(
+                "is_active",
+                type=OpenApiTypes.BOOL,
+                description="Optional: if True, return only active offers; if False, only inactive"
+            ),
+        ],
+        responses={200: OpenApiResponse(response=OfferCardSerializer(many=True))}
+    )
+    @action(
+        detail=False,
+        methods=['get'],
+        url_path='landlord',
+        permission_classes=[IsAuthenticated, IsLandlord],
+        pagination_class=OfferCardPagination
+    )
+    def landlord_offers(self, request):
+        user = request.user
+        queryset = Offers.objects.filter(landlord=user, is_active=True).order_by('-id')
 
+        params = request.query_params.copy()
+        def get_int(name):
+            val = params.get(name)
+            if val is None:
+                return None
+            try:
+                return int(val)
+            except ValueError:
+                raise ParseError({name: f"{val} must be an integer"})
+
+        def get_bool(name):
+            val = params.get(name)
+            if val is None:
+                return None
+            low = val.lower()
+            if low in ('1', 'true', 'yes'):
+                return True
+            if low in ('0', 'false', 'no'):
+                return False
+            raise ParseError({name: f"{val} must be a boolean"})
+
+        is_active_param = get_bool('is_active')
+        if is_active_param is not None:
+            queryset = queryset.filter(is_active=is_active_param)
+
+        offset = get_int('offset') or 0
+        limit = get_int('limit') or OfferCardPagination.default_limit
+        limit = min(limit, OfferCardPagination.max_limit)
+
+        page_qs = queryset[offset:offset + limit]
+        base = request.build_absolute_uri(request.path)
+        total = queryset.count()
+        def gen_endpoint(new_offset):
+            if new_offset < 0 or new_offset >= total:
+                return None
+            params['offset'] = new_offset
+            params['limit'] = limit
+            return f"{base}?{urlencode(params)}"
+
+        next_offset = offset + limit
+        prev_offset = offset - limit
+
+        serializer = OfferCardSerializer(page_qs, many=True, context={'request': request})
+        return Response({
+            'count': total,
+            'next': gen_endpoint(next_offset),
+            'previous': gen_endpoint(prev_offset),
+            'results': serializer.data
+        })
