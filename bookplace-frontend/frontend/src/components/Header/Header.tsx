@@ -78,8 +78,9 @@ const Header: React.FC<HeaderProps> = ({fullWidth, landlordMode}) => {
                 </Toolbar>
                 <Divider
                     sx={{
-                        ml: "-40px",
-                        mr: "-40px",
+                        width: "100vw",
+                        mx: "calc(50% - 50vw)",
+                        height: "1px",
                     }}
                 />
             </AppBar>

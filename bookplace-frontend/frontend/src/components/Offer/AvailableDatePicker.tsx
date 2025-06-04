@@ -56,6 +56,7 @@ const AvailableDatePicker: React.FC<AvailableDatePickerProps> = ({offerID, value
 
     return (
         <DatePicker
+            sx={{flex: 1}}
             label={label}
             value={value}
             disablePast

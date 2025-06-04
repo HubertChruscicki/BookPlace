@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, MenuItem, Select, styled, Typography} from "@mui/material";
+import { Box, Button, MenuItem, Select, styled, Typography } from "@mui/material";
 import Divider from '@mui/material/Divider';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,22 +7,25 @@ import dayjs, { Dayjs } from 'dayjs';
 import {useOffer} from "./OfferContext.tsx";
 import AvailableDatePicker from "./AvailableDatePicker.tsx";
 import {colors} from "../../theme/colors.ts"
-import api from "../../api/axiosApi.ts";
 
-const SummaryCard = styled(Box)({
+const SummaryCard = styled(Box)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: 35,
     minHeight: "100px",
     height: "auto",
-    minWidth: "450px",
     padding: "36px 24px",
     gap: 10,
     backgroundColor: `${colors.white[800]}`,
-    marginTop: 20
-})
+    marginTop: 20,
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+        maxWidth: "38%",
+    },
+    marginBottom: 50
+}));
 
 const Row = styled(Box)<{ justify?: string; align?: string }>(({ justify, align }) => ({
     display: "flex",
@@ -74,11 +77,6 @@ const OfferSummary: React.FC<OfferSummaryProps> = ({checkIn, checkOut, guests, o
              {`$${offer?.price_per_night} night`}
          </Text>
 
-        {/*{availabilityError &&*/}
-        {/*    <Typography color="error" sx={{fontWeight: "bold", alignSelf: "center", fontSize: "1.3rem"}}>*/}
-        {/*        {`${availabilityError}`}*/}
-        {/*    </Typography>*/}
-        {/*}*/}
         <Box sx={{display: "flex", flexDirection: "row"}}>
            <LocalizationProvider dateAdapter={AdapterDayjs}>
                <AvailableDatePicker

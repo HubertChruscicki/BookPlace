@@ -71,7 +71,8 @@ const OfferContent = () => {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                p: "0px 40px",
+                p: { xs: "15px", sm: "0px 40px" },
+                overflow: "hidden",
                 backgroundColor: `${colors.white[800]}`
             }}>
                 <Header/>
@@ -79,7 +80,7 @@ const OfferContent = () => {
                 <OfferPhotoGrid/>
                 <Box sx={{
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: { xs: "column", md: "row" },
                     width: "100%",
                     maxWidth: "1220px",
                     justifyContent: "space-between"

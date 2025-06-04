@@ -6,13 +6,18 @@ import OfferLocationRating from "./OfferLocationRating.tsx";
 const OfferInfo: React.FC = () => {
 
   return (
-    <Box sx={{display: "flex", flexDirection: "column",
-            width: '100%',
-            maxWidth: '1220px',
-            m: "25px",
-            mr: 5
-        }}>
+    <Box
+         sx={{
+             display: "flex",
+             flexDirection: "column",
+             width: "100%",
+             maxWidth: "1220px",
+             p: { xs: 1, md: 2 },
+             m: { xs: 1, md: 2 },
+             mr: { xs: 1, md: 2 },
+         }}
 
+    >
         <OfferLocationRating/>
         <OfferLandlordPreview/>
         <OfferDescPreview/>

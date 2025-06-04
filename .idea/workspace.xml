@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="design(offer page): add amenities">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferDescModal.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(offer page): overflow description logic + added modal">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferDescPreview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferDescPreview.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Header/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/AvailableDatePicker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferPhotoGrid.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferSummary.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/theme/theme.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -221,15 +226,8 @@
       <workItem from="1748876164831" duration="1487000" />
       <workItem from="1748879238201" duration="70000" />
       <workItem from="1748893332143" duration="1348000" />
-      <workItem from="1748894745746" duration="28380000" />
-    </task>
-    <task id="LOCAL-00009" summary="feat(auth): skeleton of new global accesible authmodal">
-      <option name="closed" value="true" />
-      <created>1745949754448</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1745949754448</updated>
+      <workItem from="1748894745746" duration="28700000" />
+      <workItem from="1749049369426" duration="6064000" />
     </task>
     <task id="LOCAL-00010" summary="feat(design): offer card added">
       <option name="closed" value="true" />
@@ -615,7 +613,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748992546346</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="refactor(offer page): overflow description logic + added modal">
+      <option name="closed" value="true" />
+      <created>1748996140840</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1748996140840</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -645,7 +651,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(routes): added checkout, checking, guest parms to offerpage offercheckoutpage" />
     <MESSAGE value="design(checkout): added checkout details block" />
     <MESSAGE value="feat(checkout): checkout working with backend and finished design" />
     <MESSAGE value="feat(celery): configuration celery" />
@@ -670,7 +675,8 @@
     <MESSAGE value="design(reservations): added landlord panel and the reservation table" />
     <MESSAGE value="fix(reservations): prefetch improvments for lint errors" />
     <MESSAGE value="design(offer page): add amenities" />
-    <option name="LAST_COMMIT_MESSAGE" value="design(offer page): add amenities" />
+    <MESSAGE value="refactor(offer page): overflow description logic + added modal" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(offer page): overflow description logic + added modal" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BookPlace$test_serializers.coverage" NAME="test_serializers Coverage Results" MODIFIED="1748204098260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />
