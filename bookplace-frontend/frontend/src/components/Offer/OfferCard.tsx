@@ -1,23 +1,30 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
-import { Box, Button, Rating, Typography } from "@mui/material";
-import {colors} from "../../theme/colors.ts"
-import {useNavigate} from "react-router-dom";
-import {OfferCardModel} from "../../models/OfferModel.ts";
+import {Box, Typography, Divider,} from "@mui/material";
+import PlaceIcon from "@mui/icons-material/Place";
+import StarIcon from "@mui/icons-material/Star";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { colors } from "../../theme/colors";
+import { OfferCardModel } from "../../models/OfferModel";
 
-const Card = styled(Box)({
+const Card = styled(Box)(({ theme }) => ({
+    width: 350,
+    height: 290,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    height: 300,
-    width: 350,
-    overflow: "hidden",
     borderRadius: 15,
-    // border: "0.005px solid grey",
+    overflow: "hidden",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+    textDecoration: "none",
+    color: "inherit",
+    transition: "transform 0.2s",
+    backgroundColor: theme.palette.background.paper,
     "&:hover": {
+        transform: "translateY(-5px)",
         boxShadow: "0px 8px 8px rgba(0, 0, 0, 0.25)",
-    }
-});
+    },
+}));
 
 const Media = styled(Box)({
     width: "100%",
@@ -26,15 +33,25 @@ const Media = styled(Box)({
     backgroundPosition: "center",
 });
 
+
 const Content = styled(Box)({
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
     flex: 1,
-    width: "100%",
-    padding: 24,
+    padding: 16,
 });
+
+const Title = styled(Typography)({
+    fontWeight: "bold",
+    fontSize: "1.1rem",
+});
+
+const Subtitle = styled(Typography)({
+    color: "text.secondary",
+    fontSize: "0.9rem",
+    marginTop: 4,
+});
+
 
 const Row = styled(Box)<{ justify?: string; align?: string }>(({ justify, align }) => ({
     display: "flex",
@@ -43,54 +60,58 @@ const Row = styled(Box)<{ justify?: string; align?: string }>(({ justify, align 
     width: "100%",
 }));
 
-const BookButton = styled(Button)({
-    backgroundColor: colors.blue[500],
-    textTransform: "none",
-    width: 100,
-    color: colors.white[900]
+
+const IconTextRow = styled(Box)({
+    display: "flex",
+    alignItems: "center",
+});
+
+const PriceBox = styled(Box)({
+    display: "flex",
+    alignItems: "center",
 });
 
 interface OfferCardProps {
     offer: OfferCardModel;
+    to?: string;
+    onClick?: () => void;
 }
 
-export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
-    const navigate = useNavigate();
-
+export const OfferCard: React.FC<OfferCardProps> = ({ offer, to, onClick }) => {
+    const linkProps = to
+        ? { component: Link, to }
+        : { onClick };
     return (
-        <Card>
-            <Media style={{ backgroundImage: `url(${offer.img_url})` }} />
+        <Card {...linkProps}>
+            <Media sx={{ backgroundImage: `url(${offer.img_url})` }} />
             <Content>
-                <Row justify="space-between" align="flex-start">
-                    <Box sx={{ width: "75%" }}>
-                        <Typography noWrap fontWeight="bold" fontSize="1.1rem">
-                            {offer.title}
+                <Box>
+                    <Title noWrap>{offer.title}</Title>
+                    <Subtitle noWrap>{offer.type}</Subtitle>
+                </Box>
+
+                <Divider sx={{ my: 1 }} />
+
+                <Row justify="space-between" align="center" sx={{ mb: 1 }}>
+                    <IconTextRow>
+                        <PlaceIcon sx={{ fontSize: 16, mr: 0.5, color: colors.blue[600] }} />
+                        <Typography variant="body2">
+                            {offer.city}, {offer.country}
                         </Typography>
-                        <Typography noWrap color="text.secondary">
-                            {offer.type}
-                        </Typography>
-                    </Box>
-                    <Row justify="flex-end">
-                        <Rating name="half-rating" defaultValue={1} precision={0.5} max={1} readOnly />
-                        <Typography fontWeight="bold" fontSize="1.1rem">
-                            {offer.rating}
-                        </Typography>
-                    </Row>
+                    </IconTextRow>
+
+                    <IconTextRow>
+                        <StarIcon sx={{ fontSize: 16, mr: 0.5, color: colors.yellow[500] }} />
+                        <Typography variant="body2">{offer.rating.toFixed(1)}</Typography>
+                    </IconTextRow>
                 </Row>
 
-                <Row justify="space-between" align="flex-end">
-                    <Typography noWrap color="text.secondary">
-                        {offer.city}, {offer.country}
+                <PriceBox>
+                    <AttachMoneyIcon sx={{ fontSize: 16, mr: 0.5, color: colors.green[600] }} />
+                    <Typography variant="body2" fontWeight="bold">
+                        {offer.price_per_night} zł / noc
                     </Typography>
-                    <Box sx={{ textAlign: "right" }}>
-                        <Typography fontWeight="bold" fontSize="1.1rem">
-                            {offer.price_per_night}$ night
-                        </Typography>
-                        <BookButton onClick={() => navigate(`/offer/${offer.id}`)}>
-                            Book now
-                        </BookButton>
-                    </Box>
-                </Row>
+                </PriceBox>
             </Content>
         </Card>
     );

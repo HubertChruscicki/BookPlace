@@ -19,7 +19,7 @@ const OffersGrid: React.FC<OffersGridProps> = ({ offers }) => {
             }}
         >
             {offers.map((offer) => (
-                <OfferCard key={offer.id} offer={offer} />
+                <OfferCard key={offer.id} offer={offer} to={`/offer/${offer.id}`} />
             ))}
         </Box>
     );

@@ -13,8 +13,8 @@ const OfferInfo: React.FC = () => {
              width: "100%",
              maxWidth: "1220px",
              p: { xs: 1, md: 2 },
-             m: { xs: 1, md: 2 },
-             mr: { xs: 1, md: 2 },
+             my: { xs: 1, md: 2 },
+             mr: { xs: 0, md: 2 },
          }}
 
     >
