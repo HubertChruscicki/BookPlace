@@ -28,7 +28,7 @@ const Card = styled(Box)(({ theme }) => ({
 
 const Media = styled(Box)({
     width: "100%",
-    height: "45%",
+    height: "50%",
     backgroundSize: "cover",
     backgroundPosition: "center",
 });
@@ -109,7 +109,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer, to, onClick }) => {
                 <PriceBox>
                     <AttachMoneyIcon sx={{ fontSize: 16, mr: 0.5, color: colors.green[600] }} />
                     <Typography variant="body2" fontWeight="bold">
-                        {offer.price_per_night} zł / noc
+                        {offer.price_per_night} zł / night
                     </Typography>
                 </PriceBox>
             </Content>

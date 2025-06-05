@@ -44,6 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route path="/landlord">
                             <Route path="calendar" element={<LandlordCalnedarPage/>}/>
                             <Route path="offers" element={<LandlordOffersPage/>} />
+                            <Route path="offers/:status" element={<LandlordOffersPage/>} />
                             <Route path="messages" element={<LandlordMessagesPage/>} />
                             <Route path="reservations/:status" element={<LandlordReservationsPage />} />
                             <Route path="reservations" element={<LandlordReservationsPage />} />

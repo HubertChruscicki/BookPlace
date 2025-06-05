@@ -14,11 +14,7 @@ interface FiltersButtonGroupProps {
     onChange: (value: string) => void;
 }
 
-const FiltersButtonGroup: React.FC<FiltersButtonGroupProps> = ({
-                                                                   options,
-                                                                   selectedValue,
-                                                                   onChange,
-                                                               }) => {
+const FiltersButtonGroup: React.FC<FiltersButtonGroupProps> = ({options, selectedValue, onChange}) => {
     return (
         <Box
             sx={{
@@ -39,7 +35,7 @@ const FiltersButtonGroup: React.FC<FiltersButtonGroupProps> = ({
                         onClick={() => onChange(opt.link)}
                         sx={{
                             textTransform: "none",
-                            backgroundColor: isSelected ? colors.blue[600] : "transparent",
+                            backgroundColor: isSelected ? colors.blue[300] : "transparent",
                             color: isSelected ? "#fff" : colors.black[900],
                             borderRadius: "12px",
                             fontWeight: isSelected ? "bold" : "normal",
@@ -47,7 +43,7 @@ const FiltersButtonGroup: React.FC<FiltersButtonGroupProps> = ({
                             boxShadow: isSelected ? "0 2px 8px rgba(0, 0, 0, 0.2)" : "none",
                             borderWidth: isSelected ? "0" : "1px",
                             "&:hover": {
-                                backgroundColor: isSelected ? colors.blue[700] : colors.blue[50],
+                                backgroundColor: isSelected ? colors.blue[500] : colors.blue[100],
                                 boxShadow: isSelected ? "0 4px 12px rgba(0, 0, 0, 0.25)" : "none",
                             },
                         }}

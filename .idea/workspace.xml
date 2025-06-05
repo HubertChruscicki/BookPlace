@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="refactor(offers) changed offer card">
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FiltersButtonsGroup.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersTable.tsx" afterDir="false" />
+    <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(landlord offers) add landlord offers overview">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Reservations/LandlordReservationsContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FiltersButtonsGroup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Common/FiltersButtonsGroup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersTable.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/OfferCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/main.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordOffersPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/LandlordOffersPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/MainPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,14 +227,7 @@
       <workItem from="1748893332143" duration="1348000" />
       <workItem from="1748894745746" duration="28700000" />
       <workItem from="1749049369426" duration="16312000" />
-    </task>
-    <task id="LOCAL-00013" summary="feat(design): add offer cards grid">
-      <option name="closed" value="true" />
-      <created>1746366277738</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1746366277738</updated>
+      <workItem from="1749122795859" duration="2762000" />
     </task>
     <task id="LOCAL-00014" summary="feat(api): add offer load enpoint and serializer">
       <option name="closed" value="true" />
@@ -620,7 +613,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749074253061</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="refactor(landlord reservations) changed buttons and extracted reusable component">
+      <option name="closed" value="true" />
+      <created>1749076435034</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1749076435034</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -650,8 +651,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat(celery): added worker conf" />
-    <MESSAGE value="feat(anymail): added anymail" />
     <MESSAGE value="feat(email): added anymail, docker additional conf" />
     <MESSAGE value="feat(email): email sending logic" />
     <MESSAGE value="refactor(reservations): added fields to list reservation endpoint" />
@@ -675,7 +674,9 @@
     <MESSAGE value="refactor(offer page): responsive improvments" />
     <MESSAGE value="feat(offers): add landlord offers list endpoint" />
     <MESSAGE value="refactor(offers) changed offer card" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(offers) changed offer card" />
+    <MESSAGE value="refactor(landlord reservations) changed buttons and extracted reusable component" />
+    <MESSAGE value="feat(landlord offers) add landlord offers overview" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(landlord offers) add landlord offers overview" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/BookPlace$test_serializers.coverage" NAME="test_serializers Coverage Results" MODIFIED="1748204098260" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bookplace-backend/backend/users/tests" />
