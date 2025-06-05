@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
 import { colors } from "../../theme/colors.ts";
 import {InfiniteData, useInfiniteQuery} from "@tanstack/react-query";
@@ -75,7 +75,7 @@ const LandlordOffersContent: React.FC<LandlordOffersContentProps> = ({ activeTab
         threshold: 0.1,
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (inView && hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
         }

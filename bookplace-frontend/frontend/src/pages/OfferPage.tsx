@@ -27,7 +27,7 @@ const OfferContent = () => {
 
     const goToCheckOut = () => {
         if (error){
-            console.log("error handle") //TODO
+            console.error("error handle") //TODO
             return;
         }
         if(checkIn && checkOut && guestsNumber){
