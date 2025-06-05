@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4567cb2b-d048-4eb4-ae31-9ff2beb66bed" name="Changes" comment="feat(landlord offers) add landlord offers overview">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/Zrzut ekranu 2025-06-05 170511.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/Zrzut ekranu 2025-06-05 170532.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/add_offer_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/add_offer_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/landlord_reservations.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/main.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/offer_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/readmeSrc/offer_2.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/components/Offer/LandlordOffersContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookplace-frontend/frontend/src/pages/OfferPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,11 +88,11 @@
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\public" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\readmeSrc" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\components\Offer\Checkout" />
       <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-backend\backend\media\images" />
-      <recent name="C:\Users\huber\Desktop\BookPlace\BookPlace\bookplace-frontend\frontend\src\Auth" />
     </key>
   </component>
   <component name="RunManager">

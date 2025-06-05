@@ -6,6 +6,27 @@ BookPlace is a comprehensive web application that enables users to book accommod
 
 BookPlace serves as a bridge between property owners and travelers, creating a community-driven platform for short-term rentals. Users can browse available accommodations, make reservations, and leave reviews, while landlords can list and manage their properties, track bookings, and communicate with guests.
 
+## 📷 Screenshots
+Below are some key screenshots demonstrating the application's functionality:
+
+### 1. Main Property Listing Page
+![Main Listing Page](readmeSrc/main.png)
+### 2. Individual Offer Page (Example 1)
+![Offer Page 1](readmeSrc/offer_1.png)
+### 3. Individual Offer Page (Example 2)
+![Offer Page 2](readmeSrc/offer_2.png)
+### 4. Guest Reservation Page
+![Guest Reservation](readmeSrc/reservation.png)
+### 5. Landlord Dashboard – Viewing Reservations
+![Landlord Reservations](readmeSrc/landlord_reservations.png)
+### 6. Landlord Dashboard – Viewing All Offers
+![Landlord Offers](readmeSrc/landlord_offers.png)
+### 7. Adding a New Offer (Step 1)
+![Add Offer – Step 1](readmeSrc/add_offer_1.png)
+### 8. Adding a New Offer (Step 6)
+![Add Offer – Step 2](readmeSrc/add_offer_2.png)
+
+
 ## 🏗️ Architecture
 
 The application follows a client-server architecture:
