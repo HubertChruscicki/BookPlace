@@ -1,0 +1,27 @@
+# Node.js (Frontend)
+Frontend/node_modules/
+Frontend/dist/
+
+# .NET (Backend)
+Backend/*/bin/
+Backend/*/obj/
+
+# IDE - Global
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# IDE - Frontend specific
+Frontend/.vscode/
+Frontend/.idea/
+
+# IDE - Backend specific  
+Backend/.vs/
+Backend/.idea/
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db

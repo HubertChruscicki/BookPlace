@@ -1,0 +1,63 @@
+# .gitignore for Backend (C# / .NET)
+# Purpose: ignore build outputs, user/IDE files, packages, test results and common local secrets
+
+## Build directories
+**/bin/
+**/obj/
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+*.sln.iml
+
+## VS Code
+.vscode/
+
+## NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+## Publish / artifacts
+artifacts/
+dist/
+publish/
+
+## Test results and coverage
+TestResults/
+coverage/
+*.coverage
+
+## Logs
+*.log
+
+## Temporary files
+*.tmp
+*.temp
+
+## OS files
+Thumbs.db
+.DS_Store
+
+## Local secrets / environment files (keep developer-local settings out of git)
+secrets.json
+appsettings.*.Local.json
+appsettings.*.Secrets.json
+.env
+*.local
+
+## JetBrains Rider caches and settings
+/.idea/
+*.DotSettings.user
+
+## Misc
+*.userprefs
