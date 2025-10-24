@@ -12,6 +12,10 @@ COPY ["src/Api/Api.csproj", "src/Api/"]
 COPY ["src/Application/Application.csproj", "src/Application/"]
 COPY ["src/Domain/Domain.csproj", "src/Domain/"]
 COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+COPY ["tests/Api.Tests/Api.Tests.csproj", "tests/Api.Tests/"]
+COPY ["tests/Application.Tests/Application.Tests.csproj", "tests/Application.Tests/"]
+COPY ["tests/Domain.Tests/Domain.Tests.csproj", "tests/Domain.Tests/"]
+COPY ["tests/Infrastructure.Tests/Infrastructure.Tests.csproj", "tests/Infrastructure.Tests/"]
 RUN dotnet restore "Backend.sln"
 COPY . .
 WORKDIR "/src/src/Api"

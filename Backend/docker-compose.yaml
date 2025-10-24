@@ -1,6 +1,14 @@
 ﻿services:
-  api:
-    image: api
+  book-place-db:
+    image: postgres:18
+    container_name: book-place-db
+    
+  book-place-app:
     build:
       context: .
-      dockerfile: src/Api/Dockerfile
+      dockerfile: Dockerfile
+    container_name: book-place-app
+      
+  book-place-rabbitmq:
+    image: rabbitmq:4.1-management
+    container_name: book-place-rabbitmq
