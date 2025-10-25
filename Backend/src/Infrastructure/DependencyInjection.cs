@@ -71,8 +71,13 @@ public static class DependencyInjection
         // Register JWT Service
         services.AddScoped<IJwtService, JwtService>();
         
+        // Register Auth Service
+        services.AddScoped<Application.Interfaces.IAuthService, AuthService>();
+        
         // Register Seeder Services
         services.AddScoped<IRoleSeederService, RoleSeederService>();
+        services.AddScoped<IOfferTypeSeederService, OfferTypeSeederService>();
+        services.AddScoped<IAmenitySeederService, AmenitySeederService>();
         services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
 
         services.AddMassTransit(x =>
@@ -118,6 +123,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationHandler, MessageOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, ConversationInitiatorAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, OfferViewAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, GuestOnlyAuthorizationHandler>();
 
         return services;
     }

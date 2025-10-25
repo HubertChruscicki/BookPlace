@@ -47,3 +47,5 @@ services:
 volumes:
   postgres_data:
   rabbitmq_data:
+    
+#    dotnet ef migrations add Initial --project src\Infrastructure --startup-project src\Api --context Infrastructure.Persistance.ApplicationDbContext

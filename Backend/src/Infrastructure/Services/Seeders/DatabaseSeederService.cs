@@ -10,30 +10,37 @@ public interface IDatabaseSeederService
 public class DatabaseSeederService : IDatabaseSeederService
 {
     private readonly IRoleSeederService _roleSeederService;
+    private readonly IOfferTypeSeederService _offerTypeSeederService;
+    private readonly IAmenitySeederService _amenitySeederService;
     private readonly ILogger<DatabaseSeederService> _logger;
 
     public DatabaseSeederService(
         IRoleSeederService roleSeederService,
+        IOfferTypeSeederService offerTypeSeederService,
+        IAmenitySeederService amenitySeederService,
         ILogger<DatabaseSeederService> logger)
     {
         _roleSeederService = roleSeederService;
+        _offerTypeSeederService = offerTypeSeederService;
+        _amenitySeederService = amenitySeederService;
         _logger = logger;
     }
 
     public async Task SeedAllAsync()
     {
         _logger.LogInformation("Starting database seeding...");
-
         try
         {
-            // Seed roles first - they are foundation for other data
             await _roleSeederService.SeedRolesAsync();
             _logger.LogInformation("Roles seeding completed successfully");
 
-            // Future seeders can be added here:
-            // await _userSeederService.SeedDefaultUsersAsync();
-            // await _offerTypeSeederService.SeedOfferTypesAsync();
-            // await _amenitySeederService.SeedAmenitiesAsync();
+            // Seed offer types - needed for offers
+            await _offerTypeSeederService.SeedOfferTypesAsync();
+            _logger.LogInformation("Offer types seeding completed successfully");
+
+            // Seed amenities - needed for offers
+            await _amenitySeederService.SeedAmenitiesAsync();
+            _logger.LogInformation("Amenities seeding completed successfully");
 
             _logger.LogInformation("Database seeding completed successfully");
         }

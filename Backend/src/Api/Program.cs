@@ -4,6 +4,7 @@ using Infrastructure.Services.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Application.Authorization.Requirements;
+using Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,9 +90,16 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("ConversationInitiatorPolicy", policy =>
         policy.Requirements.Add(new ConversationInitiatorRequirement()));
+
+    // Role-based Policies
+    options.AddPolicy("GuestOnlyPolicy", policy =>
+        policy.Requirements.Add(new GuestOnlyRequirement()));
 });
 
 var app = builder.Build();
+// Global exception handling - must be first in pipeline
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 
 if (app.Environment.IsDevelopment())
 {

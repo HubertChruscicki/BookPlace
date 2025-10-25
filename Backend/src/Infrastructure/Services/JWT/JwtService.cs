@@ -1,4 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Domain.Entities;
@@ -15,9 +15,9 @@ public interface IJwtService
 {
     /// <summary>
     /// Generates a short-lived access token (15 minutes) for API authentication.
-    /// Contains user claims: sub, email, given_name, roles, jti, iat.
+    /// Contains user claims: sub, email, given_name, family_name, mobile_phone, roles, jti, iat.
     /// </summary>
-    /// <param name="user">User entity containing ID, email, and name</param>
+    /// <param name="user">User entity containing ID, email, name, surname, and phone</param>
     /// <param name="roles">List of user roles (Guest, Host)</param>
     /// <returns>JWT access token string</returns>
     string GenerateAccessToken(User user, IList<string> roles);
@@ -71,6 +71,8 @@ public class JwtService : IJwtService
             new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Email, user.Email!),
             new(ClaimTypes.GivenName, user.Name ?? ""),
+            new(ClaimTypes.Surname, user.Surname ?? ""),
+            new(ClaimTypes.MobilePhone, user.PhoneNumber ?? ""),
             new(JwtRegisteredClaimNames.Sub, user.Id),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Iat, 
