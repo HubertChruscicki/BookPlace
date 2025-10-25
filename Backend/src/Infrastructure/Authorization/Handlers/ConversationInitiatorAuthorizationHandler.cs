@@ -5,6 +5,12 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user can initiate a conversation.
+/// Used for starting new conversations about offers or reviews.
+/// For offers: verifies currentUserId != offer.HostId (guest can write to host).
+/// For reviews: verifies currentUserId != review.GuestId (review author can respond).
+/// </summary>
 public class ConversationInitiatorAuthorizationHandler : AuthorizationHandler<ConversationInitiatorRequirement, ConversationInitiatorContext>
 {
     protected override Task HandleRequirementAsync(

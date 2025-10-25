@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is the owner of an offer.
+/// Used for editing, deleting, and updating offer status.
+/// Verifies that offer.HostId matches the current user's ID.
+/// </summary>
 public class OfferOwnerAuthorizationHandler : AuthorizationHandler<OfferOwnerRequirement, Offer>
 {
     protected override Task HandleRequirementAsync(

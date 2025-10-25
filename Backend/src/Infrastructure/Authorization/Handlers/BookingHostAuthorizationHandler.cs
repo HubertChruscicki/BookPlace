@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is the host of the offer associated with a booking.
+/// Used for booking management actions by hosts (accept/reject reservations).
+/// Verifies that booking.Offer.HostId matches the current user's ID.
+/// </summary>
 public class BookingHostAuthorizationHandler : AuthorizationHandler<BookingHostRequirement, Booking>
 {
     protected override Task HandleRequirementAsync(

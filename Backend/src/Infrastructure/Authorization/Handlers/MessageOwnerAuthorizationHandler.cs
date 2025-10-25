@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is the owner of a message.
+/// Used for editing and deleting messages.
+/// Verifies that message.SenderId matches the current user's ID.
+/// </summary>
 public class MessageOwnerAuthorizationHandler : AuthorizationHandler<MessageOwnerRequirement, Message>
 {
     protected override Task HandleRequirementAsync(

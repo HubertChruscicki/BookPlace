@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is eligible to add a review.
+/// Used for creating new reviews after completed bookings.
+/// Verifies that user had a completed booking, hasn't reviewed this offer yet, and booking was in the past.
+/// </summary>
 public class ReviewEligibilityAuthorizationHandler : AuthorizationHandler<ReviewEligibilityRequirement, ReviewEligibilityContext>
 {
     protected override Task HandleRequirementAsync(

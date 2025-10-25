@@ -6,6 +6,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user can view offer details.
+/// Used for viewing offers with different access levels (public vs private).
+/// Public access: offer.Status == Active. Private access: offer.HostId == currentUserId (all statuses).
+/// </summary>
 public class OfferViewAuthorizationHandler : AuthorizationHandler<OfferViewRequirement, Offer>
 {
     protected override Task HandleRequirementAsync(

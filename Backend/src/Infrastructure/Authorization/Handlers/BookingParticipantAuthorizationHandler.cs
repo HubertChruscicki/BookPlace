@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is a participant in a booking.
+/// Used for accessing booking details by both guests and hosts.
+/// Verifies that either booking.GuestId or booking.Offer.HostId matches the current user's ID.
+/// </summary>
 public class BookingParticipantAuthorizationHandler : AuthorizationHandler<BookingParticipantRequirement, Booking>
 {
     protected override Task HandleRequirementAsync(

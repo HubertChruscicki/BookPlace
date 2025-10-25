@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is a participant in a conversation.
+/// Used for sending messages and reading conversation history.
+/// Verifies that conversation.Participants contains the current user's ID.
+/// </summary>
 public class ConversationParticipantAuthorizationHandler : AuthorizationHandler<ConversationParticipantRequirement, Conversation>
 {
     protected override Task HandleRequirementAsync(

@@ -5,6 +5,11 @@ using System.Security.Claims;
 
 namespace Infrastructure.Authorization.Handlers;
 
+/// <summary>
+/// Authorization handler to verify if the current user is the owner of a review.
+/// Used for editing and deleting reviews.
+/// Verifies that review.GuestId matches the current user's ID.
+/// </summary>
 public class ReviewOwnerAuthorizationHandler : AuthorizationHandler<ReviewOwnerRequirement, Review>
 {
     protected override Task HandleRequirementAsync(
