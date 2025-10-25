@@ -65,7 +65,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasPrecision(18, 2);
 
         builder.Entity<Conversation>()
-            .HasCheckConstraint("CK_Conversation_Reference", 
-                "(\"OfferId\" IS NOT NULL AND \"ReviewId\" IS NULL) OR (\"OfferId\" IS NULL AND \"ReviewId\" IS NOT NULL)");
+            .ToTable(t => t.HasCheckConstraint("CK_Conversation_Reference", 
+                "(\"OfferId\" IS NOT NULL AND \"ReviewId\" IS NULL) OR (\"OfferId\" IS NULL AND \"ReviewId\" IS NOT NULL)"));
     }
 }

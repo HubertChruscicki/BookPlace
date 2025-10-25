@@ -1,0 +1,30 @@
+﻿using Application.Authorization.Requirements;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
+namespace Infrastructure.Authorization.Handlers;
+
+public class MessageOwnerAuthorizationHandler : AuthorizationHandler<MessageOwnerRequirement, Message>
+{
+    protected override Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        MessageOwnerRequirement requirement,
+        Message resource)
+    {
+        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userId == null)
+        {
+            return Task.CompletedTask;
+        }
+
+        // Logic: message.SenderId == currentUserId
+        if (resource.SenderId == userId)
+        {
+            context.Succeed(requirement);
+        }
+
+        return Task.CompletedTask;
+    }
+}

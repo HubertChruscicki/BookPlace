@@ -1,12 +1,19 @@
 ﻿using System.Reflection;
+using System.Text;
 using Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Services;
+using Infrastructure.Services.Seeders;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Application.Authorization.Requirements;
+using Infrastructure.Authorization.Handlers;
+using Infrastructure.Services;
 
 namespace Infrastructure;
 
@@ -35,6 +42,38 @@ public static class DependencyInjection
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        // JWT Authentication Configuration
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["SecretKey"];
+        
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+        // Register JWT Service
+        services.AddScoped<IJwtService, JwtService>();
+        
+        // Register Seeder Services
+        services.AddScoped<IRoleSeederService, RoleSeederService>();
+        services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
 
         services.AddMassTransit(x =>
         {
@@ -66,6 +105,19 @@ public static class DependencyInjection
                 }
             );
         });
+
+
+        // Register all authorization handlers
+        services.AddScoped<IAuthorizationHandler, OfferOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, BookingOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, BookingHostAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, BookingParticipantAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, ReviewOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, ReviewEligibilityAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, ConversationParticipantAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, MessageOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, ConversationInitiatorAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, OfferViewAuthorizationHandler>();
 
         return services;
     }

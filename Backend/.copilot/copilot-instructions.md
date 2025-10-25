@@ -1,4 +1,4 @@
-﻿﻿﻿# BookPlace Backend - Copilot Instructions
+﻿﻿﻿﻿# BookPlace Backend - Copilot Instructions
 
 ## Opis Projektu
 BookPlace Backend to aplikacja .NET 8.0 zbudowana w architekturze Clean Architecture, przeznaczona do platformy rezerwacji noclegów.
@@ -15,6 +15,11 @@ BookPlace Backend to aplikacja .NET 8.0 zbudowana w architekturze Clean Architec
 **System Opinii:**
 - Opinie przypisane do konkretnych ofert po zakończonej rezerwacji
 - Możliwość dodawania zdjęć do opinii
+
+**Archiwizacja i Soft Delete:**
+- **Offer.IsArchive** - proste pole boolean do archiwizacji ofert (default: false)
+- **Booking Soft Delete** - używa statusów `CancelledByHost` i `CancelledByGuest` zamiast pola IsDeleted
+- Anulowane rezerwacje pozostają w bazie danych dla celów raportowania i historii
 
 **Komunikacja (Chat/WebSocket):**
 - Historia wiadomości między gośćmi a gospodarzami
@@ -90,12 +95,14 @@ Backend/
 
 #### Technologie:
 - **.NET 8.0** - Platforma aplikacji
-- **ASP.NET Core Web API** - Framework webowy
-- **Entity Framework Core** - ORM
+- **ASP.NET Core Web API 8.0** - Framework webowy
+- **Entity Framework Core 8.0.10/8.0.11** - ORM
+- **PostgreSQL (Npgsql.EntityFrameworkCore.PostgreSQL 8.0.4)** - Baza danych
 - **MassTransit 8.5.4** - Service Bus / Message Broker
-- **RabbitMQ** - Message Broker
+- **RabbitMQ 4.1-management** - Message Broker
 - **Docker** - Konteneryzacja
 - **Swagger/OpenAPI** - Dokumentacja API
+- **ASP.NET Identity (Microsoft.AspNetCore.Identity 2.3.1)** - Autoryzacja i uwierzytelnianie
 
 ## Schemat Bazy Danych
 
@@ -119,10 +126,11 @@ Amenity
 Offer
 ├── Id (PK)
 ├── HostId (FK → AspNetUsers)
-├── OfferTypeId (FK → OfferType)
+├── OfferTypeId (FK → OfferType) 
 ├── Title, Description
 ├── PricePerNight, MaxGuests, Bedrooms, Bathrooms
-├── Status
+├── Status (OfferStatus enum)
+├── IsArchive (boolean, default: false)
 └── Address_* (Street, City, ZipCode, Country, Latitude, Longitude)
 
 AmenityOffer (automatyczna tabela łączącą - EF Core)
@@ -142,8 +150,10 @@ Booking
 ├── OfferId (FK → Offer)
 ├── CheckInDate, CheckOutDate
 ├── TotalPrice, NumberOfGuests
-├── Status
+├── Status (BookingStatus: Pending, Confirmed, CancelledByHost, CancelledByGuest, Completed)
 └── CreatedAt
+
+**Soft Delete:** Booking używa statusów CancelledByHost/CancelledByGuest zamiast pola IsDeleted
 
 Review
 ├── Id (PK)

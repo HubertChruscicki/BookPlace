@@ -14,6 +14,7 @@ public class Offer
     public int Bedrooms { get; set; }
     public int Bathrooms { get; set; }
     public OfferStatus Status { get; set; }
+    public bool IsArchive { get; set; } = false;
     
     public string AddressStreet { get; set; } = string.Empty;
     public string AddressCity { get; set; } = string.Empty;

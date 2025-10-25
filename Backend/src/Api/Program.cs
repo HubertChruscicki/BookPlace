@@ -1,6 +1,9 @@
 using Infrastructure;
 using Infrastructure.Persistance;
+using Infrastructure.Services.Seeders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using Application.Authorization.Requirements;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +50,47 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Authorization Configuration
+builder.Services.AddAuthorization(options =>
+{
+    // Offer Policies
+    options.AddPolicy("OfferOwnerPolicy", policy =>
+        policy.Requirements.Add(new OfferOwnerRequirement()));
+
+    options.AddPolicy("HostOnlyPolicy", policy =>
+        policy.RequireRole("Host"));
+
+    options.AddPolicy("OfferViewPolicy", policy =>
+        policy.Requirements.Add(new OfferViewRequirement()));
+
+    // Booking Policies
+    options.AddPolicy("BookingOwnerPolicy", policy =>
+        policy.Requirements.Add(new BookingOwnerRequirement()));
+
+    options.AddPolicy("BookingHostPolicy", policy =>
+        policy.Requirements.Add(new BookingHostRequirement()));
+
+    options.AddPolicy("BookingParticipantPolicy", policy =>
+        policy.Requirements.Add(new BookingParticipantRequirement()));
+
+    // Review Policies
+    options.AddPolicy("ReviewOwnerPolicy", policy =>
+        policy.Requirements.Add(new ReviewOwnerRequirement()));
+
+    options.AddPolicy("ReviewEligibilityPolicy", policy =>
+        policy.Requirements.Add(new ReviewEligibilityRequirement()));
+
+    // Message Policies
+    options.AddPolicy("ConversationParticipantPolicy", policy =>
+        policy.Requirements.Add(new ConversationParticipantRequirement()));
+
+    options.AddPolicy("MessageOwnerPolicy", policy =>
+        policy.Requirements.Add(new MessageOwnerRequirement()));
+
+    options.AddPolicy("ConversationInitiatorPolicy", policy =>
+        policy.Requirements.Add(new ConversationInitiatorRequirement()));
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -62,10 +106,14 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    await db.Database.MigrateAsync();
+    
+    var databaseSeeder = scope.ServiceProvider.GetRequiredService<IDatabaseSeederService>();
+    await databaseSeeder.SeedAllAsync();
 }
 app.Run();

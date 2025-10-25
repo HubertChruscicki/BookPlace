@@ -37,6 +37,9 @@ TestResults/
 coverage/
 *.coverage
 
+## Entity Framework Migrations
+**/Migrations/
+
 ## Logs
 *.log
 
