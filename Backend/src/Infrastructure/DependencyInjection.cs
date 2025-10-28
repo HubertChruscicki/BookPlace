@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
 using System.Text;
 using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.Persistance;
+using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services.Seeders;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +45,6 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        // JWT Authentication Configuration
         var jwtSettings = configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["SecretKey"];
         
@@ -68,11 +69,11 @@ public static class DependencyInjection
                 };
             });
 
-        // Register JWT Service
         services.AddScoped<Application.Interfaces.IJwtService, JwtService>();
         
+        services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
+        
 
-        // Register Seeder Services
         services.AddScoped<IRoleSeederService, RoleSeederService>();
         services.AddScoped<IOfferTypeSeederService, OfferTypeSeederService>();
         services.AddScoped<IAmenitySeederService, AmenitySeederService>();
@@ -109,8 +110,6 @@ public static class DependencyInjection
             );
         });
 
-
-        // Register all authorization handlers
         services.AddScoped<IAuthorizationHandler, OfferOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, BookingOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, BookingHostAuthorizationHandler>();

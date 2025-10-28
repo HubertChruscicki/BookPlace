@@ -12,7 +12,7 @@ namespace Infrastructure.Services;
 
 /// <summary>
 /// JWT service implementation for BookPlace authentication system.
-/// Manages access tokens (15 min), refresh tokens (7 days), and token validation.
+/// Manages access tokens (15 min), refresh tokens (7 days), token validation, and whitelist.
 /// Uses HS256 algorithm with configurable secret key from appsettings.json.
 /// </summary>
 public class JwtService : IJwtService

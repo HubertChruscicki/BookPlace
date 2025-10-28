@@ -6,6 +6,7 @@ namespace Application.Interfaces;
 /// <summary>
 /// Service for JWT token management including access and refresh token generation and validation.
 /// Handles token creation, expiration, and principal extraction for authentication and authorization.
+/// Manages token whitelist for secure logout functionality.
 /// </summary>
 public interface IJwtService
 {

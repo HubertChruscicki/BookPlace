@@ -1,6 +1,9 @@
-﻿using Application.DTOs.Auth;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Application.DTOs.Auth;
 using Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
+using Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -15,15 +18,18 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtService _jwtService;
+    private readonly IActiveTokenRepository _activeTokenRepository;
     private readonly ILogger<RegisterCommandHandler> _logger;
 
     public RegisterCommandHandler(
         UserManager<User> userManager,
         IJwtService jwtService,
+        IActiveTokenRepository activeTokenRepository,
         ILogger<RegisterCommandHandler> logger)
     {
         _userManager = userManager;
         _jwtService = jwtService;
+        _activeTokenRepository = activeTokenRepository;
         _logger = logger;
     }
 
@@ -60,13 +66,42 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
             throw new InvalidOperationException($"Failed to create user: {errors}");
         }
 
-        // Assign Guest role by default
         await _userManager.AddToRoleAsync(user, "Guest");
 
-        // Generate tokens
         var roles = await _userManager.GetRolesAsync(user);
         var accessToken = _jwtService.GenerateAccessToken(user, roles);
         var refreshToken = _jwtService.GenerateRefreshToken(user);
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var accessTokenParsed = tokenHandler.ReadJwtToken(accessToken);
+        var refreshTokenParsed = tokenHandler.ReadJwtToken(refreshToken);
+
+        var accessTokenJti = accessTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+        var refreshTokenJti = refreshTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+
+        if (!string.IsNullOrEmpty(accessTokenJti))
+        {
+            var accessActiveToken = new ActiveToken
+            {
+                Jti = accessTokenJti,
+                UserId = user.Id,
+                TokenType = TokenType.Access,
+                ExpiresAt = accessTokenParsed.ValidTo
+            };
+            await _activeTokenRepository.AddAsync(accessActiveToken);
+        }
+
+        if (!string.IsNullOrEmpty(refreshTokenJti))
+        {
+            var refreshActiveToken = new ActiveToken
+            {
+                Jti = refreshTokenJti,
+                UserId = user.Id,
+                TokenType = TokenType.Refresh,
+                ExpiresAt = refreshTokenParsed.ValidTo
+            };
+            await _activeTokenRepository.AddAsync(refreshActiveToken);
+        }
 
         _logger.LogInformation("User {Email} registered successfully", request.Email);
 

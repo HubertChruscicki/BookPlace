@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="Persistence\Configurations\" />
       <Folder Include="Persistence\Migrations\" />
-      <Folder Include="Persistence\Repositories\" />
       <Folder Include="Services\Consumers\" />
       <Folder Include="Services\Events\" />
     </ItemGroup>

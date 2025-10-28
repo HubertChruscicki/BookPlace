@@ -1,10 +1,10 @@
+using Api.Middleware;
 using Infrastructure;
 using Infrastructure.Persistance;
 using Infrastructure.Services.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Application.Authorization.Requirements;
-using Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,13 +51,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-// MediatR Configuration
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Application.AssemblyReference).Assembly));
 
-// Authorization Configuration
 builder.Services.AddAuthorization(options =>
 {
-    // Offer Policies
     options.AddPolicy("OfferOwnerPolicy", policy =>
         policy.Requirements.Add(new OfferOwnerRequirement()));
 
@@ -67,7 +64,6 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("OfferViewPolicy", policy =>
         policy.Requirements.Add(new OfferViewRequirement()));
 
-    // Booking Policies
     options.AddPolicy("BookingOwnerPolicy", policy =>
         policy.Requirements.Add(new BookingOwnerRequirement()));
 
@@ -77,14 +73,12 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("BookingParticipantPolicy", policy =>
         policy.Requirements.Add(new BookingParticipantRequirement()));
 
-    // Review Policies
     options.AddPolicy("ReviewOwnerPolicy", policy =>
         policy.Requirements.Add(new ReviewOwnerRequirement()));
 
     options.AddPolicy("ReviewEligibilityPolicy", policy =>
         policy.Requirements.Add(new ReviewEligibilityRequirement()));
 
-    // Message Policies
     options.AddPolicy("ConversationParticipantPolicy", policy =>
         policy.Requirements.Add(new ConversationParticipantRequirement()));
 
@@ -94,13 +88,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ConversationInitiatorPolicy", policy =>
         policy.Requirements.Add(new ConversationInitiatorRequirement()));
 
-    // Role-based Policies
     options.AddPolicy("GuestOnlyPolicy", policy =>
         policy.Requirements.Add(new GuestOnlyRequirement()));
 });
 
 var app = builder.Build();
-// Global exception handling - must be first in pipeline
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 
@@ -115,6 +107,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
+app.UseMiddleware<TokenWhitelistMiddleware>();
 app.UseAuthorization();
 
 

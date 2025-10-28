@@ -1,9 +1,10 @@
-﻿﻿﻿using Application.DTOs.Auth;
+﻿using Application.DTOs.Auth;
 using Application.Features.Authentication.Register;
 using Application.Features.Authentication.Login;
 using Application.Features.Authentication.Refresh;
 using Application.Features.Authentication.PromoteToHost;
 using Application.Features.Authentication.GetCurrentUser;
+using Application.Features.Authentication.Logout;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -147,18 +148,31 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Logs out the current user by invalidating their session.
-    /// In JWT stateless authentication, logout is handled client-side by removing tokens from storage.
+    /// Logs out the current user by invalidating their JWT tokens.
+    /// Adds both access and refresh tokens to blacklist to prevent reuse.
     /// </summary>
-    /// <returns>Confirmation message of successful logout</returns>
-    /// <response code="200">User successfully logged out</response>
-    /// <response code="401">User not authenticated</response>
+    /// <param name="request">Logout request containing access and refresh tokens</param>
+    /// <returns>Confirmation message of successful logout with invalidation details</returns>
+    /// <response code="200">User successfully logged out with tokens invalidated</response>
+    /// <response code="400">Invalid tokens provided</response>
+    /// <response code="401">User not authenticated or tokens belong to different user</response>
     [HttpPost("logout")]
     [Authorize]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(LogoutResponse), 200)]
+    [ProducesResponseType(400)]
     [ProducesResponseType(401)]
-    public IActionResult Logout()
+    public async Task<ActionResult<LogoutResponse>> Logout(LogoutRequest request)
     {
-        return Ok(new { message = "Logged out successfully" });
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        
+        var command = new LogoutCommand 
+        { 
+            UserId = userId,
+            AccessToken = request.AccessToken,
+            RefreshToken = request.RefreshToken
+        };
+        
+        var response = await _mediator.Send(command);
+        return Ok(response);
     }
 }

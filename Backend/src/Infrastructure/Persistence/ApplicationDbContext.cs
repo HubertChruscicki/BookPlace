@@ -19,6 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<ActiveToken> ActiveTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -67,5 +68,21 @@ public class ApplicationDbContext : IdentityDbContext<User>
         builder.Entity<Conversation>()
             .ToTable(t => t.HasCheckConstraint("CK_Conversation_Reference", 
                 "(\"OfferId\" IS NOT NULL AND \"ReviewId\" IS NULL) OR (\"OfferId\" IS NULL AND \"ReviewId\" IS NOT NULL)"));
+
+        builder.Entity<ActiveToken>()
+            .HasOne(at => at.User)
+            .WithMany()
+            .HasForeignKey(at => at.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ActiveToken>()
+            .HasIndex(at => at.Jti)
+            .IsUnique();
+
+        builder.Entity<ActiveToken>()
+            .HasIndex(at => new { at.UserId, at.TokenType });
+
+        builder.Entity<ActiveToken>()
+            .HasIndex(at => at.ExpiresAt);
     }
 }

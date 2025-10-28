@@ -1,12 +1,13 @@
-﻿using Application.DTOs.Auth;
-using Application.Features.Authentication.Refresh; // Upewnij się, że ten using jest
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Application.DTOs.Auth;
 using Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
+using Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens; // Potrzebne dla ClaimTypes
 
 namespace Application.Features.Authentication.Refresh;
 
@@ -17,15 +18,18 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtService _jwtService;
+    private readonly IActiveTokenRepository _activeTokenRepository;
     private readonly ILogger<RefreshTokenCommandHandler> _logger;
 
     public RefreshTokenCommandHandler(
         UserManager<User> userManager,
         IJwtService jwtService,
+        IActiveTokenRepository activeTokenRepository,
         ILogger<RefreshTokenCommandHandler> logger)
     {
         _userManager = userManager;
         _jwtService = jwtService;
+        _activeTokenRepository = activeTokenRepository;
         _logger = logger;
     }
 
@@ -48,10 +52,10 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
         {
-             _logger.LogWarning("Refresh token validation failed: User ID claim not found.");
+            _logger.LogWarning("Refresh token validation failed: User ID claim not found.");
             throw new UnauthorizedAccessException("Invalid refresh token");
         }
-        
+
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
@@ -62,16 +66,58 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
         var hasEmail = principal.FindFirst(ClaimTypes.Email) != null;
         var hasRoles = principal.FindAll(ClaimTypes.Role).Any();
         var hasJti = principal.FindFirst(JwtRegisteredClaimNames.Jti) != null;
-        
+
         if (hasEmail || hasRoles || !hasJti)
         {
-            _logger.LogWarning("Refresh token validation failed: Token appears to be an access token, not a refresh token for user {UserId}. HasEmail: {HasEmail}, HasRoles: {HasRoles}, HasJti: {HasJti}", userId, hasEmail, hasRoles, hasJti);
+            _logger.LogWarning(
+                "Refresh token validation failed: Token appears to be an access token, not a refresh token for user {UserId}. HasEmail: {HasEmail}, HasRoles: {HasRoles}, HasJti: {HasJti}",
+                userId, hasEmail, hasRoles, hasJti);
             throw new UnauthorizedAccessException("Invalid refresh token - appears to be access token");
         }
-        
+
         var roles = await _userManager.GetRolesAsync(user);
         var newAccessToken = _jwtService.GenerateAccessToken(user, roles);
         var newRefreshToken = _jwtService.GenerateRefreshToken(user);
+
+        var oldRefreshTokenJti = principal.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var newAccessTokenParsed = tokenHandler.ReadJwtToken(newAccessToken);
+        var newRefreshTokenParsed = tokenHandler.ReadJwtToken(newRefreshToken);
+
+        var newAccessTokenJti = newAccessTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)
+            ?.Value;
+        var newRefreshTokenJti = newRefreshTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)
+            ?.Value;
+
+        if (!string.IsNullOrEmpty(oldRefreshTokenJti))
+        {
+            await _activeTokenRepository.RemoveByJtisAsync(new List<string> { oldRefreshTokenJti });
+        }
+
+        if (!string.IsNullOrEmpty(newAccessTokenJti))
+        {
+            var accessActiveToken = new ActiveToken
+            {
+                Jti = newAccessTokenJti,
+                UserId = user.Id,
+                TokenType = TokenType.Access,
+                ExpiresAt = newAccessTokenParsed.ValidTo
+            };
+            await _activeTokenRepository.AddAsync(accessActiveToken);
+        }
+
+        if (!string.IsNullOrEmpty(newRefreshTokenJti))
+        {
+            var refreshActiveToken = new ActiveToken
+            {
+                Jti = newRefreshTokenJti,
+                UserId = user.Id,
+                TokenType = TokenType.Refresh,
+                ExpiresAt = newRefreshTokenParsed.ValidTo
+            };
+            await _activeTokenRepository.AddAsync(refreshActiveToken);
+        }
 
         return new AuthResponse
         {
@@ -90,6 +136,4 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
             }
         };
     }
-
-       
 }
