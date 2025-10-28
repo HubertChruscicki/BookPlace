@@ -24,7 +24,7 @@ services:
       - RabbitMQ__Hostname=book-place-rabbitmq
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
-      - JwtSettings__SecretKey=your-super-secret-key-minimum-32-characters-for-bookplace-backend
+      - JwtSettings__SecretKey=5bf2d748-ecfb-4ebd-99ae-36d975a64cf8
       - JwtSettings__Issuer=BookPlace
       - JwtSettings__Audience=BookPlace
       - JwtSettings__AccessTokenExpirationMinutes=15
@@ -47,5 +47,4 @@ services:
 volumes:
   postgres_data:
   rabbitmq_data:
-    
-#    dotnet ef migrations add Initial --project src\Infrastructure --startup-project src\Api --context Infrastructure.Persistance.ApplicationDbContext
+# dotnet ef migrations add Initial --project src\Infrastructure --startup-project src\Api --context Infrastructure.Persistance.ApplicationDbContext -o Persistence/Migrations 

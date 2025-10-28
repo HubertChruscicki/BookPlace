@@ -1,5 +1,10 @@
-﻿using Application.DTOs.Auth;
-using Application.Interfaces;
+﻿﻿﻿using Application.DTOs.Auth;
+using Application.Features.Authentication.Register;
+using Application.Features.Authentication.Login;
+using Application.Features.Authentication.Refresh;
+using Application.Features.Authentication.PromoteToHost;
+using Application.Features.Authentication.GetCurrentUser;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,11 +19,11 @@ namespace Api.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _authService;
+    private readonly IMediator _mediator;
 
-    public AuthController(IAuthService authService)
+    public AuthController(IMediator mediator)
     {
-        _authService = authService;
+        _mediator = mediator;
     }
 
     /// <summary>
@@ -35,7 +40,16 @@ public class AuthController : ControllerBase
     [ProducesResponseType(500)]
     public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request)
     {
-        var response = await _authService.RegisterAsync(request);
+        var command = new RegisterCommand
+        {
+            Email = request.Email,
+            Password = request.Password,
+            Name = request.Name,
+            Surname = request.Surname,
+            Phone = request.Phone
+        };
+
+        var response = await _mediator.Send(command);
         return Ok(response);
     }
 
@@ -53,7 +67,12 @@ public class AuthController : ControllerBase
     [ProducesResponseType(500)]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
     {
-        var response = await _authService.LoginAsync(request);
+        var query = new LoginQuery 
+        { 
+            Email = request.Email, 
+            Password = request.Password 
+        };
+        var response = await _mediator.Send(query);
         return Ok(response);
     }
 
@@ -71,7 +90,11 @@ public class AuthController : ControllerBase
     [ProducesResponseType(500)]
     public async Task<ActionResult<AuthResponse>> RefreshToken(RefreshTokenRequest request)
     {
-        var response = await _authService.RefreshTokenAsync(request);
+        var command = new RefreshTokenCommand 
+        { 
+            RefreshToken = request.RefreshToken 
+        };
+        var response = await _mediator.Send(command);
         return Ok(response);
     }
 
@@ -94,7 +117,9 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<AuthResponse>> PromoteToHost()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        var response = await _authService.PromoteToHostAsync(userId);
+        
+        var command = new PromoteToHostCommand { UserId = userId };
+        var response = await _mediator.Send(command);
         return Ok(response);
     }
 
@@ -115,7 +140,9 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<UserInfo>> GetCurrentUser()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-        var userInfo = await _authService.GetCurrentUserAsync(userId);
+        
+        var query = new GetCurrentUserQuery { UserId = userId };
+        var userInfo = await _mediator.Send(query);
         return Ok(userInfo);
     }
 

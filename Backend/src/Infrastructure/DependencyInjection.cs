@@ -69,11 +69,9 @@ public static class DependencyInjection
             });
 
         // Register JWT Service
-        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<Application.Interfaces.IJwtService, JwtService>();
         
-        // Register Auth Service
-        services.AddScoped<Application.Interfaces.IAuthService, AuthService>();
-        
+
         // Register Seeder Services
         services.AddScoped<IRoleSeederService, RoleSeederService>();
         services.AddScoped<IOfferTypeSeederService, OfferTypeSeederService>();

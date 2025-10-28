@@ -51,6 +51,9 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// MediatR Configuration
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Application.AssemblyReference).Assembly));
+
 // Authorization Configuration
 builder.Services.AddAuthorization(options =>
 {
