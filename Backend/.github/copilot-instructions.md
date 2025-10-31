@@ -15,6 +15,9 @@
 - **ZAWSZE Async/Await**: Wszystkie operacje IO (baza danych, pliki) muszą być asynchroniczne.
 - **ZAWSZE JWT Claims**: Używaj `ClaimTypes.NameIdentifier` dla `userId`.
 - **ZAWSZE Exceptions**: Rzucaj wyjątki domenowe (`UnauthorizedAccessException`, `InvalidOperationException`, `NotFoundException`) zamiast zwracać `null`.
+- **ZAWSZE Query Params dla paginacji**: `[FromQuery]` automatycznie mapuje `pageNumber`, `pageSize` na Query object.
+- **ZAWSZE PageResult<T>**: Używaj przygotowanej klasy z `Items`, `TotalPages`, `TotalItemsCount`, `PageNumber`, `PageSize`.
+- **ZAWSZE Extension Methods**: Używaj `ToPageResultAsync()` dla paginacji - gotowy mechanizm w Infrastructure.
 
 ### ❌ NIGDY:
 - **NIGDY Try-catch w kontrolerach**: Globalny middleware obsługuje wszystkie wyjątki.
@@ -25,6 +28,9 @@
 - **NIGDY Sprawdzanie `userId` w kontrolerach**: `userId` jest przekazywany do Commanda/Query.
 - **NIGDY Hardcodowane connection stringi**: Używaj `IConfiguration` i `appsettings.json`.
 - **NIGDY Synchroniczne operacje IO**.
+- **NIGDY Custom paginacja**: **NIE WYMYŚLAJ** własnych mechanizmów - używaj przygotowanych Extension Methods.
+- **NIGDY Paginacja w kontrolerach**: Logika paginacji TYLKO w Repository przez `ToPageResultAsync()`.
+- **NIGDY Bez Query parametrów**: Paginacja ZAWSZE przez `[FromQuery]` mapping na Query object.
 
 ### 🎯 TYLKO:
 - **TYLKO Controllers**: Routing HTTP, pobieranie `userId` z Claimów, wysyłanie Command/Query do `IMediator` i zwracanie `ActionResult`.
@@ -33,6 +39,9 @@
 - **TYLKO Infrastructure**: Implementacje interfejsów (np. `IRepository`, `IJwtService`), dostęp do bazy danych (DbContext).
 - **TYLKO Handlers (Autoryzacja)**: Logika dla `IAuthorizationRequirement` sprawdzająca uprawnienia do zasobu.
 - **TYLKO Requirements (Autoryzacja)**: Puste "znaczniki" `IAuthorizationRequirement` w warstwie `Application`.
+- **TYLKO Gotowe Extension Methods**: `ToPageResultAsync()` dla paginacji - nie wymyślaj własnych.
+- **TYLKO ORM optimizations**: `AsNoTracking()`, selektywne `Include()` - pozwól ORM zoptymalizować zapytania.
+- **TYLKO Query objects**: Parametry paginacji w dedykowanych `Query` klasach z walidacją atrybutami.
 
 ---
 
@@ -97,6 +106,65 @@ Infrastructure
   - Inne wyjątki $\to$ **500 Internal Server Error**
 - **Walidacja** odbywa się **automatycznie** w `Api` Layer dzięki atrybutom `[Required]`, `[MinLength]` itd. na `DTOs` w `Application`.
 - Błędy walidacji są automatycznie łapane przez ASP.NET Core i zwracane jako **400 Bad Request** (nie trzeba ich obsługiwać w middleware).
+
+---
+
+## 🔄 Mapowanie i AutoMapper
+
+### **Struktura Mapowań:**
+- **`Application/Mappings/`**: Folder główny dla wszystkich profili mapowania.
+- **`Application/Mappings/{Feature}/`**: Dedykowany podfolder dla każdego feature (np. `Offers/`, `Auth/`, `Bookings/`).
+- **Konwencja nazewnictwa**: `{Feature}MappingProfile.cs` (np. `OfferMappingProfile.cs`, `AuthMappingProfile.cs`).
+
+### **Zasady Mapowania:**
+
+#### ✅ **ZAWSZE** (AutoMapper):
+- **ZAWSZE Profile na feature**: Jeden `MappingProfile` na jeden feature/domenę biznesową.
+- **ZAWSZE Explicit mapping**: Definiuj mapowania jawnie w `CreateMap<Source, Destination>()`.
+- **ZAWSZE Domain → DTO**: Mapowanie FROM Domain Entities TO DTOs (nigdy odwrotnie w read operations).
+- **ZAWSZE w Handlerach**: Mapowanie TYLKO w `Application` Layer (Handlers), nigdy w kontrolerach.
+- **ZAWSZE DI Registration**: AutoMapper rejestrowany automatycznie - skanuje wszystkie Profile w Assembly.
+
+#### ❌ **NIGDY** (AutoMapper):
+- **NIGDY Mapowanie w kontrolerach**: Kontrolery nie znają Domain Entities.
+- **NIGDY Mapowanie w Infrastructure**: Repository zwraca Domain Entities, nie DTOs.
+- **NIGDY Implicit mapping**: Nie polegaj na automatycznym mapowaniu przez nazwy właściwości.
+- **NIGDY Jeden duży Profile**: **NIE TWORZYJ** `GlobalMappingProfile` - dziel na feature.
+
+#### 🎯 **TYLKO** (AutoMapper):
+- **TYLKO Handlers mapują**: `var dto = _mapper.Map<TargetDto>(domainEntity)` w `IRequestHandler`.
+- **TYLKO Custom resolvers**: Używaj `MapFrom()` dla złożonych transformacji.
+- **TYLKO Profile inheritance**: `Profile` dziedziczy z AutoMapper, nie tworz własnych abstrakcji.
+
+### **Przykład Struktury:**
+```
+Application/
+├── Mappings/
+│   ├── Auth/
+│   │   └── AuthMappingProfile.cs
+│   ├── Offers/
+│   │   └── OfferMappingProfile.cs
+│   ├── Bookings/
+│   │   └── BookingMappingProfile.cs
+│   └── Reviews/
+│       └── ReviewMappingProfile.cs
+```
+
+### **Wzorzec Profile:**
+```csharp
+// Application/Mappings/Offers/OfferMappingProfile.cs
+public class OfferMappingProfile : Profile
+{
+    public OfferMappingProfile()
+    {
+        CreateMap<Offer, OfferDto>()
+            .ForMember(dest => dest.OfferTypeName, 
+                      opt => opt.MapFrom(src => src.OfferType.Name));
+                      
+        CreateMap<CreateOfferCommand, Offer>();
+    }
+}
+```
 
 ---
 
@@ -178,25 +246,46 @@ Backend/
 
 -----
 
-## Schemat Bazy Danych
+## 🗄️ Schemat Bazy Danych
 
-- **Identity**: `AspNetUsers` (rozszerzone o `Name`, `ProfilePictureUrl`), `AspNetRoles`, `AspNetUserRoles`.
-- **Oferty**:
-    - `OfferType` (Słownik)
-    - `Amenity` (Słownik)
-    - `Offer` (Główna encja: `HostId`, `OfferTypeId`, `PricePerNight`, `Status`, `IsArchive`, Adres jako `ValueObject`)
-    - `OfferPhoto` (Relacja 1-do-N z `Offer`)
-    - `OfferAmenity` (Relacja M-N)
-- **Rezerwacje**:
-    - `Booking` (Główna encja: `GuestId`, `OfferId`, `CheckInDate`, `CheckOutDate`, `TotalPrice`, `Status`)
-- **Opinie**:
-    - `Review` (Główna encja: `BookingId`, `GuestId`, `OfferId`, `Rating`)
-    - `ReviewPhoto` (Relacja 1-do-N z `Review`)
-- **Chat**:
-    - `Conversation` (Kontekst: `OfferId?`, `ReviewId?`)
-    - `Message` (Wiadomość: `ConversationId`, `SenderId`, `Content`)
-    - `ConversationParticipant` (Relacja M-N Użytkownicy $\leftrightarrow$ Konwersacje)
+### 👤 **Identity & Użytkownicy**
+- **`User`** (extends `IdentityUser`): `Name`, `Surname`, `Phone`, `ProfilePictureUrl`
+- **`AspNetRoles`**, **`AspNetUserRoles`** (standardowe tabele ASP.NET Identity)
 
+### 🏠 **Oferty i Noclegi**
+- **`OfferType`** (Słownik): `Id`, `Name` (np. "Apartament", "Dom", "Pokój")
+- **`Amenity`** (Słownik): `Id`, `Name` (np. "WiFi", "Parking", "Basen")
+- **`Offer`** (Główna encja):
+  - **Podstawowe**: `Id`, `HostId`, `OfferTypeId`, `Title`, `Description`, `PricePerNight`
+  - **Szczegóły**: `MaxGuests`, `Bedrooms`, `Bathrooms`
+  - **Status**: `Status` (`OfferStatus.Active|Inactive|Suspended`), `IsArchive` (soft delete)
+  - **Adres**: `AddressStreet`, `AddressCity`, `AddressZipCode`, `AddressCountry`, `AddressLatitude`, `AddressLongitude`
+  - **Relacje**: M-N z `Amenity`, 1-N z `OfferPhoto`, `Booking`, `Review`, `Conversation`
+- **`OfferPhoto`**: `Id`, `OfferId`, `Url`, `IsCover`, `SortOrder`
+
+### 📅 **Rezerwacje**
+- **`Booking`**: 
+  - **Podstawowe**: `Id`, `GuestId`, `OfferId`, `CheckInDate`, `CheckOutDate`, `TotalPrice`, `NumberOfGuests`
+  - **Status**: `Status` (`BookingStatus.Pending|Confirmed|CancelledByHost|CancelledByGuest|Completed`)
+  - **Metadata**: `CreatedAt`
+  - **Relacje**: 1-1 z `Review` (opcjonalna)
+
+### ⭐ **System Opinii**
+- **`Review`**: `Id`, `BookingId`, `GuestId`, `OfferId`, `Rating`, `Content`, `CreatedAt`
+- **`ReviewPhoto`**: `Id`, `ReviewId`, `Url`
+
+### 💬 **Komunikacja (Chat)**
+- **`Conversation`**: `Id`, `OfferId?`, `ReviewId?` (kontekst rozmowy)
+- **`Message`**: `Id`, `ConversationId`, `SenderId`, `Content`, `SentAt`, `IsRead`
+- **Relacje**: M-N między `User` ↔ `Conversation` (uczestnictwo w rozmowach)
+
+### 🔐 **Zarządzanie Tokenami (Whitelist)**
+- **`ActiveToken`**: `Id`, `Jti`, `UserId`, `TokenType` (`TokenType.Access|Refresh`), `CreatedAt`, `ExpiresAt`
+
+### 📊 **Enumy **
+- **`OfferStatus`**: `Active`, `Inactive`, `Suspended`
+- **`BookingStatus`**: `Pending`, `Confirmed`, `CancelledByHost`, `CancelledByGuest`, `Completed`
+- **`TokenType`**: `Access`, `Refresh`
 -----
 
 ## 🐳 Docker & Configuration
@@ -211,6 +300,28 @@ Backend/
 - **Access Token**: 15 min (zawiera `userId` i `roles`).
 
 - **Refresh Token**: 7 dni (zawiera tylko `userId` i `token_type`).
+
+## 🔐 Authorization & JWT
+
+- **Access Token**: 15 min (zawiera `userId` i `roles`).
+- **Refresh Token**: 7 dni (zawiera tylko `userId` i `token_type`).
+- **Token Whitelist**: System używa **whitelist** - tylko tokeny w tabeli `ActiveTokens` są ważne.
+
+### 🗄️ Encje Tokenów (UPDATED 2025-10-28)
+
+- **`ActiveToken`**: Encja reprezentująca aktywne (ważne) tokeny JWT w systemie.
+  - `Jti` (string): Unikalny identyfikator tokenu z JWT claim
+  - `UserId` (string): ID właściciela tokenu  
+  - `TokenType` (enum): `TokenType.Access` lub `TokenType.Refresh`
+  - `ExpiresAt` (DateTime): Data wygaśnięcia tokenu
+  - `CreatedAt` (DateTime): Data utworzenia
+
+- **Whitelist Logic**: Token jest ważny TYLKO jeśli:
+  1. Jest poprawnie podpisany (weryfikacja JWT)
+  2. Istnieje w tabeli `ActiveTokens` 
+  3. Nie wygasł (`ExpiresAt > DateTime.UtcNow`)
+
+- **Repository**: `IActiveTokenRepository` zarządza operacjami CRUD na `ActiveTokens`.
 
 - **Polityki (Policies)**:
 

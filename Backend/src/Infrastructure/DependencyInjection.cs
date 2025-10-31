@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Application.Authorization.Requirements;
+using Application.Interfaces;
 using Infrastructure.Authorization.Handlers;
 using Infrastructure.Services;
 
@@ -72,6 +73,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Interfaces.IJwtService, JwtService>();
         
         services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
         
 
         services.AddScoped<IRoleSeederService, RoleSeederService>();
@@ -79,6 +81,12 @@ public static class DependencyInjection
         services.AddScoped<IAmenitySeederService, AmenitySeederService>();
         services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
 
+        
+        services.AddAutoMapper(config =>
+        {
+            config.AddMaps(Assembly.GetExecutingAssembly()); 
+        });
+        
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());
