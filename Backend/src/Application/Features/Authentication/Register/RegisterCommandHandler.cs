@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Application.DTOs.Auth;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -18,18 +19,18 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtService _jwtService;
-    private readonly IActiveTokenRepository _activeTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegisterCommandHandler> _logger;
 
     public RegisterCommandHandler(
         UserManager<User> userManager,
         IJwtService jwtService,
-        IActiveTokenRepository activeTokenRepository,
+        IUnitOfWork unitOfWork,
         ILogger<RegisterCommandHandler> logger)
     {
         _userManager = userManager;
         _jwtService = jwtService;
-        _activeTokenRepository = activeTokenRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -88,7 +89,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
                 TokenType = TokenType.Access,
                 ExpiresAt = accessTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(accessActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(accessActiveToken);
         }
 
         if (!string.IsNullOrEmpty(refreshTokenJti))
@@ -100,8 +101,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
                 TokenType = TokenType.Refresh,
                 ExpiresAt = refreshTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(refreshActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(refreshActiveToken);
         }
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("User {Email} registered successfully", request.Email);
 

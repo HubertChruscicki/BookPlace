@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Application.DTOs.Auth;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -18,18 +19,18 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtService _jwtService;
-    private readonly IActiveTokenRepository _activeTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RefreshTokenCommandHandler> _logger;
 
     public RefreshTokenCommandHandler(
         UserManager<User> userManager,
         IJwtService jwtService,
-        IActiveTokenRepository activeTokenRepository,
+        IUnitOfWork unitOfWork,
         ILogger<RefreshTokenCommandHandler> logger)
     {
         _userManager = userManager;
         _jwtService = jwtService;
-        _activeTokenRepository = activeTokenRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -92,7 +93,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
 
         if (!string.IsNullOrEmpty(oldRefreshTokenJti))
         {
-            await _activeTokenRepository.RemoveByJtisAsync(new List<string> { oldRefreshTokenJti });
+            await _unitOfWork.ActiveTokens.RemoveByJtisAsync(new List<string> { oldRefreshTokenJti });
         }
 
         if (!string.IsNullOrEmpty(newAccessTokenJti))
@@ -104,7 +105,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
                 TokenType = TokenType.Access,
                 ExpiresAt = newAccessTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(accessActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(accessActiveToken);
         }
 
         if (!string.IsNullOrEmpty(newRefreshTokenJti))
@@ -116,8 +117,12 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, A
                 TokenType = TokenType.Refresh,
                 ExpiresAt = newRefreshTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(refreshActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(refreshActiveToken);
         }
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Token successfully refreshed for user {UserId}.", user.Id);
 
         return new AuthResponse
         {

@@ -7,6 +7,7 @@
 ### ✅ ZAWSZE:
 - **ZAWSZE Clean Architecture**: Logika biznesowa TYLKO w `Application` (Handlers) i `Domain` (Entities).
 - **ZAWSZE CQRS/MediatR**: Wszystkie przypadki użycia (use cases) implementuj jako `IRequest` i `IRequestHandler` w `Application/Features`.
+- **ZAWSZE Unit of Work**: Wstrzykuj `IUnitOfWork` do Handlerów zamiast pojedynczych repozytoriów. Używaj `await _unitOfWork.SaveChangesAsync()` na końcu operacji zapisujących.
 - **ZAWSZE Authorization Policies**: Używaj autoryzacji opartej na zasobach (`IAuthorizationService` lub Policy).
 - **ZAWSZE XML Summary**: Każda publiczna metoda/klasa MUSI mieć dokumentację `/// <summary>`.
 - **ZAWSZE Walidacja w DTO**: Używaj atrybutów `[Required]`, `[MinLength]` itd. bezpośrednio w plikach DTO w warstwie `Application`.
@@ -24,6 +25,7 @@
 - **NIGDY Logika biznesowa w kontrolerach**: Kontroler deleguje pracę **TYLKO** do `IMediator`.
 - **NIGDY Duże serwisy (God Services)**: **NIE TWORZYJ** interfejsów typu `I{Nazwa}Service`. Używaj małych, skupionych Handlerów MediatR.
 - **NIGDY Direct DbContext w kontrolerach**: Kontrolery nie wiedzą o DbContext.
+- **NIGDY Pojedyncze repozytoria w Handlerach**: **NIE WSTRZYKUJ** `IOfferRepository`, `IActiveTokenRepository` osobno. Używaj `IUnitOfWork`.
 - **NIGDY Magic strings**: Używaj `const`, `enums` lub `nameof()`.
 - **NIGDY Sprawdzanie `userId` w kontrolerach**: `userId` jest przekazywany do Commanda/Query.
 - **NIGDY Hardcodowane connection stringi**: Używaj `IConfiguration` i `appsettings.json`.
@@ -37,6 +39,7 @@
 - **TYLKO Application (Features & DTOs)**: Definicje `Command`/`Query`, logika biznesowa w `Handlerach`, walidacja w `DTOs` (atrybuty).
 - **TYLKO Domain Entities**: Czyste reguły biznesowe, walidacja stanu, `ValueObjects`.
 - **TYLKO Infrastructure**: Implementacje interfejsów (np. `IRepository`, `IJwtService`), dostęp do bazy danych (DbContext).
+- **TYLKO Unit of Work w Handlerach**: Wstrzykuj `IUnitOfWork` do konstruktora, używaj `_unitOfWork.{Repository}` dla dostępu do danych, `await _unitOfWork.SaveChangesAsync()` na końcu.
 - **TYLKO Handlers (Autoryzacja)**: Logika dla `IAuthorizationRequirement` sprawdzająca uprawnienia do zasobu.
 - **TYLKO Requirements (Autoryzacja)**: Puste "znaczniki" `IAuthorizationRequirement` w warstwie `Application`.
 - **TYLKO Gotowe Extension Methods**: `ToPageResultAsync()` dla paginacji - nie wymyślaj własnych.
@@ -57,6 +60,38 @@ Infrastructure
 - **Application** zależy od `Domain`. Definiuje interfejsy (np. `IJwtService`, `IRepository`).
 - **Infrastructure** zależy od `Application` i `Domain` (implementuje interfejsy).
 - **Domain** **NIE ZALEŻY OD NICZEGO**.
+
+---
+
+## 🔄 Unit of Work Pattern
+
+### 🚫 **ANTY-WZORCE**:
+```csharp
+// ❌ ŹLEŹLE - osobne repozytoria
+public Handler(IOfferRepository offers, IActiveTokenRepository tokens) { }
+
+// ✅ DOBRZE - Unit of Work
+public Handler(IUnitOfWork unitOfWork) { }
+```
+
+
+### 🔧 **Transakcje** (dla złożonych operacji):
+```csharp
+await _unitOfWork.BeginTransactionAsync();
+try
+{
+    // Wiele operacji...
+    await _unitOfWork.SaveChangesAsync();
+    await _unitOfWork.CommitTransactionAsync();
+}
+catch
+{
+    await _unitOfWork.RollbackTransactionAsync();
+    throw;
+}
+```
+
+---
 
 ### Odpowiedzialność Warstw (Wzorzec CQRS/MediatR):
 

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Application.DTOs.Auth;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,16 +15,16 @@ namespace Application.Features.Authentication.Logout;
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
 {
     private readonly IJwtService _jwtService;
-    private readonly IActiveTokenRepository _activeTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<LogoutCommandHandler> _logger;
 
     public LogoutCommandHandler(
         IJwtService jwtService,
-        IActiveTokenRepository activeTokenRepository,
+        IUnitOfWork unitOfWork,
         ILogger<LogoutCommandHandler> logger)
     {
         _jwtService = jwtService;
-        _activeTokenRepository = activeTokenRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -71,7 +72,8 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
                 throw new UnauthorizedAccessException("No valid tokens provided for logout");
             }
 
-            await _activeTokenRepository.RemoveByJtisAsync(tokensToRemove);
+            await _unitOfWork.ActiveTokens.RemoveByJtisAsync(tokensToRemove);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("User {UserId} logged out successfully. {TokenCount} tokens removed from whitelist.", 
                 request.UserId, tokensToRemove.Count);

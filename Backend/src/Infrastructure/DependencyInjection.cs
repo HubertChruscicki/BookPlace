@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Application.Authorization.Requirements;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using Infrastructure.Authorization.Handlers;
 using Infrastructure.Services;
 
@@ -48,7 +49,7 @@ public static class DependencyInjection
 
         var jwtSettings = configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["SecretKey"];
-        
+
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,9 +72,9 @@ public static class DependencyInjection
             });
 
         services.AddScoped<Application.Interfaces.IJwtService, JwtService>();
-        
-        services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
-        services.AddScoped<IOfferRepository, OfferRepository>();
+
+        services.AddScoped<IUnitOfWork, Infrastructure.Persistence.UnitOfWork>();
+
         services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
         services.AddScoped<IRoleSeederService, RoleSeederService>();
@@ -81,12 +82,12 @@ public static class DependencyInjection
         services.AddScoped<IAmenitySeederService, AmenitySeederService>();
         services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
 
-        
+
         services.AddAutoMapper(config =>
         {
-            config.AddMaps(Assembly.GetExecutingAssembly()); 
+            config.AddMaps(Assembly.GetExecutingAssembly());
         });
-        
+
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());

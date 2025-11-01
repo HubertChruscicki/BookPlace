@@ -1,6 +1,7 @@
-﻿﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using Application.DTOs.Auth;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -17,18 +18,18 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
 {
     private readonly UserManager<User> _userManager;
     private readonly IJwtService _jwtService;
-    private readonly IActiveTokenRepository _activeTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<LoginQueryHandler> _logger;
 
     public LoginQueryHandler(
         UserManager<User> userManager,
         IJwtService jwtService,
-        IActiveTokenRepository activeTokenRepository,
+        IUnitOfWork unitOfWork,
         ILogger<LoginQueryHandler> logger)
     {
         _userManager = userManager;
         _jwtService = jwtService;
-        _activeTokenRepository = activeTokenRepository;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -54,12 +55,12 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
             throw new UnauthorizedAccessException("Invalid email or password");
         }
 
-        var existingTokens = await _activeTokenRepository.GetByUserIdAsync(user.Id);
+        var existingTokens = await _unitOfWork.ActiveTokens.GetByUserIdAsync(user.Id);
         
         if (existingTokens.Any())
         {
             var existingJtis = existingTokens.Select(t => t.Jti).ToList();
-            await _activeTokenRepository.RemoveByJtisAsync(existingJtis);
+            await _unitOfWork.ActiveTokens.RemoveByJtisAsync(existingJtis);
             _logger.LogInformation("Invalidated {Count} existing tokens for user {UserId} during new login", 
                 existingJtis.Count, user.Id);
         }
@@ -75,7 +76,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
         var accessTokenJti = accessTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
         var refreshTokenJti = refreshTokenParsed.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-        // Add new tokens to whitelist using repository
+        // Add new tokens to whitelist using Unit of Work
         if (!string.IsNullOrEmpty(accessTokenJti))
         {
             var accessActiveToken = new ActiveToken
@@ -85,7 +86,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
                 TokenType = TokenType.Access,
                 ExpiresAt = accessTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(accessActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(accessActiveToken);
         }
 
         if (!string.IsNullOrEmpty(refreshTokenJti))
@@ -97,22 +98,23 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
                 TokenType = TokenType.Refresh,
                 ExpiresAt = refreshTokenParsed.ValidTo
             };
-            await _activeTokenRepository.AddAsync(refreshActiveToken);
+            await _unitOfWork.ActiveTokens.AddAsync(refreshActiveToken);
         }
+
+        // Save all changes using Unit of Work
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new AuthResponse
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+            ExpiresAt = accessTokenParsed.ValidTo,
             User = new UserInfo
             {
                 Id = user.Id,
+                Email = user.Email!,
                 Name = user.Name,
                 Surname = user.Surname,
-                Phone = user.PhoneNumber ?? string.Empty,
-                Email = user.Email ?? string.Empty,
-                ProfilePictureUrl = user.ProfilePictureUrl,
                 Roles = roles.ToList()
             }
         };

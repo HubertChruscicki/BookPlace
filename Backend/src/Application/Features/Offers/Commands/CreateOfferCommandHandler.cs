@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Offers;
 using Application.Features.Offers.Commands;
 using Application.Interfaces;
+using BookPlace.Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -13,16 +14,16 @@ namespace Application.Features.Offers.Commands;
 /// </summary>
 public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, CreateOfferResponseDto>
 {
-    private readonly IOfferRepository _offerRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IImageProcessingService _imageProcessingService;
     private readonly IMapper _mapper;
 
     public CreateOfferCommandHandler(
-        IOfferRepository offerRepository,
+        IUnitOfWork unitOfWork,
         IImageProcessingService imageProcessingService,
         IMapper mapper)
     {
-        _offerRepository = offerRepository;
+        _unitOfWork = unitOfWork;
         _imageProcessingService = imageProcessingService;
         _mapper = mapper;
     }
@@ -38,7 +39,7 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
     {
         var offerData = request.OfferData;
 
-        var offerTypeExists = await _offerRepository.OfferTypeExistsAsync(offerData.OfferTypeId);
+        var offerTypeExists = await _unitOfWork.Offers.OfferTypeExistsAsync(offerData.OfferTypeId);
         if (!offerTypeExists)
         {
             throw new OfferTypeNotFoundException(offerData.OfferTypeId);
@@ -47,7 +48,7 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
         var amenities = new List<Amenity>();
         if (offerData.AmenityIds.Any())
         {
-            amenities = await _offerRepository.GetAmenitiesByIdsAsync(offerData.AmenityIds);
+            amenities = await _unitOfWork.Offers.GetAmenitiesByIdsAsync(offerData.AmenityIds);
             var foundAmenityIds = amenities.Select(a => a.Id).ToList();
             var missingAmenityIds = offerData.AmenityIds.Except(foundAmenityIds).ToList();
             
@@ -82,7 +83,7 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
             offer.Amenities.Add(amenity);
         }
 
-        var createdOffer = await _offerRepository.CreateAsync(offer);
+        var createdOffer = await _unitOfWork.Offers.CreateAsync(offer);
 
         if (offerData.Photos.Any())
         {
@@ -122,8 +123,10 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                 }
             }
 
-            await _offerRepository.UpdateAsync(createdOffer);
+            await _unitOfWork.Offers.UpdateAsync(createdOffer);
         }
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         var response = _mapper.Map<CreateOfferResponseDto>(createdOffer);
         return response;

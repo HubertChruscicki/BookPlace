@@ -14,21 +14,15 @@ namespace Infrastructure.Persistence.Repositories;
 public class ActiveTokenRepository : IActiveTokenRepository
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<ActiveTokenRepository> _logger;
-
-    public ActiveTokenRepository(ApplicationDbContext context, ILogger<ActiveTokenRepository> logger)
+    public ActiveTokenRepository(ApplicationDbContext context)
     {
         _context = context;
-        _logger = logger;
     }
 
     public async Task AddAsync(ActiveToken activeToken)
     {
         _context.ActiveTokens.Add(activeToken);
         await _context.SaveChangesAsync();
-
-        _logger.LogDebug("Token {Jti} added to whitelist for user {UserId}", 
-            activeToken.Jti, activeToken.UserId);
     }
 
     public async Task RemoveByJtisAsync(IList<string> jtis)
@@ -41,8 +35,6 @@ public class ActiveTokenRepository : IActiveTokenRepository
         {
             _context.ActiveTokens.RemoveRange(tokensToRemove);
             await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Removed {Count} tokens from whitelist", tokensToRemove.Count);
         }
     }
 
@@ -56,9 +48,6 @@ public class ActiveTokenRepository : IActiveTokenRepository
         {
             _context.ActiveTokens.RemoveRange(tokensToRemove);
             await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Removed all {Count} tokens for user {UserId}", 
-                tokensToRemove.Count, userId);
         }
     }
 
@@ -85,8 +74,6 @@ public class ActiveTokenRepository : IActiveTokenRepository
         {
             _context.ActiveTokens.RemoveRange(expiredTokens);
             await _context.SaveChangesAsync();
-
-            _logger.LogInformation("Removed {Count} expired tokens", expiredTokens.Count);
         }
     }
 }

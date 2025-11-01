@@ -8,6 +8,7 @@ public class User : IdentityUser
     public string Surname { get; set; } = string.Empty;
     public string? Phone { get; set; }
     public string? ProfilePictureUrl { get; set; }
+    public List<int>? FavoriteOfferIds { get; set; }
     
     public ICollection<Offer> Offers { get; set; } = new List<Offer>();
     public ICollection<Booking> GuestBookings { get; set; } = new List<Booking>();
