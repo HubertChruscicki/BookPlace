@@ -61,6 +61,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("HostOnlyPolicy", policy =>
         policy.RequireRole("Host"));
 
+    options.AddPolicy("HostOnly", policy =>
+        policy.Requirements.Add(new HostRoleRequirement()));
+
     options.AddPolicy("OfferViewPolicy", policy =>
         policy.Requirements.Add(new OfferViewRequirement()));
 

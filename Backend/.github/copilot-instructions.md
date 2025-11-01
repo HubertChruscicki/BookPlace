@@ -1,4 +1,4 @@
-﻿Jasne, oto kompletny plik MD w jednym bloku, gotowy do skopiowania.
+﻿﻿Jasne, oto kompletny plik MD w jednym bloku, gotowy do skopiowania.
 
 # BookPlace Backend - Skondensowane Instrukcje
 
@@ -205,7 +205,7 @@ BookPlace Backend to aplikacja .NET 8.0 (Clean Architecture) dla platformy rezer
 ### 🏠 Główne Funkcjonalności
 
 - **Rezerwacje i Oferty**: Zarządzanie dostępnością, lokalizacją, udogodnieniami, typami i zdjęciami ofert.
-- **System Opinii**: Opinie (ze zdjęciami) powiązane z zakończoną rezerwacją.
+- **System Ulubionych**: Użytkownicy mogą dodawać oferty do ulubionych (lista ID przechowywana jako JSON w encji User).
 - **Soft Delete**: Używanie statusów (`CancelledBy...`, `IsArchive`) zamiast fizycznego usuwania.
 - **Komunikacja (Chat)**: Historia wiadomości (WebSocket) powiązana z ofertą lub opinią.
 
@@ -250,7 +250,7 @@ Backend/
 
 ### 👤 **Identity & Użytkownicy**
 - **`User`** (extends `IdentityUser`): `Name`, `Surname`, `Phone`, `ProfilePictureUrl`
-- **`AspNetRoles`**, **`AspNetUserRoles`** (standardowe tabele ASP.NET Identity)
+- **`User`** (extends `IdentityUser`): `Name`, `Surname`, `Phone`, `ProfilePictureUrl`, `FavoriteOfferIds` (List<int> jako JSON)
 
 ### 🏠 **Oferty i Noclegi**
 - **`OfferType`** (Słownik): `Id`, `Name` (np. "Apartament", "Dom", "Pokój")
@@ -261,7 +261,7 @@ Backend/
   - **Status**: `Status` (`OfferStatus.Active|Inactive|Suspended`), `IsArchive` (soft delete)
   - **Adres**: `AddressStreet`, `AddressCity`, `AddressZipCode`, `AddressCountry`, `AddressLatitude`, `AddressLongitude`
   - **Relacje**: M-N z `Amenity`, 1-N z `OfferPhoto`, `Booking`, `Review`, `Conversation`
-- **`OfferPhoto`**: `Id`, `OfferId`, `Url`, `IsCover`, `SortOrder`
+- **`OfferPhoto`**: `Id`, `OfferId`, `OriginalUrl`, `MediumUrl`, `ThumbnailUrl`, `IsCover`, `SortOrder`
 
 ### 📅 **Rezerwacje**
 - **`Booking`**: 
@@ -272,7 +272,7 @@ Backend/
 
 ### ⭐ **System Opinii**
 - **`Review`**: `Id`, `BookingId`, `GuestId`, `OfferId`, `Rating`, `Content`, `CreatedAt`
-- **`ReviewPhoto`**: `Id`, `ReviewId`, `Url`
+- **`ReviewPhoto`**: `Id`, `ReviewId`, `OriginalUrl`, `ThumbnailUrl`
 
 ### 💬 **Komunikacja (Chat)**
 - **`Conversation`**: `Id`, `OfferId?`, `ReviewId?` (kontekst rozmowy)

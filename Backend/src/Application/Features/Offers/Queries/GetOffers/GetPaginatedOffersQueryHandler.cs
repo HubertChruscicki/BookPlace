@@ -23,7 +23,7 @@ public class GetPaginatedOffersQueryHandler
     public async Task<PageResult<OfferDto>> Handle(
         GetPaginatedOffersQuery request, CancellationToken ct)
     {
-        var domainPageResult = await _offerRepository.GetPaginatedAsync(request, ct);
+        var domainPageResult = await _offerRepository.GetPaginatedOffersWithOnlyCoverAsync(request, ct);
         var dtoItems = _mapper.Map<List<OfferDto>>(domainPageResult.Items);
         
         return new PageResult<OfferDto>(

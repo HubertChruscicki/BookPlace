@@ -24,4 +24,3 @@ public class UserInfo
     public string? ProfilePictureUrl { get; set; }
     public List<string> Roles { get; set; } = new();
 }
-

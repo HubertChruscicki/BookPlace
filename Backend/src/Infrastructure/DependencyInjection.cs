@@ -74,7 +74,7 @@ public static class DependencyInjection
         
         services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
         services.AddScoped<IOfferRepository, OfferRepository>();
-        
+        services.AddScoped<IImageProcessingService, ImageProcessingService>();
 
         services.AddScoped<IRoleSeederService, RoleSeederService>();
         services.AddScoped<IOfferTypeSeederService, OfferTypeSeederService>();
@@ -128,7 +128,8 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationHandler, MessageOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, ConversationInitiatorAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, OfferViewAuthorizationHandler>();
-        services.AddScoped<IAuthorizationHandler, GuestOnlyAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, OfferOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, HostRoleAuthorizationHandler>();
 
         return services;
     }
