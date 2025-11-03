@@ -8,6 +8,16 @@ namespace Domain.Exceptions;
 public class ImageProcessingException : Exception
 {
     /// <summary>
+    /// Gets the index of the photo that failed to process
+    /// </summary>
+    public int? PhotoIndex { get; }
+
+    /// <summary>
+    /// Gets the reason for the processing failure
+    /// </summary>
+    public string? Reason { get; }
+
+    /// <summary>
     /// Initializes a new instance of the ImageProcessingException class
     /// </summary>
     /// <param name="message">The error message that explains the reason for the exception</param>
@@ -29,8 +39,4 @@ public class ImageProcessingException : Exception
         PhotoIndex = photoIndex;
         Reason = reason;
     }
-
-    public int? PhotoIndex { get; }
-
-    public string? Reason { get; }
 }

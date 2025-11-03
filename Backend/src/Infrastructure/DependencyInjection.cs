@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 using Domain.Entities;
-using Domain.Interfaces;
 using Infrastructure.Persistance;
-using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services.Seeders;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
@@ -13,12 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Application.Authorization.Requirements;
 using Application.Interfaces;
 using BookPlace.Application.Interfaces;
 using Infrastructure.Authorization.Handlers;
 using Infrastructure.Services;
-
+using Application.Mappings;
+    
 namespace Infrastructure;
 
 public static class DependencyInjection
@@ -82,11 +80,6 @@ public static class DependencyInjection
         services.AddScoped<IAmenitySeederService, AmenitySeederService>();
         services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
 
-
-        services.AddAutoMapper(config =>
-        {
-            config.AddMaps(Assembly.GetExecutingAssembly());
-        });
 
         services.AddMassTransit(x =>
         {

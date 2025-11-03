@@ -48,8 +48,6 @@ public class GlobalExceptionHandlingMiddleware
 
         var (statusCode, message) = exception switch
         {
-            OfferTypeNotFoundException => (HttpStatusCode.BadRequest, exception.Message),
-            AmenitiesNotFoundException => (HttpStatusCode.BadRequest, exception.Message),
             ImageProcessingException => (HttpStatusCode.BadRequest, exception.Message),
             UnauthorizedAccessException => (HttpStatusCode.Unauthorized, exception.Message),
             InvalidOperationException => (HttpStatusCode.BadRequest, exception.Message),

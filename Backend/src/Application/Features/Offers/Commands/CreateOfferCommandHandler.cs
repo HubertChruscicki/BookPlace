@@ -42,7 +42,7 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
         var offerTypeExists = await _unitOfWork.Offers.OfferTypeExistsAsync(offerData.OfferTypeId);
         if (!offerTypeExists)
         {
-            throw new OfferTypeNotFoundException(offerData.OfferTypeId);
+            throw new InvalidOperationException($"Offer type with ID {offerData.OfferTypeId} does not exist");
         }
 
         var amenities = new List<Amenity>();
@@ -54,36 +54,9 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
             
             if (missingAmenityIds.Any())
             {
-                throw new AmenitiesNotFoundException(missingAmenityIds);
+                throw new InvalidOperationException($"Amenities with IDs [{string.Join(", ", missingAmenityIds)}] do not exist");
             }
         }
-
-        var offer = Offer.Create(
-            hostId: request.UserId,
-            offerTypeId: offerData.OfferTypeId,
-            title: offerData.Title,
-            description: offerData.Description,
-            pricePerNight: offerData.PricePerNight,
-            maxGuests: offerData.MaxGuests,
-            rooms: offerData.Rooms,
-            singleBeds: offerData.SingleBeds,
-            doubleBeds: offerData.DoubleBeds,
-            sofas: offerData.Sofas,
-            bathrooms: offerData.Bathrooms,
-            addressStreet: offerData.AddressStreet,
-            addressCity: offerData.AddressCity,
-            addressZipCode: offerData.AddressZipCode,
-            addressCountry: offerData.AddressCountry,
-            addressLatitude: offerData.AddressLatitude,
-            addressLongitude: offerData.AddressLongitude
-        );
-
-        foreach (var amenity in amenities)
-        {
-            offer.Amenities.Add(amenity);
-        }
-
-        var createdOffer = await _unitOfWork.Offers.CreateAsync(offer);
 
         if (offerData.Photos.Any())
         {
@@ -93,7 +66,7 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                 throw new InvalidOperationException("Only one photo can be marked as cover");
             }
 
-            if (!coverPhotos.Any() && offerData.Photos.Any())
+            if (!coverPhotos.Any())
             {
                 offerData.Photos.First().IsCover = true;
             }
@@ -104,31 +77,86 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                 
                 try
                 {
-                    var processedImage = await _imageProcessingService.ProcessImageAsync(
-                        photoDto.Base64Data, 
-                        createdOffer.Id,
-                        i);
-
-                    createdOffer.AddPhoto(
-                        originalUrl: processedImage.OriginalUrl,
-                        mediumUrl: processedImage.MediumUrl,
-                        thumbnailUrl: processedImage.ThumbnailUrl,
-                        isCover: photoDto.IsCover,
-                        sortOrder: i
-                    );
+                    Convert.FromBase64String(photoDto.Base64Data);
                 }
-                catch (Exception ex)
+                catch (FormatException ex)
                 {
-                    throw new ImageProcessingException(i, ex.Message, ex);
+                    throw new ImageProcessingException(i, $"Invalid Base64 format: {ex.Message}", ex);
                 }
             }
-
-            await _unitOfWork.Offers.UpdateAsync(createdOffer);
         }
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.BeginTransactionAsync();
+        
+        try
+        {
+            var offer = Offer.Create(
+                hostId: request.UserId,
+                offerTypeId: offerData.OfferTypeId,
+                title: offerData.Title,
+                description: offerData.Description,
+                pricePerNight: offerData.PricePerNight,
+                maxGuests: offerData.MaxGuests,
+                rooms: offerData.Rooms,
+                singleBeds: offerData.SingleBeds,
+                doubleBeds: offerData.DoubleBeds,
+                sofas: offerData.Sofas,
+                bathrooms: offerData.Bathrooms,
+                addressStreet: offerData.AddressStreet,
+                addressCity: offerData.AddressCity,
+                addressZipCode: offerData.AddressZipCode,
+                addressCountry: offerData.AddressCountry,
+                addressLatitude: offerData.AddressLatitude,
+                addressLongitude: offerData.AddressLongitude
+            );
 
-        var response = _mapper.Map<CreateOfferResponseDto>(createdOffer);
-        return response;
+            foreach (var amenity in amenities)
+            {
+                offer.Amenities.Add(amenity);
+            }
+
+            var createdOffer = await _unitOfWork.Offers.CreateAsync(offer);
+
+            if (offerData.Photos.Any())
+            {
+                for (int i = 0; i < offerData.Photos.Count; i++)
+                {
+                    var photoDto = offerData.Photos[i];
+                    
+                    try
+                    {
+                        var processedImage = await _imageProcessingService.ProcessImageAsync(
+                            photoDto.Base64Data, 
+                            createdOffer.Id,
+                            i);
+
+                        createdOffer.AddPhoto(
+                            originalUrl: processedImage.OriginalUrl,
+                            mediumUrl: processedImage.MediumUrl,
+                            thumbnailUrl: processedImage.ThumbnailUrl,
+                            isCover: photoDto.IsCover,
+                            sortOrder: i
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ImageProcessingException(i, ex.Message, ex);
+                    }
+                }
+
+                await _unitOfWork.Offers.UpdateAsync(createdOffer);
+            }
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.CommitTransactionAsync();
+
+            var response = _mapper.Map<CreateOfferResponseDto>(createdOffer);
+            return response;
+        }
+        catch
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
     }
 }

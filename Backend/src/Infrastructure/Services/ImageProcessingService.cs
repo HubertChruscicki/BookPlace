@@ -11,8 +11,8 @@ namespace Infrastructure.Services;
 public class ImageProcessingService : IImageProcessingService
 {
     private const int OriginalMaxSize = 2048;
-    private const int MediumSize = 1024;
-    private const int ThumbnailSize = 2056;
+    private const int MediumSize = 512;
+    private const int ThumbnailSize = 256;
     private const int JpegQuality = 85;
 
     /// <summary>

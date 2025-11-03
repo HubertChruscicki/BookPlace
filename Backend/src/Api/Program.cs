@@ -1,4 +1,5 @@
 using Api.Middleware;
+using Application;
 using Infrastructure;
 using Infrastructure.Persistance;
 using Infrastructure.Services.Seeders;
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddCors(options =>
 {
@@ -49,9 +51,9 @@ builder.Services.AddCors(options =>
     }
 });
 
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Application.AssemblyReference).Assembly));
 
 builder.Services.AddAuthorization(options =>
 {

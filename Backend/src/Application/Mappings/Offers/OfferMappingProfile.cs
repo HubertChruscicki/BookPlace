@@ -23,5 +23,16 @@ public class OfferMappingProfile : Profile
             .ForMember(dest => dest.Bookings, opt => opt.Ignore())
             .ForMember(dest => dest.Reviews, opt => opt.Ignore())
             .ForMember(dest => dest.Conversations, opt => opt.Ignore());
+
+        CreateMap<Offer, CreateOfferResponseDto>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => 
+                $"{src.AddressStreet}, {src.AddressCity}, {src.AddressZipCode}, {src.AddressCountry}"))
+            .ForMember(dest => dest.OfferType, opt => opt.MapFrom(src => src.OfferType))
+            .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities));
+
+        CreateMap<OfferType, OfferTypeDto>();
+        CreateMap<Amenity, AmenityDto>();
+        CreateMap<OfferPhoto, OfferPhotoDto>();
     }
 }
