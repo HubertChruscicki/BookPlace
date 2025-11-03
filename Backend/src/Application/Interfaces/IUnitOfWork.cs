@@ -10,6 +10,7 @@ public interface IUnitOfWork : IDisposable
 {
     IOfferRepository Offers { get; }
     IActiveTokenRepository ActiveTokens { get; }
+    IBookingRepository Bookings { get; }
     
     /// <summary>
     /// Saves all pending changes to the database

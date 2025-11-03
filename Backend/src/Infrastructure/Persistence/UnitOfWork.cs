@@ -4,7 +4,6 @@ using Domain.Interfaces;
 using Infrastructure.Persistance;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.Persistence;
 
@@ -19,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
     // Lazy initialization repositoriów
     private IOfferRepository? _offers;
     private IActiveTokenRepository? _activeTokens;
+    private IBookingRepository? _bookings;
 
     /// <summary>
     /// Initializes a new instance of UnitOfWork
@@ -28,16 +28,11 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Offers repository for managing offer entities
-    /// </summary>
     public IOfferRepository Offers => _offers ??= new OfferRepository(_context);
 
-    /// <summary>
-    /// Active tokens repository for JWT token management
-    /// </summary>
     public IActiveTokenRepository ActiveTokens => _activeTokens ??= new ActiveTokenRepository(_context);
+
+    public IBookingRepository Bookings => _bookings ??= new BookingRepository(_context);
 
     /// <summary>
     /// Saves all pending changes to the database

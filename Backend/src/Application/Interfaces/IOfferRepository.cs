@@ -38,4 +38,12 @@ public interface IOfferRepository
     /// <param name="amenityIds">List of amenity IDs</param>
     /// <returns>List of found amenities</returns>
     Task<List<Amenity>> GetAmenitiesByIdsAsync(List<int> amenityIds);
+
+    /// <summary>
+    /// Gets an offer by its ID
+    /// </summary>
+    /// <param name="id">Offer ID</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Offer if found, null otherwise</returns>
+    Task<Offer?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 }

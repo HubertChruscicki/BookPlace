@@ -112,4 +112,17 @@ public class OfferRepository : IOfferRepository
             .Where(a => amenityIds.Contains(a.Id))
             .ToListAsync();
     }
+
+    /// <summary>
+    /// Gets an offer by its ID
+    /// </summary>
+    /// <param name="id">Offer ID</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Offer if found, null otherwise</returns>
+    public async Task<Offer?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Offers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+    }
 }

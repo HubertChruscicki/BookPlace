@@ -364,11 +364,15 @@ Backend/
     - `OfferViewPolicy`: Czy `offer.Status == Active` LUB `offer.HostId == currentUserId`
     - `BookingHostPolicy`: Czy `booking.Offer.HostId == currentUserId`
     - `BookingOwnerPolicy`: Czy `booking.GuestId == currentUserId`
-    - `BookingParticipantPolicy`: Czy (Guest LUB Host)
+    - `BookingParticipantPolicy`: Czy `booking.GuestId == currentUserId || booking.Offer.HostId == currentUserId`
     - `ReviewOwnerPolicy`: Czy `review.GuestId == currentUserId`
     - `ReviewEligibilityPolicy`: Czy użytkownik zakończył rezerwację i jeszcze nie dodał opinii
     - `ConversationParticipantPolicy`: Czy użytkownik jest na liście uczestników konwersacji
-    - `GuestOnlyPolicy`: Czy `user.IsInRole("Guest") && !user.IsInRole("Host")`
+    - `ConversationInitiatorPolicy`: Czy użytkownik może inicjować rozmowę (dla ofert: guest może pisać do host, dla opinii: autor może odpowiadać)
+    - `MessageOwnerPolicy`: Czy `message.SenderId == currentUserId`
+    - `GuestOnlyPolicy`: Czy użytkownik ma tylko rolę Guest (używane do promocji na Host)
+    - `HostOnlyPolicy`: Czy `user.IsInRole("Host")` (prosta autoryzacja oparta na roli)
+    - `HostOnly`: Czy użytkownik ma rolę Host (custom requirement)
 
 - **Rozróżnienie**:
 
