@@ -16,6 +16,14 @@ public interface IBookingRepository
     Task AddAsync(Booking booking, CancellationToken cancellationToken = default);
     
     /// <summary>
+    /// Gets a booking by ID with all related data (Offer, Guest, Host)
+    /// </summary>
+    /// <param name="bookingId">The booking ID to retrieve</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Booking with related data or null if not found</returns>
+    Task<Booking?> GetByIdWithDetailsAsync(int bookingId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Checks if a date range is available for booking for a specific offer
     /// </summary>
     /// <param name="offerId">The offer ID to check availability for</param>

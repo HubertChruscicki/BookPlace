@@ -20,18 +20,12 @@ public class OfferViewAuthorizationHandler : AuthorizationHandler<OfferViewRequi
     {
         var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
-        // Logic: 
-        // - Publiczne: offer.Status == Active
-        // - Prywatne: offer.HostId == currentUserId (wszystkie statusy)
-        
         if (resource.Status == OfferStatus.Active)
         {
-            // Publiczny dostęp do aktywnych ofert
             context.Succeed(requirement);
         }
         else if (userId != null && resource.HostId == userId)
         {
-            // Właściciel może widzieć swoją ofertę w każdym statusie
             context.Succeed(requirement);
         }
 

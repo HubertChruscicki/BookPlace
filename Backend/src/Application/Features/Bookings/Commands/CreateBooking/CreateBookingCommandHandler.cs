@@ -1,9 +1,11 @@
-﻿using Application.DTOs.Bookings;
+﻿﻿using Application.DTOs.Bookings;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Bookings.Commands.CreateBooking;
 
@@ -14,11 +16,15 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IAuthorizationService _authorizationService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authorizationService, IHttpContextAccessor httpContextAccessor)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _authorizationService = authorizationService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
@@ -35,6 +41,17 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         if (offer == null)
         {
             throw new KeyNotFoundException($"Offer with ID {request.OfferId} not found");
+        }
+
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user != null)
+        {
+            var authorizationResult = await _authorizationService.AuthorizeAsync(user, offer, "OfferViewPolicy");
+            if (!authorizationResult.Succeeded)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to book this offer");
+            }
+            
         }
 
         ValidateBusinessRules(request, offer);

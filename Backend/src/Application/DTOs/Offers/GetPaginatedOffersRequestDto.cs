@@ -1,0 +1,55 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.DTOs.Offers;
+
+/// <summary>
+/// Request DTO for retrieving paginated offers with filtering options
+/// </summary>
+public class GetPaginatedOffersRequestDto
+{
+    /// <summary>
+    /// Page number for pagination (default: 1)
+    /// </summary>
+    [Range(1, int.MaxValue, ErrorMessage = "Page number must be greater than 0")]
+    public int PageNumber { get; set; } = 1;
+
+    /// <summary>
+    /// Number of items per page (default: 10, max: 100)
+    /// </summary>
+    [Range(1, 100, ErrorMessage = "Page size must be between 1 and 100")]
+    public int PageSize { get; set; } = 10;
+
+    /// <summary>
+    /// Filter by city name
+    /// </summary>
+    public string? City { get; set; }
+
+    /// <summary>
+    /// Filter by minimum price per night
+    /// </summary>
+    [Range(0, double.MaxValue, ErrorMessage = "Minimum price must be greater than or equal to 0")]
+    public decimal? MinPrice { get; set; }
+
+    /// <summary>
+    /// Filter by maximum price per night
+    /// </summary>
+    [Range(0, double.MaxValue, ErrorMessage = "Maximum price must be greater than or equal to 0")]
+    public decimal? MaxPrice { get; set; }
+
+    /// <summary>
+    /// Filter by number of guests
+    /// </summary>
+    [Range(1, 50, ErrorMessage = "Number of guests must be between 1 and 50")]
+    public int? Guests { get; set; }
+
+    /// <summary>
+    /// Filter by offer type ID
+    /// </summary>
+    [Range(1, int.MaxValue, ErrorMessage = "Offer type ID must be greater than 0")]
+    public int? OfferTypeId { get; set; }
+
+    /// <summary>
+    /// Filter by amenities (comma-separated list of amenity IDs)
+    /// </summary>
+    public string? Amenities { get; set; }
+}

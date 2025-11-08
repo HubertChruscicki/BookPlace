@@ -31,6 +31,22 @@ public class BookingRepository : IBookingRepository
     }
 
     /// <summary>
+    /// Gets a booking by ID with all related data (Offer, Guest, Host)
+    /// </summary>
+    /// <param name="bookingId">The booking ID to retrieve</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Booking with related data or null if not found</returns>
+    public async Task<Booking?> GetByIdWithDetailsAsync(int bookingId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Bookings
+            .Include(b => b.Offer)
+            .ThenInclude(o => o.Host)
+            .Include(b => b.Guest)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.Id == bookingId, cancellationToken);
+    }
+
+    /// <summary>
     /// Checks if a date range is available for booking for a specific offer
     /// </summary>
     /// <param name="offerId">The offer ID to check availability for</param>
@@ -130,15 +146,21 @@ public class BookingRepository : IBookingRepository
             .Include(b => b.Guest)
             .AsNoTracking();
 
+        query = query.Where(b => b.GuestId == userId || b.Offer.HostId == userId);
+        
         if (!string.IsNullOrEmpty(role))
         {
-            if (role.ToLower() == "guest")
+            if (role.Equals("guest", StringComparison.OrdinalIgnoreCase))
             {
                 query = query.Where(b => b.GuestId == userId);
             }
-            else if (role.ToLower() == "host")
+            else if (role.Equals("host", StringComparison.OrdinalIgnoreCase))
             {
                 query = query.Where(b => b.Offer.HostId == userId);
+            }
+            else
+            {
+                query = query.Where(b => b.GuestId == userId);
             }
         }
         else

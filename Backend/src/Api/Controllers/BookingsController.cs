@@ -34,6 +34,7 @@ public class BookingsController : ControllerBase
     /// <response code="401">User not authenticated</response>
     /// <response code="404">Offer not found</response>
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -57,10 +58,7 @@ public class BookingsController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return CreatedAtAction(
-            nameof(GetBookingById), 
-            new { id = result.Id }, 
-            result);
+        return Created("Booking created successfully", result);
     }
 
     /// <summary>
@@ -81,13 +79,10 @@ public class BookingsController : ControllerBase
     /// <param name="request">Filtering and pagination parameters</param>
     /// <returns>Paginated list of bookings</returns>
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetPaginatedBookings([FromQuery] GetPaginatedBookingsRequestDto request)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
 
         var query = new GetPaginatedBookingsQuery
         {
