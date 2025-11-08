@@ -10,13 +10,15 @@
 - **ZAWSZE Unit of Work**: Wstrzykuj `IUnitOfWork` do Handlerów zamiast pojedynczych repozytoriów. Używaj `await _unitOfWork.SaveChangesAsync()` na końcu operacji zapisujących.
 - **ZAWSZE Authorization Policies**: Używaj autoryzacji opartej na zasobach (`IAuthorizationService` lub Policy).
 - **ZAWSZE XML Summary**: Każda publiczna metoda/klasa MUSI mieć dokumentację `/// <summary>`.
-- **ZAWSZE Walidacja w DTO**: Używaj atrybutów `[Required]`, `[MinLength]` itd. bezpośrednio w plikach DTO w warstwie `Application`.
+- **ZAWSZE Request DTOs z walidacją**: Wszystkie endpointy używają dedykowanych Request DTOs z atrybutami `[Required]`, `[MinLength]`, `[Range]`, `[EmailAddress]` itd.
+- **ZAWSZE Controller buduje Commands/Queries**: Kontroler mapuje Request DTO na Command/Query, dodając `userId` z `User.Claims` i inne dane kontekstowe.
+- **ZAWSZE Walidacja TYLKO w Request DTOs**: Commands/Queries nie zawierają atrybutów walidacji - są czyste i skupione na logice biznesowej.
 - **ZAWSZE Middleware**: Globalna obsługa błędów przez dedykowany middleware.
 - **ZAWSZE Dependency Injection**: Rejestruj zależności w plikach `DependencyInjection.cs` lub `Program.cs`.
 - **ZAWSZE Async/Await**: Wszystkie operacje IO (baza danych, pliki) muszą być asynchroniczne.
 - **ZAWSZE JWT Claims**: Używaj `ClaimTypes.NameIdentifier` dla `userId`.
 - **ZAWSZE Exceptions**: Rzucaj wyjątki domenowe (`UnauthorizedAccessException`, `InvalidOperationException`, `NotFoundException`) zamiast zwracać `null`.
-- **ZAWSZE Query Params dla paginacji**: `[FromQuery]` automatycznie mapuje `pageNumber`, `pageSize` na Query object.
+- **ZAWSZE Query Params dla paginacji**: `[FromQuery]` automatycznie mapuje Request DTO na Query object.
 - **ZAWSZE PageResult<T>**: Używaj przygotowanej klasy z `Items`, `TotalPages`, `TotalItemsCount`, `PageNumber`, `PageSize`.
 - **ZAWSZE Extension Methods**: Używaj `ToPageResultAsync()` dla paginacji - gotowy mechanizm w Infrastructure.
 
@@ -27,16 +29,21 @@
 - **NIGDY Direct DbContext w kontrolerach**: Kontrolery nie wiedzą o DbContext.
 - **NIGDY Pojedyncze repozytoria w Handlerach**: **NIE WSTRZYKUJ** `IOfferRepository`, `IActiveTokenRepository` osobno. Używaj `IUnitOfWork`.
 - **NIGDY Magic strings**: Używaj `const`, `enums` lub `nameof()`.
-- **NIGDY Sprawdzanie `userId` w kontrolerach**: `userId` jest przekazywany do Commanda/Query.
+- **NIGDY Commands/Queries bezpośrednio w kontrolerach**: **NIE PRZYJMUJ** Commands/Queries jako parametrów `[FromBody]` - używaj Request DTOs.
+- **NIGDY Walidacja w Commands/Queries**: **NIE DODAWAJ** atrybutów `[Required]`, `[Range]` do Commands/Queries - są tylko w Request DTOs.
+- **NIGDY Dziedziczenie Commands z DTOs**: **NIE RÓB** `public class LoginCommand : LoginRequest` - Commands i Request DTOs to osobne klasy.
+- **NIGDY Sprawdzanie `userId` w kontrolerach**: `userId` jest pobierany z Claims i przekazywany do Command/Query.
 - **NIGDY Hardcodowane connection stringi**: Używaj `IConfiguration` i `appsettings.json`.
 - **NIGDY Synchroniczne operacje IO**.
 - **NIGDY Custom paginacja**: **NIE WYMYŚLAJ** własnych mechanizmów - używaj przygotowanych Extension Methods.
 - **NIGDY Paginacja w kontrolerach**: Logika paginacji TYLKO w Repository przez `ToPageResultAsync()`.
-- **NIGDY Bez Query parametrów**: Paginacja ZAWSZE przez `[FromQuery]` mapping na Query object.
+- **NIGDY Bez Request DTOs**: **NIE UŻYWAJ** prymitywnych typów (`string`, `int`) jako parametrów endpointów - zawsze Request DTO z walidacją.
 
 ### 🎯 TYLKO:
-- **TYLKO Controllers**: Routing HTTP, pobieranie `userId` z Claimów, wysyłanie Command/Query do `IMediator` i zwracanie `ActionResult`.
-- **TYLKO Application (Features & DTOs)**: Definicje `Command`/`Query`, logika biznesowa w `Handlerach`, walidacja w `DTOs` (atrybuty).
+- **TYLKO Controllers**: Routing HTTP, pobieranie `userId` z `User.Claims`, mapowanie Request DTOs na Commands/Queries, wysyłanie do `IMediator` i zwracanie `ActionResult`.
+- **TYLKO Request DTOs z walidacją**: Wszystkie endpointy przyjmują dedykowane Request DTOs (`[FromBody]`, `[FromQuery]`) z atrybutami walidacji (`[Required]`, `[Range]`, `[EmailAddress]`).
+- **TYLKO Commands/Queries bez walidacji**: Commands i Queries zawierają TYLKO dane biznesowe potrzebne do wykonania operacji - bez atrybutów walidacji.
+- **TYLKO Application (Features & DTOs)**: Definicje `Command`/`Query`, Request DTOs z walidacją, Response DTOs, logika biznesowa w `Handlerach`.
 - **TYLKO Domain Entities**: Czyste reguły biznesowe, walidacja stanu, `ValueObjects`.
 - **TYLKO Infrastructure**: Implementacje interfejsów (np. `IRepository`, `IJwtService`), dostęp do bazy danych (DbContext).
 - **TYLKO Unit of Work w Handlerach**: Wstrzykuj `IUnitOfWork` do konstruktora, używaj `_unitOfWork.{Repository}` dla dostępu do danych, `await _unitOfWork.SaveChangesAsync()` na końcu.
@@ -44,7 +51,7 @@
 - **TYLKO Requirements (Autoryzacja)**: Puste "znaczniki" `IAuthorizationRequirement` w warstwie `Application`.
 - **TYLKO Gotowe Extension Methods**: `ToPageResultAsync()` dla paginacji - nie wymyślaj własnych.
 - **TYLKO ORM optimizations**: `AsNoTracking()`, selektywne `Include()` - pozwól ORM zoptymalizować zapytania.
-- **TYLKO Query objects**: Parametry paginacji w dedykowanych `Query` klasach z walidacją atrybutami.
+- **TYLKO Konwencja nazewnictwa DTOs**: `{Action}{Entity}RequestDto` (np. `CreateBookingRequestDto`, `GetPaginatedOffersRequestDto`).
 
 ---
 
@@ -97,10 +104,12 @@ catch
 
 #### 🎮 **API Layer** (Presentation):
 - Wstrzykuje **TYLKO `IMediator`** (oraz opcjonalnie `IAuthorizationService`).
-- Pobiera dane z `Request` HTTP (automatycznie mapowane na DTO) i `User.Claims`.
-- Automatycznie waliduje DTO dzięki `[ApiController]`.
-- Tworzy i wysyła `Command` lub `Query` do `IMediator`.
-- Zwraca `ActionResult` (np. `Ok()`, `NotFound()`, `Forbid()`).
+- Przyjmuje **TYLKO Request DTOs** (`[FromBody]`, `[FromQuery]`) - **NIE PRZYJMUJE** Commands/Queries bezpośrednio.
+- Automatycznie waliduje Request DTOs dzięki `[ApiController]` i atrybutom walidacji.
+- Pobiera `userId` z `User.Claims` używając `ClaimTypes.NameIdentifier`.
+- **Buduje Commands/Queries** z Request DTOs, dodając dane kontekstowe (`userId`, inne Claims).
+- Wysyła gotowy Command/Query do `IMediator.Send()`.
+- Zwraca `ActionResult` (np. `Ok()`, `Created()`, `NotFound()`, `Forbid()`).
 
 #### 🧠 **Application Layer** (Use Cases / Features):
 - Definiuje `Command` (zapis) i `Query` (odczyt) jako implementacje `IRequest`.
@@ -193,9 +202,9 @@ public class OfferMappingProfile : Profile
     public OfferMappingProfile()
     {
         CreateMap<Offer, OfferDto>()
-            .ForMember(dest => dest.OfferTypeName, 
+            .ForMember(dest => dest.OfferTypeName,
                       opt => opt.MapFrom(src => src.OfferType.Name));
-                      
+
         CreateMap<CreateOfferCommand, Offer>();
     }
 }

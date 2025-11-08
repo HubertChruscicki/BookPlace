@@ -4,10 +4,14 @@ using MediatR;
 
 namespace Application.Features.Offers.Queries;
 
-public record GetPaginatedOffersQuery(
-    int PageNumber = 1,
-    int PageSize = 10,
-    string? City = null,
-    decimal? MinPrice = null,
-    decimal? MaxPrice = null
-) : IRequest<PageResult<OfferDto>>;
+/// <summary>
+/// Query for retrieving paginated offers with filtering options
+/// </summary>
+public class GetPaginatedOffersQuery : IRequest<PageResult<OfferDto>>
+{
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+    public string? City { get; set; }
+    public decimal? MinPrice { get; set; }
+    public decimal? MaxPrice { get; set; }
+}

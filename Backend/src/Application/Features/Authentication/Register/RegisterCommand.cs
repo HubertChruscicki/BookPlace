@@ -4,11 +4,13 @@ using MediatR;
 namespace Application.Features.Authentication.Register;
 
 /// <summary>
-/// Command for registering a new user account with Guest role.
-/// Contains all necessary user registration data and returns authentication response.
+/// Command for registering a new user account with Guest role
 /// </summary>
-public class RegisterCommand : RegisterRequest, IRequest<AuthResponse>
+public class RegisterCommand : IRequest<AuthResponse>
 {
-    // RegisterRequest już zawiera wszystkie potrzebne pola:
-    // Name, Surname, Phone, Email, Password
+    public string Name { get; set; } = string.Empty;
+    public string Surname { get; set; } = string.Empty;
+    public string? Phone { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

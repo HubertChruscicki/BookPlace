@@ -31,6 +31,16 @@ public class OfferMappingProfile : Profile
             .ForMember(dest => dest.OfferType, opt => opt.MapFrom(src => src.OfferType))
             .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities));
 
+        CreateMap<Offer, OfferDto>()
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => 
+                $"{src.AddressStreet}, {src.AddressCity}, {src.AddressZipCode}, {src.AddressCountry}"))
+            .ForMember(dest => dest.OfferType, opt => opt.MapFrom(src => src.OfferType))
+            .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
+            .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow)) // Tymczasowe mapowanie
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow)); // Tymczasowe mapowanie
+
         CreateMap<OfferType, OfferTypeDto>();
         CreateMap<Amenity, AmenityDto>();
         CreateMap<OfferPhoto, OfferPhotoDto>();

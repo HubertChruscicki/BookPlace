@@ -1,4 +1,5 @@
-﻿using Application.Features.Bookings.Commands.CreateBooking;
+﻿using Application.DTOs.Bookings;
+using Application.Features.Bookings.Commands.CreateBooking;
 using Application.Features.Bookings.Queries.GetPaginatedBookings;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ public class BookingsController : ControllerBase
     /// <summary>
     /// Creates a new booking for the authenticated user
     /// </summary>
-    /// <param name="command">Booking creation data</param>
+    /// <param name="request">Booking creation data</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Created booking details</returns>
     /// <response code="201">Booking created successfully</response>
@@ -37,14 +38,23 @@ public class BookingsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingCommand command, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequestDto request, CancellationToken cancellationToken = default)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized("User ID not found in token");
         }
-        command.GuestId = userId;
+
+        var command = new CreateBookingCommand
+        {
+            OfferId = request.OfferId,
+            CheckInDate = request.CheckInDate,
+            CheckOutDate = request.CheckOutDate,
+            NumberOfGuests = request.NumberOfGuests,
+            GuestId = userId
+        };
+
         var result = await _mediator.Send(command, cancellationToken);
 
         return CreatedAtAction(
@@ -68,10 +78,10 @@ public class BookingsController : ControllerBase
     /// <summary>
     /// Retrieves a paginated list of bookings for the authenticated user
     /// </summary>
-    /// <param name="query">Filtering and pagination parameters</param>
+    /// <param name="request">Filtering and pagination parameters</param>
     /// <returns>Paginated list of bookings</returns>
     [HttpGet]
-    public async Task<IActionResult> GetPaginatedBookings([FromQuery] GetPaginatedBookingsQuery query)
+    public async Task<IActionResult> GetPaginatedBookings([FromQuery] GetPaginatedBookingsRequestDto request)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
@@ -79,7 +89,17 @@ public class BookingsController : ControllerBase
             return Unauthorized();
         }
 
-        query.UserId = userId;
+        var query = new GetPaginatedBookingsQuery
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            Role = request.Role,
+            Status = request.Status,
+            OfferId = request.OfferId,
+            DateFrom = request.DateFrom,
+            DateTo = request.DateTo,
+            UserId = userId
+        };
 
         var result = await _mediator.Send(query);
         return Ok(result);

@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using Application.Common.Pagination;
+﻿using Application.Common.Pagination;
 using Application.DTOs.Bookings;
 using MediatR;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Application.Features.Bookings.Queries.GetPaginatedBookings;
 
@@ -18,8 +16,5 @@ public class GetPaginatedBookingsQuery : IRequest<PageResult<BookingDto>>
     public int? OfferId { get; set; }
     public DateTime? DateFrom { get; set; }
     public DateTime? DateTo { get; set; }
-    
-    [JsonIgnore]
-    [SwaggerIgnore]
-    public string UserId { get; internal set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
 }
