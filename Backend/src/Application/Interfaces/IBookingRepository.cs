@@ -21,7 +21,12 @@ public interface IBookingRepository
     /// <param name="bookingId">The booking ID to retrieve</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Booking with related data or null if not found</returns>
-    Task<Booking?> GetByIdWithDetailsAsync(int bookingId, CancellationToken cancellationToken = default);
+    Task<Booking?> GetByIdAsync(int bookingId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Gets a booking by ID with related data for update operations (with tracking)
+    /// </summary>
+    Task<Booking?> GetByIdForUpdateAsync(int bookingId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Checks if a date range is available for booking for a specific offer

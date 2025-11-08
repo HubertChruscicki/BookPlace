@@ -35,21 +35,20 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
     /// <exception cref="UnauthorizedAccessException">When user is not authorized to view booking</exception>
     public async Task<BookingDto> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
     {
-        // 1. Pobierz zasób (booking) z relacjami
-        var booking = await _unitOfWork.Bookings.GetByIdWithDetailsAsync(request.BookingId, cancellationToken);
+        var booking = await _unitOfWork.Bookings.GetByIdAsync(request.BookingId, cancellationToken);
         if (booking == null)
         {
             throw new KeyNotFoundException($"Booking with ID {request.BookingId} not found");
         }
 
         var user = _httpContextAccessor.HttpContext?.User;
-        if (user != null)
+
+        var authorizationResult = await _authorizationService
+            .AuthorizeAsync(user!, booking, "BookingParticipantPolicy");
+
+        if (!authorizationResult.Succeeded)
         {
-            var authorizationResult = await _authorizationService.AuthorizeAsync(user, booking, "BookingParticipantPolicy");
-            if (!authorizationResult.Succeeded)
-            {
-                throw new UnauthorizedAccessException("You are not authorized to view this booking");
-            }
+            throw new UnauthorizedAccessException("You are not authorized to view this booking");
         }
 
         return _mapper.Map<BookingDto>(booking);

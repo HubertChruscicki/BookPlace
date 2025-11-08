@@ -24,7 +24,6 @@ public class BookingParticipantAuthorizationHandler : AuthorizationHandler<Booki
             return Task.CompletedTask;
         }
 
-        // Logic: booking.GuestId == currentUserId || booking.Offer.HostId == currentUserId
         if (resource.GuestId == userId || resource.Offer?.HostId == userId)
         {
             context.Succeed(requirement);

@@ -31,18 +31,35 @@ public class BookingRepository : IBookingRepository
     }
 
     /// <summary>
-    /// Gets a booking by ID with all related data (Offer, Guest, Host)
+    /// Gets a booking by ID with all related data (Offer, Guest, Host, Photos)
     /// </summary>
     /// <param name="bookingId">The booking ID to retrieve</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Booking with related data or null if not found</returns>
-    public async Task<Booking?> GetByIdWithDetailsAsync(int bookingId, CancellationToken cancellationToken = default)
+    public async Task<Booking?> GetByIdAsync(int bookingId, CancellationToken cancellationToken = default)
     {
         return await _context.Bookings
             .Include(b => b.Offer)
-            .ThenInclude(o => o.Host)
+                .ThenInclude(o => o.Host)
+            .Include(b => b.Offer)
+                .ThenInclude(o => o.Photos)
             .Include(b => b.Guest)
             .AsNoTracking()
+            .FirstOrDefaultAsync(b => b.Id == bookingId, cancellationToken);
+    }
+    
+    /// <summary>
+    /// Gets a booking by ID with related data for update operations (with tracking)
+    /// </summary>
+    /// <param name="bookingId">The booking ID to retrieve</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Tracked Booking with related data or null if not found</returns>
+    public async Task<Booking?> GetByIdForUpdateAsync(int bookingId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Bookings
+            .Include(b => b.Offer)
+            .Include(b => b.Offer)
+            .ThenInclude(o => o.Photos)
             .FirstOrDefaultAsync(b => b.Id == bookingId, cancellationToken);
     }
 
@@ -143,6 +160,8 @@ public class BookingRepository : IBookingRepository
         var query = _context.Bookings
             .Include(b => b.Offer)
                 .ThenInclude(o => o.OfferType)
+            .Include(b => b.Offer)
+                .ThenInclude(o => o.Photos)
             .Include(b => b.Guest)
             .AsNoTracking();
 

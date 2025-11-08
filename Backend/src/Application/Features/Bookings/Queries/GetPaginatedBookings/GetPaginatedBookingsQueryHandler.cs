@@ -34,12 +34,6 @@ public class GetPaginatedBookingsQueryHandler : IRequestHandler<GetPaginatedBook
     /// <returns>Paginated result with booking list filtered by authorization</returns>
     public async Task<PageResult<BookingDto>> Handle(GetPaginatedBookingsQuery request, CancellationToken cancellationToken)
     {
-        var user = _httpContextAccessor.HttpContext?.User;
-        if (user == null)
-        {
-            throw new UnauthorizedAccessException("User context not found");
-        }
-
         var bookingsPageResult = await _unitOfWork.Bookings.GetPaginatedBookingsAsync(
             request.UserId,
             request.PageNumber,

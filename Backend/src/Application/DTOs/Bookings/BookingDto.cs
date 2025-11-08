@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using Domain.Entities;
 
 namespace Application.DTOs.Bookings;
 public class BookingDto
@@ -16,13 +17,12 @@ public class BookingDto
     public decimal TotalPrice { get; set; }
 
     public int NumberOfGuests { get; set; }
-
+    
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public BookingStatus Status { get; set; }
 
     public DateTime CreatedAt { get; set; }
     public string? OfferTitle { get; set; }
     public string? OfferCity { get; set; }
     public string? OfferCoverPhotoUrl { get; set; }
-    public string? GuestName { get; set; }
-    public string? GuestSurname { get; set; }
 }

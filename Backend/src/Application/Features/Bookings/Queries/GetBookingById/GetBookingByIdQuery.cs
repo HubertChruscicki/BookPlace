@@ -9,5 +9,4 @@ namespace Application.Features.Bookings.Queries.GetBookingById;
 public class GetBookingByIdQuery : IRequest<BookingDto>
 {
     public int BookingId { get; set; }
-    public string UserId { get; set; } = string.Empty;
 }

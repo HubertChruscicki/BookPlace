@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Application.Features.Bookings.Commands.CancelBooking;
+using Application.Features.Bookings.Queries.GetBookingById;
 
 namespace Api.Controllers;
 
@@ -14,11 +16,11 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class BookingsController : ControllerBase
+public class BookingController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public BookingsController(IMediator mediator)
+    public BookingController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -62,15 +64,25 @@ public class BookingsController : ControllerBase
     }
 
     /// <summary>
-    /// Placeholder for GetBookingById action (to be implemented later)
+    /// Retrieves details for a specific booking
     /// </summary>
-    /// <param name="id">Booking ID</param>
+    /// <param name="id">The ID of the booking to retrieve</param>
     /// <returns>Booking details</returns>
+    /// <response code="200">Returns booking details</response>
+    /// <response code="401">User not authenticated</response>
+    /// <response code="403">User not authorized to view this booking</response>
+    /// <response code="404">Booking not found</response>
     [HttpGet("{id}")]
-    public IActionResult GetBookingById(int id)
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetBookingById([FromRoute] int id)
     {
-        // Placeholder - będzie implementowane w następnych etapach
-        return Ok($"Booking {id} endpoint - to be implemented");
+        var query = new GetBookingByIdQuery { BookingId = id };
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 
     /// <summary>
@@ -97,6 +109,50 @@ public class BookingsController : ControllerBase
         };
 
         var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Cancels a booking (as a Host)
+    /// </summary>
+    /// <param name="id">The ID of the booking to cancel</param>
+    /// <returns>The updated booking details</returns>
+    /// <response code="200">Returns updated booking</response>
+    /// <response code="400">Invalid operation (e.g., booking already completed)</response>
+    /// <response code="403">User is not the host for this booking</response>
+    /// <response code="404">Booking not found</response>
+    [HttpPatch("{id}/cancel-by-host")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CancelByHost([FromRoute] int id)
+    {
+        var command = new CancelBookingByHostCommand { BookingId = id };
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Cancels a booking (as a Guest)
+    /// </summary>
+    /// <param name="id">The ID of the booking to cancel</param>
+    /// <returns>The updated booking details</returns>
+    /// <response code="200">Returns updated booking</response>
+    /// <response code="400">Invalid operation (e.g., booking already completed)</response>
+    /// <response code="403">User is not the guest for this booking</response>
+    /// <response code="404">Booking not found</response>
+    [HttpPatch("{id}/cancel-by-guest")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CancelByGuest([FromRoute] int id)
+    {
+        var command = new CancelBookingByGuestCommand { BookingId = id };
+        var result = await _mediator.Send(command);
         return Ok(result);
     }
 }
