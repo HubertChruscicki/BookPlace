@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Application.DTOs.Auth;
 using Application.Interfaces;
-using BookPlace.Application.Interfaces;
+using Application.Interfaces;
 using Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;

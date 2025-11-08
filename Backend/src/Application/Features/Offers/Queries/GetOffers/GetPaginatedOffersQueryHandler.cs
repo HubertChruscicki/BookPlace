@@ -1,7 +1,7 @@
 ﻿using Application.Common.Pagination;
 using Application.DTOs.Offers;
 using Application.Interfaces;
-using BookPlace.Application.Interfaces;
+using Application.Interfaces;
 using AutoMapper;
 using MediatR;
 

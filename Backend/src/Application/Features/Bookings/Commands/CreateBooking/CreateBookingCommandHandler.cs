@@ -1,5 +1,5 @@
 ﻿using Application.DTOs.Bookings;
-using BookPlace.Application.Interfaces;
+using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -60,7 +60,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             CheckOutDate = request.CheckOutDate,
             NumberOfGuests = request.NumberOfGuests,
             TotalPrice = totalPrice,
-            Status = BookingStatus.Pending,
+            Status = BookingStatus.Confirmed,
             CreatedAt = DateTime.UtcNow
         };
 

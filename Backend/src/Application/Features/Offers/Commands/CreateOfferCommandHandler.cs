@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Offers;
 using Application.Features.Offers.Commands;
 using Application.Interfaces;
-using BookPlace.Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;

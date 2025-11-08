@@ -1,4 +1,5 @@
 ﻿using Application.Features.Bookings.Commands.CreateBooking;
+using Application.Features.Bookings.Queries.GetPaginatedBookings;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,5 +63,25 @@ public class BookingsController : ControllerBase
     {
         // Placeholder - będzie implementowane w następnych etapach
         return Ok($"Booking {id} endpoint - to be implemented");
+    }
+
+    /// <summary>
+    /// Retrieves a paginated list of bookings for the authenticated user
+    /// </summary>
+    /// <param name="query">Filtering and pagination parameters</param>
+    /// <returns>Paginated list of bookings</returns>
+    [HttpGet]
+    public async Task<IActionResult> GetPaginatedBookings([FromQuery] GetPaginatedBookingsQuery query)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        query.UserId = userId;
+
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 }

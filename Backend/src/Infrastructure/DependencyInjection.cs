@@ -12,15 +12,26 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Application.Interfaces;
-using BookPlace.Application.Interfaces;
 using Infrastructure.Authorization.Handlers;
 using Infrastructure.Services;
 using Application.Mappings;
+using Domain.Interfaces;
+using Infrastructure.Persistence;
+using Infrastructure.Persistence.Repositories;
     
 namespace Infrastructure;
 
+/// <summary>
+/// Konfiguracja Dependency Injection dla warstwy Infrastructure
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Rejestruje serwisy Infrastructure w kontenerze DI
+    /// </summary>
+    /// <param name="services">Kolekcja serwisów</param>
+    /// <param name="configuration">Konfiguracja aplikacji</param>
+    /// <returns>Zaktualizowana kolekcja serwisów</returns>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration
@@ -124,6 +135,9 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationHandler, OfferViewAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, OfferOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, HostRoleAuthorizationHandler>();
+        services.AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
+        services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
 
         return services;
     }

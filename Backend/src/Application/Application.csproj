@@ -4,21 +4,28 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Mappings\" />
+        <InternalsVisibleTo Include="Api" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper" Version="15.1.0" />
-      <PackageReference Include="MediatR" Version="13.1.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0" />
-      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+        <Folder Include="Exceptions\" />
+        <Folder Include="Mappings\" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+        <PackageReference Include="AutoMapper" Version="15.1.0" />
+        <PackageReference Include="MediatR" Version="13.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.6.2" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

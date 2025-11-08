@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Application.DTOs.Auth;
 using Application.Interfaces;
-using BookPlace.Application.Interfaces;
+using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Interfaces;
@@ -101,7 +101,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthResponse>
             await _unitOfWork.ActiveTokens.AddAsync(refreshActiveToken);
         }
 
-        // Save all changes using Unit of Work
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new AuthResponse
