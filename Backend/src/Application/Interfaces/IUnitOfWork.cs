@@ -1,5 +1,4 @@
-﻿using Application.Interfaces;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 
 namespace Application.Interfaces;
 
@@ -23,4 +22,5 @@ public interface IUnitOfWork
     Task CommitTransactionAsync();
     Task RollbackTransactionAsync();
 }
+
 

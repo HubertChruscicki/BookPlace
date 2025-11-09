@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Offers;
 using Application.DTOs.Bookings;
 using Application.Features.Offers.Commands;
-using Application.Features.Offers.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,8 @@ using Application.Features.Offers.Commands.DeleteOffer;
 using Application.Features.Offers.Commands.UpdateOffer;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Features.Offers.Queries.GetOfferById;
+using Application.Features.Offers.Queries.GetOfferTypes;
+using Application.Features.Offers.Queries.GetAmenities;
 
 namespace Api.Controllers;
 
@@ -153,4 +154,33 @@ public class OfferController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Gets all available offer types
+    /// </summary>
+    /// <returns>List of all offer types</returns>
+    /// <response code="200">Offer types retrieved successfully</response>
+    [HttpGet("types")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(List<OfferTypeDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetOfferTypes()
+    {
+        var query = new GetOfferTypesQuery();
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Gets all available amenities
+    /// </summary>
+    /// <returns>List of all amenities</returns>
+    /// <response code="200">Amenities retrieved successfully</response>
+    [HttpGet("amenities")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(List<AmenityDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAmenities()
+    {
+        var query = new GetAmenitiesQuery();
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
 }

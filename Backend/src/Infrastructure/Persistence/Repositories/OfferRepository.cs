@@ -133,11 +133,37 @@ public class OfferRepository : IOfferRepository
     public async Task<Offer?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Offers
+            .AsNoTracking()
             .Include(o => o.OfferType)
+            .Include(o => o.Host)
             .Include(o => o.Amenities)
             .Include(o => o.Photos.OrderBy(p => p.SortOrder))
-            .Include(o => o.Host)
-            .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets all offer types
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all offer types</returns>
+    public async Task<List<OfferType>> GetAllOfferTypesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.OfferTypes
+            .AsNoTracking()
+            .OrderBy(ot => ot.Name)
+            .ToListAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets all amenities
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of all amenities</returns>
+    public async Task<List<Amenity>> GetAllAmenitiesAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Amenities
+            .AsNoTracking()
+            .OrderBy(a => a.Name)
+            .ToListAsync(cancellationToken);
     }
 }
