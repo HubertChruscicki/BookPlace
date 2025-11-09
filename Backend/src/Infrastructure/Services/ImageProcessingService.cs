@@ -2,7 +2,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
-
 namespace Infrastructure.Services;
 
 /// <summary>
@@ -19,30 +18,29 @@ public class ImageProcessingService : IImageProcessingService
     /// Processes a base64 encoded image and creates multiple sizes
     /// </summary>
     /// <param name="base64Data">Base64 encoded image data</param>
-    /// <param name="offerId">ID of the offer this image belongs to</param>
+    /// <param name="entityType">Type of entity (ex. offer / review)</param>
+    /// <param name="entityId">ID of the entity this image belongs to</param>
     /// <param name="photoIndex">Index of the photo for this offer (0-based)</param>
     /// <returns>Result containing URLs for different image sizes</returns>
-    /// <exception cref="InvalidOperationException">Thrown when image processing fails</exception>
-    public async Task<ProcessedImageResult> ProcessImageAsync(string base64Data, int offerId, int photoIndex)
+    public async Task<ProcessedImageResult> ProcessImageAsync(string base64Data, string entityType, int entityId, int photoIndex)
     {
         try
         {
             var imageBytes = Convert.FromBase64String(base64Data);
             using var image = Image.Load(imageBytes);
             
-            // Generate our own filename format: offer_{offerId}_photo_{photoIndex}_{timestamp}
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            var baseFileName = $"offer_{offerId}_photo_{photoIndex}_{timestamp}";
-            var fileExtension = ".jpg"; // Always save as JPEG for consistency
+            var baseFileName = $"{entityType}_{entityId}_photo_{photoIndex}_{timestamp}";
+            var fileExtension = ".jpg"; 
             
-            var uploadsPath = Path.Combine("wwwroot", "uploads", "offers", offerId.ToString());
+            var uploadsPath = Path.Combine("wwwroot", "uploads", entityType, entityId.ToString());
             Directory.CreateDirectory(uploadsPath);
             
             var originalPath = await ProcessAndSaveImage(image, uploadsPath, $"{baseFileName}_original{fileExtension}", OriginalMaxSize);
             var mediumPath = await ProcessAndSaveImage(image, uploadsPath, $"{baseFileName}_medium{fileExtension}", MediumSize);
             var thumbnailPath = await ProcessAndSaveImage(image, uploadsPath, $"{baseFileName}_thumb{fileExtension}", ThumbnailSize);
             
-            var baseUrl = $"/uploads/offers/{offerId}/";
+            var baseUrl = $"/uploads/{entityType}/{entityId}/";
             
             return new ProcessedImageResult
             {
@@ -95,4 +93,3 @@ public class ImageProcessingService : IImageProcessingService
         return fullPath;
     }
 }
-

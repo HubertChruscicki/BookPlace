@@ -2,7 +2,7 @@
 using Application.DTOs.Offers;
 using MediatR;
 
-namespace Application.Features.Offers.Queries;
+namespace Application.Features.Offers.Queries.GetOffers;
 
 /// <summary>
 /// Query for retrieving paginated offers with filtering options

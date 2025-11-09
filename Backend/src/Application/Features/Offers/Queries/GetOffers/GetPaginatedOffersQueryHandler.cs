@@ -1,5 +1,6 @@
 ﻿using Application.Common.Pagination;
 using Application.DTOs.Offers;
+using Application.Features.Offers.Queries.GetOffers;
 using Application.Interfaces;
 using Application.Interfaces;
 using AutoMapper;

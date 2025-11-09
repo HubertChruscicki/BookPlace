@@ -137,6 +137,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationHandler, HostRoleAuthorizationHandler>();
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IOfferRepository, OfferRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IActiveTokenRepository, ActiveTokenRepository>();
 
         return services;

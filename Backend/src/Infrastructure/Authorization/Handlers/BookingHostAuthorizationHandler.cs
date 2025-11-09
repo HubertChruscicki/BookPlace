@@ -24,7 +24,6 @@ public class BookingHostAuthorizationHandler : AuthorizationHandler<BookingHostR
             return Task.CompletedTask;
         }
 
-        // Logic: booking.Offer.HostId == currentUserId
         if (resource.Offer?.HostId == userId)
         {
             context.Succeed(requirement);

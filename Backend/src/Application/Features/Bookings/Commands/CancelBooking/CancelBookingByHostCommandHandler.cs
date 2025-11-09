@@ -37,7 +37,7 @@ public class CancelBookingByHostCommandHandler : IRequestHandler<CancelBookingBy
         }
 
         var user = _httpContextAccessor.HttpContext?.User;
-        if (user == null || !user.Identity.IsAuthenticated)
+        if (user == null)
         {
             throw new UnauthorizedAccessException("User context not found");
         }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Application.Features.Bookings.Queries.GetBusyDates;
+using Application.Features.Offers.Queries.GetOffers;
 
 namespace Api.Controllers;
 

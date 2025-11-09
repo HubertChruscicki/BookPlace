@@ -15,4 +15,34 @@ public class Review
     public Offer Offer { get; set; } = null!;
     public ICollection<ReviewPhoto> Photos { get; set; } = new List<ReviewPhoto>();
     public ICollection<Conversation> Conversations { get; set; } = new List<Conversation>();
+    
+    public static Review Create(int bookingId, string guestId, int offerId, int rating, string content)
+    {
+        if (rating < 1 || rating > 5)
+            throw new ArgumentOutOfRangeException(nameof(rating), "Rating must be between 1 and 5.");
+            
+        if (string.IsNullOrWhiteSpace(content))
+            throw new ArgumentException("Content cannot be empty.", nameof(content));
+
+        return new Review
+        {
+            BookingId = bookingId,
+            GuestId = guestId,
+            OfferId = offerId,
+            Rating = rating,
+            Content = content,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
+    
+    public void AddPhoto(string originalUrl, string thumbnailUrl)
+    {
+        var photo = new ReviewPhoto
+        {
+            ReviewId = this.Id,
+            OriginalUrl = originalUrl,
+            ThumbnailUrl = thumbnailUrl
+        };
+        Photos.Add(photo);
+    }
 }

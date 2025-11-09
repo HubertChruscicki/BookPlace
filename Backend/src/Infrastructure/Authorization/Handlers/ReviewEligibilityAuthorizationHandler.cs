@@ -2,6 +2,8 @@
 using Application.Authorization.Contexts;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Application.Interfaces;
+using Domain.Entities;
 
 namespace Infrastructure.Authorization.Handlers;
 
@@ -10,29 +12,46 @@ namespace Infrastructure.Authorization.Handlers;
 /// Used for creating new reviews after completed bookings.
 /// Verifies that user had a completed booking, hasn't reviewed this offer yet, and booking was in the past.
 /// </summary>
-public class ReviewEligibilityAuthorizationHandler : AuthorizationHandler<ReviewEligibilityRequirement, ReviewEligibilityContext>
+public class ReviewEligibilityAuthorizationHandler : AuthorizationHandler<ReviewEligibilityRequirement, Booking>
 {
-    protected override Task HandleRequirementAsync(
+    private readonly IUnitOfWork _unitOfWork;
+
+    public ReviewEligibilityAuthorizationHandler(IUnitOfWork unitOfWork)
+    {
+        _unitOfWork = unitOfWork;
+    }
+
+    protected override async Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         ReviewEligibilityRequirement requirement,
-        ReviewEligibilityContext resource)
+        Booking resource)
     {
-        var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        if (userId == null || userId != resource.UserId)
+        var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null)
         {
-            return Task.CompletedTask;
+            context.Fail(new AuthorizationFailureReason(this, "User is not authenticated."));
+            return;
         }
 
-        // Logic: 
-        // - Użytkownik miał zakończoną rezerwację (Status = Completed)
-        // - Nie dodał jeszcze opinii dla tej oferty
-        // - Rezerwacja była w przeszłości
-        // TODO: Implementacja logiki weryfikacji w database service
-        
-        // Na razie pozwalamy - logika będzie w service layer
-        context.Succeed(requirement);
+        if (resource.GuestId != userId)
+        {
+            context.Fail(new AuthorizationFailureReason(this, "User is not the guest for this booking."));
+            return;
+        }
 
-        return Task.CompletedTask;
+        if (resource.Status != BookingStatus.Completed)
+        {
+            context.Fail(new AuthorizationFailureReason(this, "Booking is not completed."));
+            return;
+        }
+
+        var reviewExists = await _unitOfWork.Reviews.ExistsForBookingAsync(resource.Id);
+        if (reviewExists)
+        {
+            context.Fail(new AuthorizationFailureReason(this, "Review has already been submitted for this booking."));
+            return;
+        }
+
+        context.Succeed(requirement);
     }
 }

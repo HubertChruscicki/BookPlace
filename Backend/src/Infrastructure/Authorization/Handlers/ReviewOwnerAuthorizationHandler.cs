@@ -24,7 +24,6 @@ public class ReviewOwnerAuthorizationHandler : AuthorizationHandler<ReviewOwnerR
             return Task.CompletedTask;
         }
 
-        // Logic: review.GuestId == currentUserId
         if (resource.GuestId == userId)
         {
             context.Succeed(requirement);

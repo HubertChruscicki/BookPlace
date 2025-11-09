@@ -126,8 +126,10 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                     {
                         var processedImage = await _imageProcessingService.ProcessImageAsync(
                             photoDto.Base64Data, 
+                            "offers",
                             createdOffer.Id,
                             i);
+
 
                         createdOffer.AddPhoto(
                             originalUrl: processedImage.OriginalUrl,

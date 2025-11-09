@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork
 
     private IBookingRepository? _bookings;
     private IOfferRepository? _offers;
+    private IReviewRepository? _reviews;
     private IActiveTokenRepository? _activeTokens;
 
     /// <summary>
@@ -32,6 +33,9 @@ public class UnitOfWork : IUnitOfWork
 
     public IOfferRepository Offers =>
         _offers ??= new OfferRepository(_context);
+    
+    public IReviewRepository Reviews =>
+        _reviews ??= new ReviewRepository(_context);
 
     public IActiveTokenRepository ActiveTokens =>
         _activeTokens ??= new ActiveTokenRepository(_context);

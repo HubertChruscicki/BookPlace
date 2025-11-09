@@ -10,7 +10,7 @@ public interface IUnitOfWork
 {
     IBookingRepository Bookings { get; }
     IOfferRepository Offers { get; }
-
+    IReviewRepository Reviews { get; }
     IActiveTokenRepository ActiveTokens { get; }
 
     /// <summary>
