@@ -54,6 +54,6 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
         }
 
         review.Archive();
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

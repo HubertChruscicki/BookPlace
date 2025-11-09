@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Application.Features.Bookings.Queries.GetBusyDates;
+using Application.Features.Offers.Commands.DeleteOffer;
+using Application.Features.Offers.Commands.UpdateOffer;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Features.Offers.Queries.GetOfferById;
 
@@ -107,6 +109,48 @@ public class OfferController : ControllerBase
         
         var result = await _mediator.Send(query, cancellationToken);
         return Ok(result);
+    }
+    
+    /// <summary>
+    /// Updates an existing offer
+    /// </summary>
+    /// <remarks>User must be the owner of the offer (OfferOwnerPolicy)</remarks>
+    [HttpPut("{id}")]
+    [Authorize]
+    [ProducesResponseType(typeof(OfferDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<OfferDto>> UpdateOffer(
+        [FromRoute] int id, 
+        [FromBody] UpdateOfferRequestDto requestDto)
+    {
+        var command = new UpdateOfferCommand
+        {
+            OfferId = id,
+            OfferData = requestDto
+        };
+
+        var result = await _mediator.Send(command);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Archives an offer (Soft Delete)
+    /// </summary>
+    /// <remarks>User must be the owner of the offer (OfferOwnerPolicy)</remarks>
+    [HttpDelete("{id}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteOffer([FromRoute] int id)
+    {
+        var command = new DeleteOfferCommand { OfferId = id };
+        await _mediator.Send(command);
+        return NoContent();
     }
 
 }

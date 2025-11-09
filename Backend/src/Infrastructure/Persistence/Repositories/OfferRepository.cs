@@ -57,22 +57,12 @@ public class OfferRepository : IOfferRepository
 
         if (query.CheckInDate.HasValue && query.CheckOutDate.HasValue)
         {
-            var totalOffersBeforeFilter = await _context.Offers
-                .Where(o => o.Status == Domain.Enums.OfferStatus.Active && !o.IsArchive)
-                .CountAsync(ct);
-            
-            Console.WriteLine($"[DEBUG] Total active offers before date filtering: {totalOffersBeforeFilter}");
-            Console.WriteLine($"[DEBUG] Filtering offers with CheckIn: {query.CheckInDate.Value:yyyy-MM-dd HH:mm:ss}, CheckOut: {query.CheckOutDate.Value:yyyy-MM-dd HH:mm:ss}");
-            
             offerQuery = offerQuery.Where(o => !o.Bookings.Any(b =>
                 (b.Status == BookingStatus.Pending || 
                  b.Status == BookingStatus.Confirmed ||
                  b.Status == BookingStatus.Completed) &&
                 b.CheckInDate < query.CheckOutDate.Value &&
                 b.CheckOutDate > query.CheckInDate.Value));
-                
-            var totalOffersAfterFilter = await offerQuery.CountAsync(ct);
-            Console.WriteLine($"[DEBUG] Total offers after date filtering: {totalOffersAfterFilter}");
         }
 
         return await offerQuery.ToPageResultAsync(query.PageNumber, query.PageSize, ct);
@@ -85,8 +75,7 @@ public class OfferRepository : IOfferRepository
     /// <returns>Created offer with assigned ID</returns>
     public async Task<Offer> CreateAsync(Offer offer)
     {
-        _context.Offers.Add(offer);
-        await _context.SaveChangesAsync();
+        await _context.Offers.AddAsync(offer); //TODO TU USUNIETO JAKBY NIE DZIALALO SAVECHANGESASYNC
 
         return await _context.Offers
             .Include(o => o.OfferType)
@@ -102,10 +91,8 @@ public class OfferRepository : IOfferRepository
     /// <returns>Updated offer</returns>
     public async Task<Offer> UpdateAsync(Offer offer)
     {
-        _context.Offers.Update(offer);
-        await _context.SaveChangesAsync();
+        _context.Offers.Update(offer); //TODO TU USUNIETO JAKBY NIE DZIALALO SAVECHANGESASYNC
 
-        // Reload with related entities for response mapping
         return await _context.Offers
             .Include(o => o.OfferType)
             .Include(o => o.Amenities)

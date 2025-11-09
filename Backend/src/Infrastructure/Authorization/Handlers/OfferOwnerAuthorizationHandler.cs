@@ -24,7 +24,6 @@ public class OfferOwnerAuthorizationHandler : AuthorizationHandler<OfferOwnerReq
             return Task.CompletedTask;
         }
 
-        // Logic: offer.HostId == currentUserId
         if (resource.HostId == userId)
         {
             context.Succeed(requirement);
