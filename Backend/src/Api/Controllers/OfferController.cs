@@ -9,6 +9,7 @@ using Application.Common.Pagination;
 using Application.Features.Bookings.Queries.GetBusyDates;
 using Application.Features.Offers.Commands.DeleteOffer;
 using Application.Features.Offers.Commands.UpdateOffer;
+using Application.Features.Offers.Commands.UpdateStatus;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Features.Offers.Queries.GetOfferById;
 using Application.Features.Offers.Queries.GetOfferTypes;
@@ -187,6 +188,31 @@ public class OfferController : ControllerBase
         var command = new DeleteOfferCommand { OfferId = id };
         await _mediator.Send(command);
         return NoContent();
+    }
+    
+    /// <summary>
+    /// Updates the status of a specific offer
+    /// </summary>
+    /// <remarks>User must be the owner of the offer (OfferOwnerPolicy)</remarks>
+    [HttpPatch("{id}/status")]
+    [Authorize]
+    [ProducesResponseType(typeof(OfferDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)] 
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<OfferDto>> UpdateOfferStatus(
+        [FromRoute] int id, 
+        [FromBody] UpdateOfferStatusRequestDto requestDto)
+    {
+        var command = new UpdateOfferStatusCommand
+        {
+            OfferId = id,
+            NewStatus = requestDto.NewStatus
+        };
+
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 
     /// <summary>

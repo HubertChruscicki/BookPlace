@@ -150,4 +150,13 @@ public class Offer
         IsArchive = false;
         Status = OfferStatus.Active;
     }
+    
+    /// <summary>
+    /// Updates the operational status of the offer
+    /// </summary>
+    /// <param name="newStatus">The new status to set</param>
+    public void UpdateStatus(OfferStatus newStatus)
+    {
+        Status = newStatus;
+    }
 }
