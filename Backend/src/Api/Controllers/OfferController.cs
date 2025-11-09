@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Application.Common.Pagination;
 using Application.Features.Bookings.Queries.GetBusyDates;
 using Application.Features.Offers.Commands.DeleteOffer;
 using Application.Features.Offers.Commands.UpdateOffer;
@@ -12,6 +13,7 @@ using Application.Features.Offers.Queries.GetOffers;
 using Application.Features.Offers.Queries.GetOfferById;
 using Application.Features.Offers.Queries.GetOfferTypes;
 using Application.Features.Offers.Queries.GetAmenities;
+using Application.Features.Offers.Queries.GetMyOffers;
 
 namespace Api.Controllers;
 
@@ -43,6 +45,39 @@ public class OfferController : ControllerBase
             MaxPrice = request.MaxPrice,
             CheckInDate = request.CheckInDate,
             CheckOutDate = request.CheckOutDate
+        };
+
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Retrieves a paginated list of offers for the authenticated Host
+    /// </summary>
+    /// <remarks>
+    /// Allows filtering by Status and IncludeArchived (default: false)
+    /// </remarks>
+    [HttpGet("my-offers")]
+    [Authorize(Policy = "HostOnlyPolicy")]
+    [ProducesResponseType(typeof(PageResult<OfferSummaryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)] 
+    public async Task<ActionResult<PageResult<OfferSummaryDto>>> GetMyOffers(
+        [FromQuery] GetMyOffersRequestDto requestDto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized("User ID not found in token");
+        }
+
+        var query = new GetMyOffersQuery
+        {
+            UserId = userId,
+            PageNumber = requestDto.PageNumber,
+            PageSize = requestDto.PageSize,
+            Status = requestDto.Status,
+            IncludeArchived = requestDto.IncludeArchived
         };
 
         var result = await _mediator.Send(query);

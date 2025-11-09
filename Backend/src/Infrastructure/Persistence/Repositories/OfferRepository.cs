@@ -1,4 +1,5 @@
 ﻿using Application.Common.Pagination;
+using Application.Features.Offers.Queries.GetMyOffers;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Interfaces;
 using Domain.Entities;
@@ -68,6 +69,39 @@ public class OfferRepository : IOfferRepository
         return await offerQuery.ToPageResultAsync(query.PageNumber, query.PageSize, ct);
     }
 
+    /// <summary>
+    /// Gets paginated offers belonging to a specific Host
+    /// </summary>
+    public async Task<PageResult<Offer>> GetPaginatedOffersForHostAsync(
+        GetMyOffersQuery query,
+        CancellationToken ct
+    )
+    {
+        var offerQuery = _context.Offers
+            .AsNoTracking()
+            .Include(o => o.OfferType) 
+            .Include(o => o.Photos.Where(p => p.IsCover)) 
+            .Where(o => o.HostId == query.UserId);
+
+        if (query.IncludeArchived != true)
+        {
+            offerQuery = offerQuery.Where(o => !o.IsArchive);
+        }
+
+        if (query.Status.HasValue)
+        {
+            offerQuery = offerQuery.Where(o => o.Status == query.Status.Value);
+        }
+
+        offerQuery = offerQuery.OrderByDescending(o => o.Id); 
+        
+        return await offerQuery.ToPageResultAsync(
+            query.PageNumber,
+            query.PageSize,
+            ct
+        );
+    }
+    
     /// <summary>
     /// Creates a new offer in the database
     /// </summary>

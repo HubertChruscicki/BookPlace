@@ -1,4 +1,5 @@
 ﻿using Application.Common.Pagination;
+using Application.Features.Offers.Queries.GetMyOffers;
 using Application.Features.Offers.Queries.GetOffers;
 using Domain.Entities;
 
@@ -8,6 +9,10 @@ public interface IOfferRepository
 {
     Task<PageResult<Offer>> GetPaginatedOffersWithOnlyCoverAsync(
         GetPaginatedOffersQuery query,
+        CancellationToken ct
+    );
+    Task<PageResult<Offer>> GetPaginatedOffersForHostAsync(
+        GetMyOffersQuery query,
         CancellationToken ct
     );
     Task<Offer> CreateAsync(Offer offer);
