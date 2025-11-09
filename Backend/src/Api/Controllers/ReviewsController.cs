@@ -156,14 +156,15 @@ public class ReviewsController : ControllerBase
     }
 
     /// <summary>
-    /// Deletes an existing review
+    /// Archives a review (soft delete)
     /// </summary>
     /// <remarks>
-    /// User must be the owner of the review (original author)
+    /// User must be the owner of the review (original author). This operation archives the review instead of permanently deleting it.
     /// </remarks>
     [HttpDelete("{id}")]
     [Authorize]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -175,6 +176,6 @@ public class ReviewsController : ControllerBase
         };
 
         await _mediator.Send(command);
-        return NoContent();
+        return Ok(new { message = "Review has been archived successfully" });
     }
 }

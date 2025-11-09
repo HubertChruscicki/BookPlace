@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Reviews;
-using Application.Features.Reviews.Commands;
 using Application.Interfaces;
 using AutoMapper;
 using MediatR;
@@ -39,6 +38,11 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand, R
         if (review == null)
         {
             throw new KeyNotFoundException($"Review with ID {request.ReviewId} not found");
+        }
+        
+        if (review.IsArchive)
+        {
+            throw new InvalidOperationException("Cannot update archived review");
         }
 
         var user = _httpContextAccessor.HttpContext?.User;

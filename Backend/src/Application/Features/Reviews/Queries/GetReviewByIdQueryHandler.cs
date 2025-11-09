@@ -35,6 +35,11 @@ public class GetReviewByIdQueryHandler
             throw new InvalidOperationException($"Review with ID {request.ReviewId} not found.");
         }
         
+        if (review.IsArchive)
+        {
+            throw new InvalidOperationException($"Review with ID {request.ReviewId} is archived and cannot be accessed.");
+        }
+        
         return _mapper.Map<ReviewDto>(review);
     }
 }

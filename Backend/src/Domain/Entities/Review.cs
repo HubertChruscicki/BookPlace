@@ -9,6 +9,7 @@ public class Review
     public int Rating { get; set; }
     public string Content { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public bool IsArchive { get; set; }
     
     public Booking Booking { get; set; } = null!;
     public User Guest { get; set; } = null!;
@@ -37,6 +38,9 @@ public class Review
     
     public void AddPhoto(string originalUrl, string thumbnailUrl)
     {
+        if (IsArchive)
+            throw new InvalidOperationException("Cannot add photos to archived review.");
+            
         var photo = new ReviewPhoto
         {
             ReviewId = this.Id,
@@ -44,5 +48,13 @@ public class Review
             ThumbnailUrl = thumbnailUrl
         };
         Photos.Add(photo);
+    }
+    
+    /// <summary>
+    /// Archives the review (soft delete). Archived reviews cannot be modified.
+    /// </summary>
+    public void Archive()
+    {
+        IsArchive = true;
     }
 }

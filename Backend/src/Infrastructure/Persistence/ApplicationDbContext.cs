@@ -51,6 +51,10 @@ public class ApplicationDbContext : IdentityDbContext<User>
             .HasForeignKey(r => r.GuestId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Entity<Review>()
+            .Property(r => r.IsArchive)
+            .HasDefaultValue(false);
+
         builder.Entity<Message>()
             .HasOne(m => m.Sender)
             .WithMany(u => u.SentMessages)

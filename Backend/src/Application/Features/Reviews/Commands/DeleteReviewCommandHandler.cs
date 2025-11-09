@@ -26,7 +26,7 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
     }
 
     /// <summary>
-    /// Deletes a review after checking ownership authorization
+    /// Archives a review (soft delete) after checking ownership authorization
     /// </summary>
     public async Task Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
     {
@@ -34,6 +34,11 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
         if (review == null)
         {
             throw new KeyNotFoundException($"Review with ID {request.ReviewId} not found");
+        }
+        
+        if (review.IsArchive)
+        {
+            throw new InvalidOperationException("Review is already archived");
         }
 
         var user = _httpContextAccessor.HttpContext?.User;
@@ -48,7 +53,7 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
             throw new UnauthorizedAccessException("You can only delete your own reviews");
         }
 
-        await _unitOfWork.Reviews.DeleteAsync(review);
+        review.Archive();
         await _unitOfWork.SaveChangesAsync();
     }
 }

@@ -12,7 +12,6 @@ public interface IReviewRepository
     Task<Review> CreateAsync(Review review);
     Task<bool> ExistsForBookingAsync(int bookingId);
     Task UpdateAsync(Review review);
-    Task DeleteAsync(Review review);
     Task<Review?> GetReviewWithDetailsAsync(int reviewId);
     Task<Review?> GetByIdAsync(int id);
     

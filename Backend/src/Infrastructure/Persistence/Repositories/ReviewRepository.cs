@@ -33,7 +33,7 @@ public class ReviewRepository : IReviewRepository
         IQueryable<Review> reviewQuery = _context.Reviews
             .Include(r => r.Guest)
             .Include(r => r.Photos)
-            .Where(r => r.OfferId == query.OfferId)
+            .Where(r => r.OfferId == query.OfferId && !r.IsArchive)
             .AsNoTracking();
 
         if (query.OrderBy == "Rating")
@@ -71,7 +71,7 @@ public class ReviewRepository : IReviewRepository
             .Include(r => r.Photos)
             .Include(r => r.Offer) 
                 .ThenInclude(o => o.OfferType)
-            .Where(r => r.GuestId == query.UserId)
+            .Where(r => r.GuestId == query.UserId && !r.IsArchive)
             .AsNoTracking();
 
         if (query.OrderBy == "Rating")
@@ -106,7 +106,7 @@ public class ReviewRepository : IReviewRepository
     
     public async Task<bool> ExistsForBookingAsync(int bookingId)
     {
-        return await _context.Reviews.AnyAsync(r => r.BookingId == bookingId);
+        return await _context.Reviews.AnyAsync(r => r.BookingId == bookingId && !r.IsArchive);
     }
 
     /// <summary>
@@ -117,18 +117,9 @@ public class ReviewRepository : IReviewRepository
         _context.Reviews.Update(review);
         await _context.SaveChangesAsync();
     }
-
+    
     /// <summary>
-    /// Deletes a review
-    /// </summary>
-    public async Task DeleteAsync(Review review)
-    {
-        _context.Reviews.Remove(review);
-        await _context.SaveChangesAsync();
-    }
-
-    /// <summary>
-    /// Gets review with all details (photos, booking, offer)
+    /// Gets review with all details (photos, booking, offer) - only non-archived reviews
     /// </summary>
     public async Task<Review?> GetReviewWithDetailsAsync(int reviewId)
     {
@@ -137,9 +128,12 @@ public class ReviewRepository : IReviewRepository
             .Include(r => r.Booking)
                 .ThenInclude(b => b.Offer)
             .Include(r => r.Guest)
-            .FirstOrDefaultAsync(r => r.Id == reviewId);
+            .FirstOrDefaultAsync(r => r.Id == reviewId && !r.IsArchive);
     }
 
+    /// <summary>
+    /// Gets review by ID
+    /// </summary>
     /// <summary>
     /// Gets review by ID
     /// </summary>
