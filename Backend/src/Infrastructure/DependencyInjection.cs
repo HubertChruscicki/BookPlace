@@ -131,9 +131,9 @@ public static class DependencyInjection
         services.AddScoped<IAuthorizationHandler, ReviewEligibilityAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, ConversationParticipantAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, MessageOwnerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, GuestOnlyAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, ConversationInitiatorAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, OfferViewAuthorizationHandler>();
-        services.AddScoped<IAuthorizationHandler, OfferOwnerAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, HostRoleAuthorizationHandler>();
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IOfferRepository, OfferRepository>();
