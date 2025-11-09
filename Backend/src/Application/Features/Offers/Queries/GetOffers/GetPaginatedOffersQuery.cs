@@ -7,11 +7,13 @@ namespace Application.Features.Offers.Queries.GetOffers;
 /// <summary>
 /// Query for retrieving paginated offers with filtering options
 /// </summary>
-public class GetPaginatedOffersQuery : IRequest<PageResult<OfferDto>>
+public class GetPaginatedOffersQuery : IRequest<PageResult<OfferSummaryDto>>
 {
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 10;
     public string? City { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
+    public DateTime? CheckInDate { get; set; }
+    public DateTime? CheckOutDate { get; set; }
 }

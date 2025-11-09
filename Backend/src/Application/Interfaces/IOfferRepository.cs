@@ -1,5 +1,4 @@
 ﻿using Application.Common.Pagination;
-using Application.Features.Offers.Queries;
 using Application.Features.Offers.Queries.GetOffers;
 using Domain.Entities;
 

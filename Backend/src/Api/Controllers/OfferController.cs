@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Application.Features.Bookings.Queries.GetBusyDates;
 using Application.Features.Offers.Queries.GetOffers;
+using Application.Features.Offers.Queries.GetOfferById;
 
 namespace Api.Controllers;
 
@@ -36,9 +37,28 @@ public class OfferController : ControllerBase
             PageSize = request.PageSize,
             City = request.City,
             MinPrice = request.MinPrice,
-            MaxPrice = request.MaxPrice
+            MaxPrice = request.MaxPrice,
+            CheckInDate = request.CheckInDate,
+            CheckOutDate = request.CheckOutDate
         };
 
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Retrieves a specific offer by ID with full details
+    /// </summary>
+    /// <param name="id">Offer ID</param>
+    /// <returns>Complete offer details with all photos and amenities</returns>
+    /// <response code="200">Offer details retrieved successfully</response>
+    /// <response code="404">Offer not found</response>
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetOfferById(int id)
+    {
+        var query = new GetOfferByIdQuery { OfferId = id };
         var result = await _mediator.Send(query);
         return Ok(result);
     }

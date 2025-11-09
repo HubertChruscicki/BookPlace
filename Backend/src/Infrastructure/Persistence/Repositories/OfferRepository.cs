@@ -1,5 +1,4 @@
 ﻿using Application.Common.Pagination;
-using Application.Features.Offers.Queries;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Interfaces;
 using Domain.Entities;
@@ -32,27 +31,51 @@ public class OfferRepository : IOfferRepository
         CancellationToken ct
     )
     {
-        IQueryable<Offer> offerQuery = _context.Offers
-            .Include(o => o.OfferType) //TODO WSZYSTKIE RELACJE
-            .AsNoTracking();
-        
+        var offerQuery = _context.Offers
+            .AsNoTracking()
+            .Include(o => o.OfferType)
+            .Include(o => o.Host)
+            .Include(o => o.Photos.Where(p => p.IsCover))
+            .Include(o => o.Bookings)
+            .Where(o => o.Status == Domain.Enums.OfferStatus.Active && !o.IsArchive);
+
         if (!string.IsNullOrEmpty(query.City))
         {
-            offerQuery = offerQuery.Where(o => o.AddressCity == query.City);
+            offerQuery = offerQuery.Where(o => 
+                o.AddressCity.ToLower().Contains(query.City.ToLower()));
         }
+
         if (query.MinPrice.HasValue)
         {
             offerQuery = offerQuery.Where(o => o.PricePerNight >= query.MinPrice.Value);
         }
-        // ... inne filtry
-        
-        // offerQuery = offerQuery.OrderByDescending(o => o.CreatedAt);
-        
-        return await offerQuery.ToPageResultAsync(
-            query.PageNumber,
-            query.PageSize,
-            ct
-        );
+
+        if (query.MaxPrice.HasValue)
+        {
+            offerQuery = offerQuery.Where(o => o.PricePerNight <= query.MaxPrice.Value);
+        }
+
+        if (query.CheckInDate.HasValue && query.CheckOutDate.HasValue)
+        {
+            var totalOffersBeforeFilter = await _context.Offers
+                .Where(o => o.Status == Domain.Enums.OfferStatus.Active && !o.IsArchive)
+                .CountAsync(ct);
+            
+            Console.WriteLine($"[DEBUG] Total active offers before date filtering: {totalOffersBeforeFilter}");
+            Console.WriteLine($"[DEBUG] Filtering offers with CheckIn: {query.CheckInDate.Value:yyyy-MM-dd HH:mm:ss}, CheckOut: {query.CheckOutDate.Value:yyyy-MM-dd HH:mm:ss}");
+            
+            offerQuery = offerQuery.Where(o => !o.Bookings.Any(b =>
+                (b.Status == BookingStatus.Pending || 
+                 b.Status == BookingStatus.Confirmed ||
+                 b.Status == BookingStatus.Completed) &&
+                b.CheckInDate < query.CheckOutDate.Value &&
+                b.CheckOutDate > query.CheckInDate.Value));
+                
+            var totalOffersAfterFilter = await offerQuery.CountAsync(ct);
+            Console.WriteLine($"[DEBUG] Total offers after date filtering: {totalOffersAfterFilter}");
+        }
+
+        return await offerQuery.ToPageResultAsync(query.PageNumber, query.PageSize, ct);
     }
 
     /// <summary>
@@ -123,6 +146,10 @@ public class OfferRepository : IOfferRepository
     public async Task<Offer?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _context.Offers
+            .Include(o => o.OfferType)
+            .Include(o => o.Amenities)
+            .Include(o => o.Photos.OrderBy(p => p.SortOrder))
+            .Include(o => o.Host)
             .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }

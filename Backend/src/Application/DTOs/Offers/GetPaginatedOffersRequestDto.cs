@@ -52,4 +52,14 @@ public class GetPaginatedOffersRequestDto
     /// Filter by amenities (comma-separated list of amenity IDs)
     /// </summary>
     public string? Amenities { get; set; }
+
+    /// <summary>
+    /// Check-in date for availability filtering
+    /// </summary>
+    public DateTime? CheckInDate { get; set; }
+
+    /// <summary>
+    /// Check-out date for availability filtering
+    /// </summary>
+    public DateTime? CheckOutDate { get; set; }
 }

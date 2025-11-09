@@ -120,4 +120,34 @@ public class Offer
 
         Photos.Add(photo);
     }
+
+    /// <summary>
+    /// Archives the offer (soft delete)
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown when offer is already archived</exception>
+    public void Archive()
+    {
+        if (IsArchive)
+        {
+            throw new InvalidOperationException("Offer is already archived");
+        }
+
+        IsArchive = true;
+        Status = OfferStatus.Inactive;
+    }
+
+    /// <summary>
+    /// Restores the offer from archive
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown when offer is not archived</exception>
+    public void Restore()
+    {
+        if (!IsArchive)
+        {
+            throw new InvalidOperationException("Offer is not archived");
+        }
+
+        IsArchive = false;
+        Status = OfferStatus.Active;
+    }
 }
