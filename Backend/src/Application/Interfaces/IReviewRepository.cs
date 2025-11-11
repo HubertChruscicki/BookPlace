@@ -9,9 +9,9 @@ namespace Application.Interfaces;
 /// </summary>
 public interface IReviewRepository
 {
-    Task<Review> CreateAsync(Review review);
-    Task<bool> ExistsForBookingAsync(int bookingId);
+    Task CreateAsync(Review review);
     Task UpdateAsync(Review review);
+    Task<bool> ExistsForBookingAsync(int bookingId);
     Task<Review?> GetReviewWithDetailsAsync(int reviewId);
     Task<Review?> GetByIdAsync(int id);
     

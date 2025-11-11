@@ -107,15 +107,9 @@ public class OfferRepository : IOfferRepository
     /// </summary>
     /// <param name="offer">Offer entity to create</param>
     /// <returns>Created offer with assigned ID</returns>
-    public async Task<Offer> CreateAsync(Offer offer)
+    public async Task CreateAsync(Offer offer)
     {
-        await _context.Offers.AddAsync(offer); //TODO TU USUNIETO JAKBY NIE DZIALALO SAVECHANGESASYNC
-
-        return await _context.Offers
-            .Include(o => o.OfferType)
-            .Include(o => o.Amenities)
-            .Include(o => o.Photos)
-            .FirstAsync(o => o.Id == offer.Id);
+        await _context.Offers.AddAsync(offer);
     }
 
     /// <summary>
@@ -123,15 +117,9 @@ public class OfferRepository : IOfferRepository
     /// </summary>
     /// <param name="offer">Offer entity to update</param>
     /// <returns>Updated offer</returns>
-    public async Task<Offer> UpdateAsync(Offer offer)
+    public async Task UpdateAsync(Offer offer)
     {
-        _context.Offers.Update(offer); //TODO TU USUNIETO JAKBY NIE DZIALALO SAVECHANGESASYNC
-
-        return await _context.Offers
-            .Include(o => o.OfferType)
-            .Include(o => o.Amenities)
-            .Include(o => o.Photos)
-            .FirstAsync(o => o.Id == offer.Id);
+        _context.Offers.Update(offer); 
     }
 
     /// <summary>

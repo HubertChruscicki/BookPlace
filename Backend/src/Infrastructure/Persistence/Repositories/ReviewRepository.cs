@@ -97,26 +97,23 @@ public class ReviewRepository : IReviewRepository
     /// <summary>
     /// Creates a new review
     /// </summary>
-    public async Task<Review> CreateAsync(Review review)
+    public async Task CreateAsync(Review review)
     {
-        _context.Reviews.Add(review);
-        await _context.SaveChangesAsync();
-        return review;
+        await _context.Reviews.AddAsync(review);
     }
     
-    public async Task<bool> ExistsForBookingAsync(int bookingId)
-    {
-        return await _context.Reviews.AnyAsync(r => r.BookingId == bookingId && !r.IsArchive);
-    }
-
     /// <summary>
     /// Updates an existing review
     /// </summary>
     public async Task UpdateAsync(Review review)
     {
         _context.Reviews.Update(review);
-        await _context.SaveChangesAsync();
     }
+    public async Task<bool> ExistsForBookingAsync(int bookingId)
+    {
+        return await _context.Reviews.AnyAsync(r => r.BookingId == bookingId && !r.IsArchive);
+    }
+
     
     /// <summary>
     /// Gets review with all details (photos, booking, offer) - only non-archived reviews

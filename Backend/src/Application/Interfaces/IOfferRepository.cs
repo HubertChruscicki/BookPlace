@@ -15,8 +15,8 @@ public interface IOfferRepository
         GetMyOffersQuery query,
         CancellationToken ct
     );
-    Task<Offer> CreateAsync(Offer offer);
-    Task<Offer> UpdateAsync(Offer offer);
+    Task CreateAsync(Offer offer);
+    Task UpdateAsync(Offer offer);
     Task<bool> OfferTypeExistsAsync(int offerTypeId);
     Task<List<Amenity>> GetAmenitiesByIdsAsync(List<int> amenityIds);
     Task<Offer?> GetByIdAsync(int id, CancellationToken cancellationToken = default);

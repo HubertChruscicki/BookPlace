@@ -70,18 +70,22 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
             }
         }
 
+        var review = Review.Create(
+            bookingId: booking.Id,
+            guestId: request.UserId,
+            offerId: booking.OfferId,
+            rating: request.ReviewData.Rating,
+            content: request.ReviewData.Content
+        );
+        
         await _unitOfWork.BeginTransactionAsync();
         try
         {
-            var review = Review.Create(
-                bookingId: booking.Id,
-                guestId: request.UserId,
-                offerId: booking.OfferId,
-                rating: request.ReviewData.Rating,
-                content: request.ReviewData.Content
-            );
+     
 
-            var createdReview = await _unitOfWork.Reviews.CreateAsync(review);
+            await _unitOfWork.Reviews.CreateAsync(review);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             
             if (request.ReviewData.Photos.Any())
             {
@@ -93,10 +97,10 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
                         var processedImage = await _imageProcessingService.ProcessImageAsync(
                             photoDto.Base64Data,
                             "reviews",
-                            createdReview.Id,
+                            review.Id,
                             i);
 
-                        createdReview.AddPhoto(
+                        review.AddPhoto(
                             originalUrl: processedImage.OriginalUrl,
                             thumbnailUrl: processedImage.ThumbnailUrl
                         );
@@ -106,13 +110,14 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
                         throw new ImageProcessingException(i, ex.Message, ex);
                     }
                 }
-                await _unitOfWork.Reviews.UpdateAsync(createdReview);
+                await _unitOfWork.Reviews.UpdateAsync(review);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             }
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync();
 
-            var resultReview = await _unitOfWork.Reviews.GetReviewWithDetailsAsync(createdReview.Id);
+            var resultReview = await _unitOfWork.Reviews.GetReviewWithDetailsAsync(review.Id);
             return _mapper.Map<ReviewDto>(resultReview);
         }
         catch

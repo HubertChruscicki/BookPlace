@@ -84,37 +84,37 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                 }
             }
         }
+        var offer = Offer.Create(
+            hostId: request.UserId,
+            offerTypeId: offerData.OfferTypeId,
+            title: offerData.Title,
+            description: offerData.Description,
+            pricePerNight: offerData.PricePerNight,
+            maxGuests: offerData.MaxGuests,
+            rooms: offerData.Rooms,
+            singleBeds: offerData.SingleBeds,
+            doubleBeds: offerData.DoubleBeds,
+            sofas: offerData.Sofas,
+            bathrooms: offerData.Bathrooms,
+            addressStreet: offerData.AddressStreet,
+            addressCity: offerData.AddressCity,
+            addressZipCode: offerData.AddressZipCode,
+            addressCountry: offerData.AddressCountry,
+            addressLatitude: offerData.AddressLatitude,
+            addressLongitude: offerData.AddressLongitude
+        );
+
+        foreach (var amenity in amenities)
+        {
+            offer.Amenities.Add(amenity);
+        }
 
         await _unitOfWork.BeginTransactionAsync();
-        
+
         try
         {
-            var offer = Offer.Create(
-                hostId: request.UserId,
-                offerTypeId: offerData.OfferTypeId,
-                title: offerData.Title,
-                description: offerData.Description,
-                pricePerNight: offerData.PricePerNight,
-                maxGuests: offerData.MaxGuests,
-                rooms: offerData.Rooms,
-                singleBeds: offerData.SingleBeds,
-                doubleBeds: offerData.DoubleBeds,
-                sofas: offerData.Sofas,
-                bathrooms: offerData.Bathrooms,
-                addressStreet: offerData.AddressStreet,
-                addressCity: offerData.AddressCity,
-                addressZipCode: offerData.AddressZipCode,
-                addressCountry: offerData.AddressCountry,
-                addressLatitude: offerData.AddressLatitude,
-                addressLongitude: offerData.AddressLongitude
-            );
-
-            foreach (var amenity in amenities)
-            {
-                offer.Amenities.Add(amenity);
-            }
-
-            var createdOffer = await _unitOfWork.Offers.CreateAsync(offer);
+            await _unitOfWork.Offers.CreateAsync(offer);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             if (offerData.Photos.Any())
             {
@@ -127,11 +127,11 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                         var processedImage = await _imageProcessingService.ProcessImageAsync(
                             photoDto.Base64Data, 
                             "offers",
-                            createdOffer.Id,
+                            offer.Id,
                             i);
 
 
-                        createdOffer.AddPhoto(
+                        offer.AddPhoto(
                             originalUrl: processedImage.OriginalUrl,
                             mediumUrl: processedImage.MediumUrl,
                             thumbnailUrl: processedImage.ThumbnailUrl,
@@ -145,13 +145,13 @@ public class CreateOfferCommandHandler : IRequestHandler<CreateOfferCommand, Cre
                     }
                 }
 
-                await _unitOfWork.Offers.UpdateAsync(createdOffer);
+                await _unitOfWork.Offers.UpdateAsync(offer);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
             await _unitOfWork.CommitTransactionAsync();
 
-            var response = _mapper.Map<CreateOfferResponseDto>(createdOffer);
+            var response = _mapper.Map<CreateOfferResponseDto>(offer);
             return response;
         }
         catch
