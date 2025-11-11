@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using Application.Common.Contracts;
 using Domain.Entities;
 using Infrastructure.Persistance;
 using Infrastructure.Services.Seeders;
@@ -16,6 +17,7 @@ using Infrastructure.Authorization.Handlers;
 using Infrastructure.Services;
 using Application.Mappings;
 using Domain.Interfaces;
+using Infrastructure.Configs;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
     
@@ -59,6 +61,8 @@ public static class DependencyInjection
         var jwtSettings = configuration.GetSection("JwtSettings");
         var secretKey = jwtSettings["SecretKey"];
 
+        services.Configure<BrevoSettings>(configuration.GetSection("BrevoSettings"));
+        
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -98,11 +102,17 @@ public static class DependencyInjection
         services.AddScoped<IOfferTypeSeederService, OfferTypeSeederService>();
         services.AddScoped<IAmenitySeederService, AmenitySeederService>();
         services.AddScoped<IDatabaseSeederService, DatabaseSeederService>();
-
+        services.AddScoped<IEmailService, BrevoEmailService>();
 
         services.AddMassTransit(x =>
         {
-            x.AddConsumers(Assembly.GetExecutingAssembly());
+            x.AddConsumers(typeof(BookingMade).Assembly);
+            x.AddEntityFrameworkOutbox<ApplicationDbContext>(o =>
+            {
+                o.UsePostgres();
+                o.QueryDelay = TimeSpan.FromSeconds(10);
+                o.UseBusOutbox();
+            });
             x.UsingRabbitMq(
                 (context, cfg) =>
                 {

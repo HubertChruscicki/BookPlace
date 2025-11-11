@@ -1,8 +1,11 @@
-﻿﻿using Application.DTOs.Bookings;
+﻿﻿using System.Security.Claims;
+ using Application.Common.Contracts;
+ using Application.DTOs.Bookings;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,13 +21,15 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
     private readonly IMapper _mapper;
     private readonly IAuthorizationService _authorizationService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IPublishEndpoint _publisher;
 
-    public CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authorizationService, IHttpContextAccessor httpContextAccessor)
+    public CreateBookingCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, IAuthorizationService authorizationService, IHttpContextAccessor httpContextAccessor, IPublishEndpoint publisher)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
         _authorizationService = authorizationService;
         _httpContextAccessor = httpContextAccessor;
+        _publisher = publisher;
     }
 
     /// <summary>
@@ -81,8 +86,32 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             CreatedAt = DateTime.UtcNow
         };
 
-        await _unitOfWork.Bookings.AddAsync(booking, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            await _unitOfWork.Bookings.AddAsync(booking, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        
+            var bookingMadeEvent = new BookingMade
+            {
+                BookingId = booking.Id,
+                RecipientEmail = user!.FindFirstValue(ClaimTypes.Email)!,
+                RecipientName = user!.FindFirstValue(ClaimTypes.GivenName)!,
+                OfferTitle = offer.Title,
+                OfferCity = offer.AddressCity,
+                OfferCountry = offer.AddressCountry,
+                CheckInDate = booking.CheckInDate,
+                CheckOutDate = booking.CheckOutDate
+            };
+            await _publisher.Publish(bookingMadeEvent, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.CommitTransactionAsync();
+        }
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackTransactionAsync();
+            throw;
+        }
 
         return _mapper.Map<BookingDto>(booking);
     }

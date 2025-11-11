@@ -24,5 +24,6 @@ public class BookingDto
     public DateTime CreatedAt { get; set; }
     public string? OfferTitle { get; set; }
     public string? OfferCity { get; set; }
+    public string? OfferCountry { get; set; }
     public string? OfferCoverPhotoUrl { get; set; }
 }

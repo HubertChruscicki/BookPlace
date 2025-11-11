@@ -49,6 +49,12 @@ coverage/
 
 ## OS files
 Thumbs.db
+
+## Environment files
+.env
+.env.local
+.env.production
+.env.development
 .DS_Store
 
 ## Local secrets / environment files (keep developer-local settings out of git)

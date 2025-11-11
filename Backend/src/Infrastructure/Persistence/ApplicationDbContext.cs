@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -88,5 +89,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
         builder.Entity<ActiveToken>()
             .HasIndex(at => at.ExpiresAt);
+        
+        builder.AddInboxStateEntity();
+        builder.AddOutboxStateEntity();
+        builder.AddOutboxMessageEntity();
     }
 }
