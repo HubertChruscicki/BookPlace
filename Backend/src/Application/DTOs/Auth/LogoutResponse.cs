@@ -8,5 +8,4 @@ public class LogoutResponse
 {
     public string Message { get; set; } = "Successfully logged out";
     public DateTime LoggedOutAt { get; set; } = DateTime.UtcNow;
-    public int TokensInvalidated { get; set; }
 }

@@ -78,10 +78,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
             _logger.LogInformation("User {UserId} logged out successfully. {TokenCount} tokens removed from whitelist.", 
                 request.UserId, tokensToRemove.Count);
 
-            return new LogoutResponse
-            {
-                TokensInvalidated = tokensToRemove.Count
-            };
+            return new LogoutResponse { };
         }
         catch (Exception ex) when (!(ex is UnauthorizedAccessException))
         {

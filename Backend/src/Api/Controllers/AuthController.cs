@@ -26,6 +26,51 @@ public class AuthController : ControllerBase
     {
         _mediator = mediator;
     }
+    
+    /// <summary>
+    /// Sets HttpOnly cookies for access and refresh tokens
+    /// </summary>
+    private void SetAuthCookies(string accessToken, string refreshToken)
+    {
+        var accessCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Path = "/",
+            Expires = DateTime.UtcNow.AddMinutes(15)
+        };
+
+        var refreshCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Path = "/api/auth/refresh",
+            Expires = DateTime.UtcNow.AddDays(7)
+        };
+
+        Response.Cookies.Append("access_token", accessToken, accessCookieOptions);
+        Response.Cookies.Append("refresh_token", refreshToken, refreshCookieOptions);
+    }
+
+    /// <summary>
+    /// Clears authentication cookies
+    /// </summary>
+    private void ClearAuthCookies()
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Path = "/",
+            Expires = DateTime.UtcNow.AddDays(-1)
+        };
+
+        Response.Cookies.Append("access_token", "", cookieOptions);
+        Response.Cookies.Append("refresh_token", "", cookieOptions);
+    }
 
     /// <summary>
     /// Registers a new user account in the system.
@@ -51,7 +96,12 @@ public class AuthController : ControllerBase
         };
 
         var response = await _mediator.Send(command);
-        return Ok(response);
+        SetAuthCookies(response.AccessToken, response.RefreshToken);
+        return Ok(new AuthResponse
+        {
+            ExpiresAt = response.ExpiresAt,
+            User = response.User
+        });    
     }
 
     /// <summary>
@@ -74,13 +124,17 @@ public class AuthController : ControllerBase
             Password = request.Password 
         };
         var response = await _mediator.Send(query);
-        return Ok(response);
+        SetAuthCookies(response.AccessToken, response.RefreshToken);
+        return Ok(new AuthResponse
+        {
+            ExpiresAt = response.ExpiresAt,
+            User = response.User
+        });    
     }
 
     /// <summary>
     /// Refreshes an expired access token using a valid refresh token.
     /// </summary>
-    /// <param name="request">Refresh token request containing the refresh token</param>
     /// <returns>New authentication response with fresh JWT tokens</returns>
     /// <response code="200">Tokens successfully refreshed</response>
     /// <response code="401">Invalid or expired refresh token</response>
@@ -89,14 +143,26 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(AuthResponse), 200)]
     [ProducesResponseType(401)]
     [ProducesResponseType(500)]
-    public async Task<ActionResult<AuthResponse>> RefreshToken(RefreshTokenRequest request)
+    public async Task<ActionResult<AuthResponse>> RefreshToken()
     {
-        var command = new RefreshTokenCommand 
-        { 
-            RefreshToken = request.RefreshToken 
-        };
+        var refreshToken = Request.Cookies["refresh_token"];
+        
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            ClearAuthCookies();
+            return Unauthorized("Refresh token not found");
+        }
+
+        var command = new RefreshTokenCommand { RefreshToken = refreshToken };
         var response = await _mediator.Send(command);
-        return Ok(response);
+        
+        SetAuthCookies(response.AccessToken, response.RefreshToken);
+        
+        return Ok(new AuthResponse
+        {
+            ExpiresAt = response.ExpiresAt,
+            User = response.User
+        });
     }
 
     /// <summary>
@@ -121,7 +187,14 @@ public class AuthController : ControllerBase
         
         var command = new PromoteToHostCommand { UserId = userId };
         var response = await _mediator.Send(command);
-        return Ok(response);
+        
+        SetAuthCookies(response.AccessToken, response.RefreshToken);
+
+        return Ok(new AuthResponse
+        {
+            ExpiresAt = response.ExpiresAt,
+            User = response.User
+        });
     }
 
     /// <summary>
@@ -161,18 +234,25 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(LogoutResponse), 200)]
     [ProducesResponseType(400)]
     [ProducesResponseType(401)]
-    public async Task<ActionResult<LogoutResponse>> Logout(LogoutRequest request)
+    public async Task<ActionResult<LogoutResponse>> Logout()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        var accessToken = Request.Cookies["access_token"];
+        var refreshToken = Request.Cookies["refresh_token"];
         
-        var command = new LogoutCommand 
-        { 
-            UserId = userId,
-            AccessToken = request.AccessToken,
-            RefreshToken = request.RefreshToken
-        };
+        if (!string.IsNullOrEmpty(accessToken) && !string.IsNullOrEmpty(refreshToken))
+        {
+            var command = new LogoutCommand 
+            { 
+                UserId = userId,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
+            
+            await _mediator.Send(command);
+        }
         
-        var response = await _mediator.Send(command);
-        return Ok(response);
+        ClearAuthCookies();
+        return Ok(new LogoutResponse {});
     }
 }

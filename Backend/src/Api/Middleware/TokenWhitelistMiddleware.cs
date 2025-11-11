@@ -27,20 +27,13 @@ public class TokenWhitelistMiddleware
     /// <param name="dbContext">Database context for checking whitelisted tokens</param>
     public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext)
     {
-        if (!context.Request.Headers.ContainsKey("Authorization"))
+        var token = context.Request.Cookies["access_token"];      
+        
+        if (string.IsNullOrEmpty(token))
         {
             await _next(context);
             return;
         }
-
-        var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-        if (authHeader == null || !authHeader.StartsWith("Bearer "))
-        {
-            await _next(context);
-            return;
-        }
-
-        var token = authHeader.Substring("Bearer ".Length).Trim();
         
         try
         {
