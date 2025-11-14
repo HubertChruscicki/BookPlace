@@ -11,6 +11,9 @@ public interface IUnitOfWork
     IOfferRepository Offers { get; }
     IReviewRepository Reviews { get; }
     IActiveTokenRepository ActiveTokens { get; }
+    IConversationRepository Conversations { get; }
+    IMessageRepository Messages { get; }
+    
 
     /// <summary>
     /// Saves all changes to the database

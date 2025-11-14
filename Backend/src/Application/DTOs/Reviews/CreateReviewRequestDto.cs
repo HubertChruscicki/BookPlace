@@ -16,7 +16,6 @@ public class CreateReviewRequestDto
     [Required(ErrorMessage = "Content is required.")]
     [StringLength(1000, ErrorMessage = "Content cannot exceed 1000 characters.")]
     public string Content { get; set; } = string.Empty;
-
     public List<ReviewPhotoRequestDto> Photos { get; set; } = new List<ReviewPhotoRequestDto>();
 }
 

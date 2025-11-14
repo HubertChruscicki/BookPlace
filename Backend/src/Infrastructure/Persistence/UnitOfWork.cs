@@ -18,6 +18,8 @@ public class UnitOfWork : IUnitOfWork
     private IOfferRepository? _offers;
     private IReviewRepository? _reviews;
     private IActiveTokenRepository? _activeTokens;
+    private IConversationRepository? _conversations;
+    private IMessageRepository? _messages;
 
     /// <summary>
     /// Initializes a new instance of UnitOfWork
@@ -39,6 +41,12 @@ public class UnitOfWork : IUnitOfWork
 
     public IActiveTokenRepository ActiveTokens =>
         _activeTokens ??= new ActiveTokenRepository(_context);
+    
+    public IConversationRepository Conversations =>
+        _conversations ??= new ConversationRepository(_context);
+
+    public IMessageRepository Messages =>
+        _messages ??= new MessageRepository(_context);
 
     /// <summary>
     /// Saves all changes to the database

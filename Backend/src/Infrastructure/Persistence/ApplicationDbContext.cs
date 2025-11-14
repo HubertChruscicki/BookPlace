@@ -20,6 +20,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<ReviewPhoto> ReviewPhotos { get; set; }
     public DbSet<Conversation> Conversations { get; set; }
     public DbSet<Message> Messages { get; set; }
+    public DbSet<MessagePhoto> MessagePhotos { get; set; }
+
     public DbSet<ActiveToken> ActiveTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -2,9 +2,11 @@ namespace Domain.Entities;
 public class Conversation
 {
     public int Id { get; set; }
+    public int? BookingId { get; set; }
     public int? OfferId { get; set; }
     public int? ReviewId { get; set; }
     
+    public Booking? Booking { get; set; }
     public Offer? Offer { get; set; }
     public Review? Review { get; set; }
     public ICollection<User> Participants { get; set; } = new List<User>();

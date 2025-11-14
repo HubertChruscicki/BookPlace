@@ -1,7 +1,7 @@
 ﻿using Application.Common.Pagination;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistance.Extensions;
+namespace Infrastructure.Persistence.Extensions;
 
 public static class QueryableExtensions
 {
@@ -12,6 +12,18 @@ public static class QueryableExtensions
         CancellationToken ct)
     {
         var totalItemsCount = await query.CountAsync(ct);
+
+        if (pageNumber == 0)
+        {
+            if (totalItemsCount == 0)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                pageNumber = (int)Math.Ceiling((double)totalItemsCount / pageSize);
+            }
+        }
 
         var items = await query
             .Skip((pageNumber - 1) * pageSize)

@@ -4,7 +4,7 @@ using Application.Features.Offers.Queries.GetOffers;
 using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Persistance;
-using Infrastructure.Persistance.Extensions;
+using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
