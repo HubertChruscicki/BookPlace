@@ -55,11 +55,11 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Clears authentication cookies
+    /// Clears authentication cookies by setting them to expire in the past
     /// </summary>
     private void ClearAuthCookies()
     {
-        var cookieOptions = new CookieOptions
+        var accessCookieOptions = new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
@@ -68,8 +68,17 @@ public class AuthController : ControllerBase
             Expires = DateTime.UtcNow.AddDays(-1)
         };
 
-        Response.Cookies.Append("access_token", "", cookieOptions);
-        Response.Cookies.Append("refresh_token", "", cookieOptions);
+        var refreshCookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Path = "/api/auth/refresh",
+            Expires = DateTime.UtcNow.AddDays(-1)
+        };
+
+        Response.Cookies.Append("access_token", "", accessCookieOptions);
+        Response.Cookies.Append("refresh_token", "", refreshCookieOptions);
     }
 
     /// <summary>
@@ -222,9 +231,9 @@ public class AuthController : ControllerBase
 
     /// <summary>
     /// Logs out the current user by invalidating their JWT tokens.
-    /// Adds both access and refresh tokens to blacklist to prevent reuse.
+    /// Retrieves tokens from HTTP cookies and adds them to blacklist to prevent reuse.
+    /// Clears authentication cookies from the browser.
     /// </summary>
-    /// <param name="request">Logout request containing access and refresh tokens</param>
     /// <returns>Confirmation message of successful logout with invalidation details</returns>
     /// <response code="200">User successfully logged out with tokens invalidated</response>
     /// <response code="400">Invalid tokens provided</response>
