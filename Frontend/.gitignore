@@ -1,39 +1,24 @@
-# .gitignore dla Frontend
-node_modules/
-dist/
-.vite/
-.vite-temp/
-.env*
-.idea/
+# Logs
+logs
 *.log
-package-lock.json
-
-# System plików
-.DS_Store
-Thumbs.db
-
-# Vite
-.vite/
-
-# VSCode
-.vscode/
-
-# Testy
-coverage/
-
-# Inne
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Pliki tymczasowe
-*.tmp
-*.temp
+node_modules
+dist
+dist-ssr
+*.local
 
-# Systemy operacyjne
-*.swp
-*.swo
-
-# Pliki generowane
-*.tsbuildinfo
-
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
