@@ -1,5 +1,5 @@
 ﻿import { Routes, Route } from 'react-router-dom';
-import HomePage from "./pages/HomePage.tsx";
+import LandingPage from "./pages/LandingPage.tsx";
 import MainLayout from './components/layout/MainLayout';
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
                 path="/" 
                 element={
                     <MainLayout>
-                        <HomePage />
+                        <LandingPage />
                     </MainLayout>
                 } 
             />

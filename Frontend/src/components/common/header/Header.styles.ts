@@ -2,7 +2,7 @@
 import {AppBar, Toolbar, Button} from '@mui/material';
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background.paper,
     borderBottom: '1px solid',
     borderBottomColor: theme.palette.divider,
 }));
@@ -13,7 +13,7 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     paddingRight: theme.spacing(2),
     minHeight: '64px',
     width: '100%',
-    maxWidth: '1800px',
+    maxWidth: '1600px',
     marginLeft: 'auto',
     marginRight: 'auto',
 

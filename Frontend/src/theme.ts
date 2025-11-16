@@ -14,7 +14,7 @@ export const theme = createTheme({
         },
         background: {
             default: '#f3f4f6',   // $color-gray-100
-            paper: '#ffffff',     // $color-white
+            paper: '#ececec',     // $color-white
         },
         text: {
             primary: '#111827',   // $text-primary
@@ -61,9 +61,9 @@ export const theme = createTheme({
     breakpoints: {
         values: {
             xs: 0,
-            sm: 600,     
-            md: 960,     
-            lg: 1366,    
+            sm: 960,     
+            md: 1366,     
+            lg: 1600,    
             xl: 1920,
         },
     },
