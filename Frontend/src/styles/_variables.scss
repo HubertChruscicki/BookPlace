@@ -1,0 +1,80 @@
+﻿// =============================================================================
+// BOOKPLACE - SCSS VARIABLES
+// Simple color palette and breakpoints
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// COLORS
+// -----------------------------------------------------------------------------
+
+// Blue - main app colors
+$primary-blue: #2563eb;           
+$primary-blue-light: #3b82f6;     
+$primary-blue-dark: #1d4ed8;      
+
+// Yellow - accent color
+$accent-yellow: #fbbf24;          
+
+// Neutral colors
+$color-white: #ffffff;
+$color-gray-100: #f3f4f6;         
+$color-gray-500: #6b7280;         
+$color-gray-900: #111827;         
+$color-black: #000000;
+
+// Text colors
+$text-primary: $color-gray-900;    
+$text-secondary: $color-gray-500;  
+$text-white: $color-white;         
+
+// -----------------------------------------------------------------------------
+// TYPOGRAPHY
+// -----------------------------------------------------------------------------
+
+// Main font
+$font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+// Font sizes
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+$font-size-3xl: 1.875rem; // 30px
+
+// Font weights
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// -----------------------------------------------------------------------------
+// BREAKPOINTS
+// -----------------------------------------------------------------------------
+
+// Mobile (xs)
+$mobile-max: 599px;     // 0px - 599px
+// Tablet (sm)
+$tablet-min: 600px;     // 600px - 899px
+$tablet-max: 899px;
+
+// Tablet (md)
+$laptop-min: 900px;     // 900px - 1199px
+$laptop-max: 1199px;
+
+// Stand Desktop (lg)
+$desktop-min: 1200px;   // 1200px - 1535px
+$desktop-max: 1535px;
+
+// Large Desktop (xl)
+$desktop-large-min: 1536px; // 1536px+
+
+// -----------------------------------------------------------------------------
+// BASIC SPACING
+// -----------------------------------------------------------------------------
+
+$spacing-sm: 0.5rem;   // 8px
+$spacing-md: 1rem;     // 16px
+$spacing-lg: 1.5rem;   // 24px
+$spacing-xl: 2rem;     // 32px
+
+
