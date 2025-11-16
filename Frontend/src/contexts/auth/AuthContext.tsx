@@ -1,9 +1,9 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type {AuthContextType} from "../models/AuthModels.ts";
-import type {User} from "../models/UserModels.ts";
-import {apiLogin, apiLogout, fetchCurrentUser} from "../api/auth.api.ts";
 import { AuthContext } from './auth.context';
+import type {User} from "../../models/UserModels.ts";
+import {apiLogin, apiLogout, apiRegister, fetchCurrentUser} from "../../api/auth.api.ts";
+import type {AuthContextType, LoginCredentials, RegisterCredentials, AuthResponse} from "../../models/AuthModels.ts";
 
 const USER_QUERY_KEY = ['currentUser'];
 
@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     const {
-        mutateAsync: login,
+        mutateAsync: loginMutation,
         isPending: isLoggingIn,
         error: loginError
     } = useMutation({
@@ -32,12 +32,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     });
 
+    const {
+        mutateAsync: registerMutation
+    } = useMutation({
+        mutationFn: apiRegister,
+        onSuccess: (data) => {
+            queryClient.setQueryData(USER_QUERY_KEY, data.user);
+        },
+        onError: () => {
+            queryClient.setQueryData(USER_QUERY_KEY, null);
+        }
+    });
+    const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+        return await loginMutation(credentials);
+    };
+
+    const register = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
+        return await registerMutation(credentials);
+    };
+
     const { mutateAsync: logout } = useMutation({
         mutationFn: apiLogout,
         onSuccess: () => {
             queryClient.setQueryData(USER_QUERY_KEY, null);
             queryClient.clear();
         },
+        onError: (error) => {
+            console.error('Logout error:', error);
+            queryClient.setQueryData(USER_QUERY_KEY, null);
+            queryClient.clear();
+        }
     });
 
     const isAuthenticated = !!user && !isError;
@@ -47,6 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated,
         isLoading,
         login,
+        register,
         logout,
         isLoggingIn,
         loginError: loginError || null,
@@ -55,6 +80,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return (
         <AuthContext.Provider value={value}>
             {children}
-            </AuthContext.Provider>
+        </AuthContext.Provider>
     );
 };
