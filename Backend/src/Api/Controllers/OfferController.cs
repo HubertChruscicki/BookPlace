@@ -48,7 +48,8 @@ public class OfferController : ControllerBase
             OfferTypeId = request.OfferTypeId,
             AmenityIds = request.Amenities,
             CheckInDate = request.CheckInDate,
-            CheckOutDate = request.CheckOutDate
+            CheckOutDate = request.CheckOutDate,
+            SortBy = request.SortBy
         };
 
         var result = await _mediator.Send(query);

@@ -84,6 +84,13 @@ public class OfferRepository : IOfferRepository
                 b.CheckOutDate > query.CheckInDate.Value));
         }
 
+        offerQuery = query.SortBy switch
+        {
+            OfferSortBy.PriceAsc => offerQuery.OrderBy(o => o.PricePerNight),
+            OfferSortBy.PriceDesc => offerQuery.OrderByDescending(o => o.PricePerNight),
+            _ => offerQuery.OrderBy(o => o.PricePerNight) // Default fallback
+        };
+
         return await offerQuery.ToPageResultAsync(query.PageNumber, query.PageSize, ct);
     }
 

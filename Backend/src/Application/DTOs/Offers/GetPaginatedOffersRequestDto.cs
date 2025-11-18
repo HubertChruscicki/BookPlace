@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Enums;
 
 namespace Application.DTOs.Offers;
 
@@ -64,4 +65,9 @@ public class GetPaginatedOffersRequestDto
     /// </summary>
     /// <example>2025-11-20</example>
     public DateOnly? CheckOutDate { get; set; }
+
+    /// <summary>
+    /// Sort offers by specified criteria (default: PriceAsc)
+    /// </summary>
+    public OfferSortBy SortBy { get; set; } = OfferSortBy.PriceAsc;
 }

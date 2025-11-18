@@ -1,5 +1,6 @@
 ﻿using Application.Common.Pagination;
 using Application.DTOs.Offers;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Offers.Queries.GetOffers;
@@ -19,4 +20,5 @@ public class GetPaginatedOffersQuery : IRequest<PageResult<OfferSummaryDto>>
     public List<int>? AmenityIds { get; set; }
     public DateOnly? CheckInDate { get; set; }
     public DateOnly? CheckOutDate { get; set; }
+    public OfferSortBy SortBy { get; set; } = OfferSortBy.PriceAsc;
 }
