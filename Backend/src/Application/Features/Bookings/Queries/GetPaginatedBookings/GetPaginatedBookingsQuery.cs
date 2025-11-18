@@ -14,7 +14,7 @@ public class GetPaginatedBookingsQuery : IRequest<PageResult<BookingDto>>
     public required string Role { get; set; }
     public string Status { get; set; }
     public int? OfferId { get; set; }
-    public DateTime? DateFrom { get; set; }
-    public DateTime? DateTo { get; set; }
+    public DateOnly? DateFrom { get; set; }
+    public DateOnly? DateTo { get; set; }
     public string UserId { get; set; } = string.Empty;
 }

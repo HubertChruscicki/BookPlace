@@ -1,4 +1,4 @@
-﻿﻿using System.Security.Claims;
+﻿using System.Security.Claims;
  using Application.Common.Contracts;
  using Application.DTOs.Bookings;
 using Application.Interfaces;
@@ -78,8 +78,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         {
             GuestId = request.GuestId,
             OfferId = request.OfferId,
-            CheckInDate = request.CheckInDate.Date, 
-            CheckOutDate = request.CheckOutDate.Date,
+            CheckInDate = request.CheckInDate,
+            CheckOutDate = request.CheckOutDate,
             NumberOfGuests = request.NumberOfGuests,
             TotalPrice = totalPrice,
             Status = BookingStatus.Confirmed,
@@ -140,7 +140,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         {
             throw new InvalidOperationException("Check-in date must be before check-out date");
         }
-        if (request.CheckInDate.Date < DateTime.UtcNow.Date)
+        if (request.CheckInDate < DateOnly.FromDateTime(DateTime.UtcNow))
         {
             throw new InvalidOperationException("Check-in date cannot be in the past");
         }
@@ -157,9 +157,9 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
     /// <param name="checkInDate">Check-in date</param>
     /// <param name="checkOutDate">Check-out date</param>
     /// <returns>Total calculated price</returns>
-    private static decimal CalculateTotalPrice(decimal pricePerNight, DateTime checkInDate, DateTime checkOutDate)
+    private static decimal CalculateTotalPrice(decimal pricePerNight, DateOnly checkInDate, DateOnly checkOutDate)
     {
-        var numberOfNights = (checkOutDate.Date - checkInDate.Date).Days;
+        var numberOfNights = (checkOutDate.ToDateTime(TimeOnly.MinValue) - checkInDate.ToDateTime(TimeOnly.MinValue)).Days;
         return pricePerNight * numberOfNights;
     }
 }

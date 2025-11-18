@@ -21,6 +21,6 @@ public class GetPaginatedBookingsRequestDto
 
     [Range(1, int.MaxValue, ErrorMessage = "Offer ID must be greater than 0")]
     public int? OfferId { get; set; }
-    public DateTime? DateFrom { get; set; }
-    public DateTime? DateTo { get; set; }
+    public DateOnly? DateFrom { get; set; }
+    public DateOnly? DateTo { get; set; }
 }

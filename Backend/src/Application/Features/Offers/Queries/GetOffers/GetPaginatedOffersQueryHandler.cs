@@ -32,9 +32,9 @@ public class GetPaginatedOffersQueryHandler
 
         if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
         {
-            var today = DateTime.UtcNow.Date; 
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
-            if (request.CheckInDate.Value.Date < today)
+            if (request.CheckInDate.Value < today)
             {
                 throw new InvalidOperationException(
                     "Check-in date cannot be in the past.");

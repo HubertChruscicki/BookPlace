@@ -49,17 +49,19 @@ public class GetPaginatedOffersRequestDto
     public int? OfferTypeId { get; set; }
 
     /// <summary>
-    /// Filter by amenities (comma-separated list of amenity IDs)
+    /// Filter by amenities (list of amenity IDs)
     /// </summary>
-    public string? Amenities { get; set; }
+    public List<int>? Amenities { get; set; }
 
     /// <summary>
-    /// Check-in date for availability filtering
+    /// Check-in date for availability filtering (format: YYYY-MM-DD)
     /// </summary>
-    public DateTime? CheckInDate { get; set; }
+    /// <example>2025-11-18</example>
+    public DateOnly? CheckInDate { get; set; }
 
     /// <summary>
-    /// Check-out date for availability filtering
+    /// Check-out date for availability filtering (format: YYYY-MM-DD)
     /// </summary>
-    public DateTime? CheckOutDate { get; set; }
+    /// <example>2025-11-20</example>
+    public DateOnly? CheckOutDate { get; set; }
 }

@@ -44,6 +44,9 @@ public class OfferController : ControllerBase
             City = request.City,
             MinPrice = request.MinPrice,
             MaxPrice = request.MaxPrice,
+            Guests = request.Guests,
+            OfferTypeId = request.OfferTypeId,
+            AmenityIds = request.Amenities,
             CheckInDate = request.CheckInDate,
             CheckOutDate = request.CheckOutDate
         };

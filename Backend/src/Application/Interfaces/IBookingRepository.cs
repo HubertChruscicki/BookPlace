@@ -36,7 +36,7 @@ public interface IBookingRepository
     /// <param name="checkOutDate">Check-out date</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the date range is available, false otherwise</returns>
-    Task<bool> IsDateRangeAvailableAsync(int offerId, DateTime checkInDate, DateTime checkOutDate, CancellationToken cancellationToken = default);
+    Task<bool> IsDateRangeAvailableAsync(int offerId, DateOnly checkInDate, DateOnly checkOutDate, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Gets all busy date ranges for a specific offer
@@ -44,7 +44,7 @@ public interface IBookingRepository
     /// <param name="offerId">The offer ID to get busy dates for</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>List of busy date ranges</returns>
-    Task<List<(DateTime StartDate, DateTime EndDate)>> GetBusyDatesAsync(int offerId, CancellationToken cancellationToken = default);
+    Task<List<(DateOnly StartDate, DateOnly EndDate)>> GetBusyDatesAsync(int offerId, CancellationToken cancellationToken = default);
     
     /// <summary>
     /// Gets busy dates for a specific offer filtered by month and year
@@ -75,7 +75,7 @@ public interface IBookingRepository
         string? role = null,
         string? status = null,
         int? offerId = null,
-        DateTime? dateFrom = null,
-        DateTime? dateTo = null,
+        DateOnly? dateFrom = null,
+        DateOnly? dateTo = null,
         CancellationToken cancellationToken = default);
 }

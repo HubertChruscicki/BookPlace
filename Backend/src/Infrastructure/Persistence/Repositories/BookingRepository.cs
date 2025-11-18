@@ -71,7 +71,7 @@ public class BookingRepository : IBookingRepository
     /// <param name="checkOutDate">Check-out date</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the date range is available, false otherwise</returns>
-    public async Task<bool> IsDateRangeAvailableAsync(int offerId, DateTime checkInDate, DateTime checkOutDate, CancellationToken cancellationToken = default)
+    public async Task<bool> IsDateRangeAvailableAsync(int offerId, DateOnly checkInDate, DateOnly checkOutDate, CancellationToken cancellationToken = default)
     {
         var overlappingBookings = await _context.Bookings
             .Where(b => b.OfferId == offerId 
@@ -89,11 +89,11 @@ public class BookingRepository : IBookingRepository
     /// <param name="offerId">The offer ID to get busy dates for</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>List of busy date ranges</returns>
-    public async Task<List<(DateTime StartDate, DateTime EndDate)>> GetBusyDatesAsync(int offerId, CancellationToken cancellationToken = default)
+    public async Task<List<(DateOnly StartDate, DateOnly EndDate)>> GetBusyDatesAsync(int offerId, CancellationToken cancellationToken = default)
     {
         return await _context.Bookings
             .Where(b => b.OfferId == offerId && b.Status == BookingStatus.Confirmed)
-            .Select(b => new ValueTuple<DateTime, DateTime>(b.CheckInDate, b.CheckOutDate))
+            .Select(b => new ValueTuple<DateOnly, DateOnly>(b.CheckInDate, b.CheckOutDate))
             .ToListAsync(cancellationToken);
     }
 
@@ -107,8 +107,8 @@ public class BookingRepository : IBookingRepository
     /// <returns>List of busy dates as strings</returns>
     public async Task<List<string>> GetBusyDatesForMonthAsync(int offerId, int month, int year, CancellationToken cancellationToken = default)
     {
-        var startOfMonth = DateTime.SpecifyKind(new DateTime(year, month, 1), DateTimeKind.Utc);
-        var endOfMonth = DateTime.SpecifyKind(startOfMonth.AddMonths(1), DateTimeKind.Utc);
+        var startOfMonth = new DateOnly(year, month, 1);
+        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
 
         var bookings = await _context.Bookings
             .Where(b => b.OfferId == offerId 
@@ -153,8 +153,8 @@ public class BookingRepository : IBookingRepository
         string? role = null,
         string? status = null,
         int? offerId = null,
-        DateTime? dateFrom = null,
-        DateTime? dateTo = null,
+        DateOnly? dateFrom = null,
+        DateOnly? dateTo = null,
         CancellationToken cancellationToken = default)
     {
         var query = _context.Bookings

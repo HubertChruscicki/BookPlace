@@ -12,10 +12,10 @@ public class CreateBookingRequestDto
     public int OfferId { get; set; }
 
     [Required(ErrorMessage = "Check-in date is required")]
-    public DateTime CheckInDate { get; set; }
+    public DateOnly CheckInDate { get; set; }
     
     [Required(ErrorMessage = "Check-out date is required")]
-    public DateTime CheckOutDate { get; set; }
+    public DateOnly CheckOutDate { get; set; }
     
     [Required(ErrorMessage = "Number of guests is required")]
     [Range(1, 50, ErrorMessage = "Number of guests must be between 1 and 50")]

@@ -8,6 +8,6 @@ public record BookingMade
     public string OfferTitle { get; set; } = String.Empty;
     public string OfferCity { get; set; } = String.Empty;
     public string OfferCountry { get; set; } = String.Empty;
-    public DateTime CheckInDate { get; set; }
-    public DateTime CheckOutDate { get; set; }
+    public DateOnly CheckInDate { get; set; }
+    public DateOnly CheckOutDate { get; set; }
 }

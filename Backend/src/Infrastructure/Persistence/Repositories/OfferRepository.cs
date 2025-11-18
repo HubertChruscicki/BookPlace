@@ -3,6 +3,7 @@ using Application.Features.Offers.Queries.GetMyOffers;
 using Application.Features.Offers.Queries.GetOffers;
 using Application.Interfaces;
 using Domain.Entities;
+using Domain.Enums;
 using Infrastructure.Persistance;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -37,8 +38,9 @@ public class OfferRepository : IOfferRepository
             .Include(o => o.OfferType)
             .Include(o => o.Host)
             .Include(o => o.Photos.Where(p => p.IsCover))
+            .Include(o => o.Amenities)
             .Include(o => o.Bookings)
-            .Where(o => o.Status == Domain.Enums.OfferStatus.Active && !o.IsArchive);
+            .Where(o => o.Status == OfferStatus.Active && !o.IsArchive);
 
         if (!string.IsNullOrEmpty(query.City))
         {
@@ -54,6 +56,22 @@ public class OfferRepository : IOfferRepository
         if (query.MaxPrice.HasValue)
         {
             offerQuery = offerQuery.Where(o => o.PricePerNight <= query.MaxPrice.Value);
+        }
+
+        if (query.Guests.HasValue)
+        {
+            offerQuery = offerQuery.Where(o => o.MaxGuests >= query.Guests.Value);
+        }
+
+        if (query.OfferTypeId.HasValue)
+        {
+            offerQuery = offerQuery.Where(o => o.OfferTypeId == query.OfferTypeId.Value);
+        }
+
+        if (query.AmenityIds != null && query.AmenityIds.Any())
+        {
+            offerQuery = offerQuery.Where(o => 
+                query.AmenityIds.All(amenityId => o.Amenities.Any(a => a.Id == amenityId)));
         }
 
         if (query.CheckInDate.HasValue && query.CheckOutDate.HasValue)
