@@ -11,7 +11,7 @@ interface HeaderProps {
 }
 const Header: React.FC<HeaderProps> = ({ showSearch = false, centerContent }) => {
   return (
-    <StyledAppBar position="relative" elevation={0}>
+    <StyledAppBar position="sticky" elevation={0}>
         <StyledToolbar>
             <BookPlaceLogo/>
             <HeaderCenterSection showSearch={showSearch} centerContent={centerContent} />

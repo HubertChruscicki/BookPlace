@@ -23,11 +23,28 @@ export interface OfferSummary {
     pricePerNight: number;
     maxGuests: number;
     rooms: number;
+    singleBeds: number;
+    doubleBeds: number;
+    sofas: number;
     bathrooms: number;
     status: string;
+    addressStreet: string;
+    addressCity: string;
+    addressZipCode: string;
+    addressCountry: string;
+    addressLatitude: number;
+    addressLongitude: number;
     fullAddress: string;
+    offerType: OfferType;
+    amenities: Amenity[];
     coverPhoto: OfferPhoto;
     createdAt: string;
+    updatedAt: string;
+}
+// @ts-ignore: TypeScript enum compatibility issue with erasableSyntaxOnly
+export enum OfferSortBy {
+    PriceAsc = 0,
+    PriceDesc = 1
 }
 
 export interface GetOffersParams {
@@ -38,14 +55,14 @@ export interface GetOffersParams {
     MaxPrice?: number;
     Guests?: number;
     OfferTypeId?: number;
-    Amenities?: string;
+    Amenities?: number[];
     CheckInDate?: string;
     CheckOutDate?: string;
-}
-export interface PageResult<T> {
-    items: T[];
-    totalPages: number;
-    totalItemsCount: number;
-    pageNumber: number;
-    pageSize: number;
+    SortBy?: OfferSortBy;
+    // Filter parameters for filters modal
+    Rooms?: number;
+    SingleBeds?: number;
+    DoubleBeds?: number;
+    Sofas?: number;
+    Bathrooms?: number;
 }

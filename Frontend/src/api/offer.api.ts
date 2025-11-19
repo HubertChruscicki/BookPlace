@@ -2,9 +2,9 @@
 import type {
     Amenity,
     GetOffersParams,
-    OfferSummary, OfferType,
-    PageResult
+    OfferSummary, OfferType
 } from '../models/OfferModels';
+import type { PageResult } from '../models/PageResultModel';
 
 export const fetchOffers = async (
     params: GetOffersParams
