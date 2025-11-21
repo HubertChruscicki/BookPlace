@@ -178,7 +178,12 @@ const SearchPage = () => {
                                     maxWidth: '400px'
                                 }}
                             >
-                                <OfferCard offer={offer} />
+                                <OfferCard 
+                                    offer={offer} 
+                                    checkInDate={params.CheckInDate}
+                                    checkOutDate={params.CheckOutDate}
+                                    guests={params.Guests}
+                                />
                             </Box>
                         ))}
                     </Box>

@@ -17,6 +17,13 @@ export interface OfferPhoto {
     sortOrder: number;
 }
 
+export interface OfferHost {
+    id?: number;
+    name: string;
+    avatarUrl?: string;
+    isSuperHost?: boolean;
+}
+
 export interface OfferSummary {
     id: number;
     title: string;
@@ -65,4 +72,28 @@ export interface GetOffersParams {
     DoubleBeds?: number;
     Sofas?: number;
     Bathrooms?: number;
+}
+
+export interface OfferDetail {
+    id: number;
+    title: string;
+    description: string;
+    pricePerNight: number;
+    maxGuests: number;
+    rooms: number;
+    bathrooms: number;
+    singleBeds: number;
+    doubleBeds: number;
+    sofas?: number;
+    addressCity: string;
+    addressCountry: string;
+    addressLatitude: number;
+    addressLongitude: number;
+    fullAddress: string;
+    amenities: Amenity[];
+    photos: OfferPhoto[];
+    offerType?: OfferType;
+    rating?: number;
+    reviewsCount?: number;
+    host?: OfferHost;
 }

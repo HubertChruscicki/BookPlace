@@ -2,6 +2,7 @@
 import LandingPage from "./pages/LandingPage.tsx";
 import MainLayout from './components/layout/MainLayout';
 import SearchPage from "./pages/SearchPage.tsx";
+import OfferPage from "./pages/OfferPage.tsx";
 
 export default function App() {
     return (
@@ -19,6 +20,14 @@ export default function App() {
                 element={
                     <MainLayout showSearch={true}>
                         <SearchPage />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/offer/:offerId"
+                element={
+                    <MainLayout showSearch={true}>
+                        <OfferPage/>
                     </MainLayout>
                 }
             />

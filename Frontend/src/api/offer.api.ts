@@ -1,7 +1,7 @@
 ﻿import apiClient from './apiClient';
 import type {
     Amenity,
-    GetOffersParams,
+    GetOffersParams, OfferDetail,
     OfferSummary, OfferType
 } from '../models/OfferModels';
 import type { PageResult } from '../models/PageResultModel';
@@ -16,6 +16,12 @@ export const fetchOffers = async (
 
     return data;
 };
+
+export const fetchOfferDetails = async (id: string | number): Promise<OfferDetail> => {
+    const { data } = await apiClient.get<OfferDetail>(`/Offer/${id}`);
+    return data;
+};
+
 export const fetchOfferTypes = async (): Promise<OfferType[]> => {
     const { data } = await apiClient.get<OfferType[]>('/Offer/types');
     return data;
@@ -24,3 +30,4 @@ export const fetchAmenities = async (): Promise<Amenity[]> => {
     const { data } = await apiClient.get<Amenity[]>('/Offer/amenities');
     return data;
 };
+

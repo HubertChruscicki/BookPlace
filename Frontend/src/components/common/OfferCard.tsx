@@ -8,21 +8,42 @@ import {
     Box,
     Rating,
 } from '@mui/material';
-import { LocationOn, People, Hotel, Bathtub } from '@mui/icons-material';
-import type { OfferSummary } from '../../models/OfferModels';
+import {LocationOn, People, Hotel, Bathtub} from '@mui/icons-material';
+import type {OfferSummary} from '../../models/OfferModels';
 import {theme} from "../../theme.ts";
 import {useNavigate} from "react-router-dom";
 
 interface OfferCardProps {
     offer: OfferSummary;
+    checkInDate?: string;
+    checkOutDate?: string;
+    guests?: number;
     //TODO REVIEW PROPS
 }
 
-export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
+export const OfferCard: React.FC<OfferCardProps> = ({offer, checkInDate, checkOutDate, guests}) => {
 
     const navigate = useNavigate();
     const handleBookNow = () => {
-        navigate('/offer/' + offer.id);
+        const queryParams = new URLSearchParams();
+
+        if (checkInDate) {
+            queryParams.set('CheckInDate', checkInDate);
+        }
+        if (checkOutDate) {
+            queryParams.set('CheckOutDate', checkOutDate);
+        }
+        if (guests !== undefined) {
+            queryParams.set('Guests', guests.toString());
+        }
+
+        const queryString = queryParams.toString();
+
+        if (queryString) {
+            navigate(`/offer/${offer.id}?${queryString}`);
+        } else {
+            navigate(`/offer/${offer.id}`);
+        }
     };
 
 
@@ -46,13 +67,13 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
         <Card
             sx={{
                 width: '100%',
-                flexGrow: 1, 
+                flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 3,
                 boxShadow: 3,
                 transition: 'all 0.3s ease',
-                height: '100%', 
+                height: '100%',
                 '&:hover': {
                     boxShadow: 8,
                     transform: 'translateY(-4px)'
@@ -77,20 +98,20 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                 flexDirection: 'column',
             }}>
 
-                <Box sx={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
-                    mb: 0.5 
+                    mb: 0.5
                 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
                         <Rating
                             name="read-only"
                             value={averageRating}
                             precision={0.5}
                             readOnly
                             size="small"
-                            sx={{ color: '#faaf00' }}
+                            sx={{color: '#faaf00'}}
                         />
                         <Typography variant="body2" color="text.secondary">
                             {averageRating.toFixed(1)}
@@ -149,7 +170,7 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                         mb: 1
                     }}
                 >
-                    <LocationOn sx={{ fontSize: 18, color: 'primary.main' }} />
+                    <LocationOn sx={{fontSize: 18, color: 'primary.main'}}/>
                     {offer.addressCity}, {offer.addressCountry}
                 </Typography>
 
@@ -162,21 +183,21 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                     borderTop: '1px solid #eee',
                     borderBottom: '1px solid #eee'
                 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <People sx={{ fontSize: 18, color: 'text.secondary' }} />
-                        <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                        <People sx={{fontSize: 18, color: 'text.secondary'}}/>
+                        <Typography variant="body2" color="text.primary" sx={{fontWeight: 500}}>
                             {offer.maxGuests} Guests
                         </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Hotel sx={{ fontSize: 18, color: 'text.secondary' }} />
-                        <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                        <Hotel sx={{fontSize: 18, color: 'text.secondary'}}/>
+                        <Typography variant="body2" color="text.primary" sx={{fontWeight: 500}}>
                             {offer.rooms} Rooms
                         </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Bathtub sx={{ fontSize: 18, color: 'text.secondary' }} />
-                        <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                        <Bathtub sx={{fontSize: 18, color: 'text.secondary'}}/>
+                        <Typography variant="body2" color="text.primary" sx={{fontWeight: 500}}>
                             {offer.bathrooms} Baths
                         </Typography>
                     </Box>
@@ -187,16 +208,17 @@ export const OfferCard: React.FC<OfferCardProps> = ({ offer }) => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        mt: 'auto', 
-                        
+                        mt: 'auto',
+
                         pt: 1
                     }}
                 >
                     <Box>
-                        <Typography variant="h5" component="span" sx={{ fontWeight: 700, color: theme.palette.primary.dark }}>
+                        <Typography variant="h5" component="span"
+                                    sx={{fontWeight: 700, color: theme.palette.primary.dark}}>
                             ${offer.pricePerNight.toFixed(2)}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" component="span" sx={{ ml: 0.5 }}>
+                        <Typography variant="body2" color="text.secondary" component="span" sx={{ml: 0.5}}>
                             / night
                         </Typography>
                     </Box>
