@@ -17,7 +17,7 @@ export default function App() {
             <Route
                 path="/search"
                 element={
-                    <MainLayout>
+                    <MainLayout showSearch={true}>
                         <SearchPage />
                     </MainLayout>
                 }

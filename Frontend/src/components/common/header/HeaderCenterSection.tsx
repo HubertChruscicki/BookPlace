@@ -1,5 +1,6 @@
 ﻿import React from 'react';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
+import HeaderSearch from './HeaderSearch';
 
 interface HeaderCenterSectionProps {
     showSearch?: boolean;
@@ -7,9 +8,6 @@ interface HeaderCenterSectionProps {
 }
 
 const HeaderCenterSection: React.FC<HeaderCenterSectionProps> = ({showSearch = false, centerContent}) => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
     return (
         <Box sx={{
             flexGrow: 1,
@@ -17,18 +15,7 @@ const HeaderCenterSection: React.FC<HeaderCenterSectionProps> = ({showSearch = f
             justifyContent: 'center',
             mx: { xs: 1, sm: 2, md: 4 }
         }}>
-            {centerContent || (showSearch && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: 'text.secondary',
-                        fontStyle: 'italic'
-                    }}
-                >
-                    {!isMobile && 'Search placeholder'}
-                </Box>
-            ))}
+            {centerContent || (showSearch && <HeaderSearch />)}
         </Box>
     );
 };

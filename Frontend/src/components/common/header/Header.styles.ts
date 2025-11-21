@@ -11,7 +11,7 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     justifyContent: 'space-between',
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
-    minHeight: '64px',
+    minHeight: '80px',
     width: '100%',
     maxWidth: '1600px',
     marginLeft: 'auto',
@@ -20,7 +20,7 @@ export const StyledToolbar = styled(Toolbar)(({ theme }) => ({
         [theme.breakpoints.up('sm')]: {
         paddingLeft: theme.spacing(3),
         paddingRight: theme.spacing(3),
-        minHeight: '70px',
+        minHeight: '80px',
     },
 
     [theme.breakpoints.up('md')]: {

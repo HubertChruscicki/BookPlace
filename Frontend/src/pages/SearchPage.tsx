@@ -95,7 +95,6 @@ const SearchPage = () => {
     const handleFiltersChange = (filters: FilterValues) => {
         const newParams = new URLSearchParams(searchParams);
         
-        // Remove existing filter params
         newParams.delete('MinPrice');
         newParams.delete('MaxPrice');
         newParams.delete('Rooms');

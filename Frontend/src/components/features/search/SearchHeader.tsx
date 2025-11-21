@@ -73,7 +73,6 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
      
 
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    {/* Sort Select */}
                     <FormControl size="small" sx={{ minWidth: 200,  }}>
                         <InputLabel id="sort-select-label">Sort</InputLabel>
                         <Select
