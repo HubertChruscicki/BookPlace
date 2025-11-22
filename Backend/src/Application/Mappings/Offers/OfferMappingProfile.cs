@@ -38,6 +38,7 @@ public class OfferMappingProfile : Profile
             .ForMember(dest => dest.OfferType, opt => opt.MapFrom(src => src.OfferType))
             .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.Amenities))
             .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos))
+            .ForMember(dest => dest.Host, opt => opt.MapFrom(src => src.Host))
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow)) // Tymczasowe mapowanie
             .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow)); // Tymczasowe mapowanie
 
@@ -54,5 +55,7 @@ public class OfferMappingProfile : Profile
         CreateMap<OfferType, OfferTypeDto>();
         CreateMap<Amenity, AmenityDto>();
         CreateMap<OfferPhoto, OfferPhotoDto>();
+        CreateMap<User, OfferHostDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => $"{src.Name} {src.Surname}".Trim()));
     }
 }

@@ -19,6 +19,7 @@ public class BookingMappingProfile : Profile
             .ForMember(dest => dest.OfferCoverPhotoUrl, opt => opt.MapFrom(src =>
                 src.Offer.Photos.Any(p => p.IsCover)
                     ? src.Offer.Photos.First(p => p.IsCover).ThumbnailUrl
-                    : null));
+                    : null))
+            .ForMember(dest => dest.Host, opt => opt.MapFrom(src => src.Offer.Host));
     }
 }

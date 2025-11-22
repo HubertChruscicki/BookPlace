@@ -1,7 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using Application.DTOs.Offers;
+using System.Text.Json.Serialization;
 using Domain.Entities;
 
 namespace Application.DTOs.Bookings;
+
+/// <summary>
+/// DTO representing a booking with offer summary and host details.
+/// </summary>
 public class BookingDto
 {
     public int Id { get; set; }
@@ -26,4 +31,5 @@ public class BookingDto
     public string? OfferCity { get; set; }
     public string? OfferCountry { get; set; }
     public string? OfferCoverPhotoUrl { get; set; }
+    public OfferHostDto Host { get; set; } = new();
 }

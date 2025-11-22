@@ -27,6 +27,7 @@ public class OfferDto
     public OfferTypeDto OfferType { get; set; } = new();
     public List<AmenityDto> Amenities { get; set; } = new();
     public List<OfferPhotoDto> Photos { get; set; } = new();
+    public OfferHostDto Host { get; set; } = new();
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
