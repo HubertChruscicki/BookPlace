@@ -22,7 +22,7 @@ const OfferMapSection: React.FC<OfferMapSectionProps> = ({ lat, lng, address, ci
                 </Typography>
             </Box>
 
-            <Box sx={{ height: 480, borderRadius: 4, overflow: 'hidden' }}>
+            <Box sx={{ maxHeight: 480, borderRadius: 4, overflow: 'hidden' }}>
                 <OfferMap
                     lat={lat}
                     lng={lng}

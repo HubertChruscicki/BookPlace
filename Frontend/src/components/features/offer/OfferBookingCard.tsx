@@ -88,9 +88,9 @@ const OfferBookingCard: React.FC<OfferBookingCardProps> = ({ pricePerNight, maxG
                             px: 3,
                             py: 1,
                             fontSize: '0.95rem',
-                            background: 'linear-gradient(45deg, #086cf3 30%, #1d4ed8 90%)',
+                            background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
                             '&:hover': {
-                                background: 'linear-gradient(45deg, #086cf3 30%, #1d4ed8 90%',
+                                background: 'linear-gradient(45deg, #1565c0 30%, #7b1fa2 90%)',
                             },
                             minWidth: '120px'
                         }}
@@ -151,10 +151,10 @@ const OfferBookingCard: React.FC<OfferBookingCardProps> = ({ pricePerNight, maxG
                         borderRadius: 3,
                         py: 1.5,
                         fontSize: '1.1rem',
-                        background: 'linear-gradient(45deg, #086cf3 30%, #1d4ed8 90%)',
+                        background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
                         '&:hover': {
-                            background: 'linear-gradient(45deg, #086cf3 30%, #1d4ed8 90%)',
-                        },
+                            background: 'linear-gradient(45deg, #1565c0 30%, #7b1fa2 90%)',
+                        }
                     }}
                 >
                     Reserve
@@ -165,13 +165,13 @@ const OfferBookingCard: React.FC<OfferBookingCardProps> = ({ pricePerNight, maxG
                 <>
                     <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography color="text.secondary" sx={{ textDecoration: 'underline' }}>
+                            <Typography color="text.secondary">
                                 ${pricePerNight} x {nights} nights
                             </Typography>
                             <Typography>${totalPrice.toFixed(2)}</Typography>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography color="text.secondary" sx={{ textDecoration: 'underline' }}>
+                            <Typography color="text.secondary">
                                 Service fee
                             </Typography>
                             <Typography>${serviceFee.toFixed(2)}</Typography>

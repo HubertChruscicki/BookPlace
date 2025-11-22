@@ -5,11 +5,11 @@ import { useOffer } from '../hooks/useOffers';
 import OfferHeader from "../components/features/offer/OfferHeader";
 import OfferPhotoGallery from '../components/features/offer/OfferPhotoGallery';
 import OfferInfoSection from '../components/features/offer/OfferInfoSection';
-import OfferHostInfo from '../components/features/offer/OfferHostInfo';
 import OfferAmenitiesSection from '../components/features/offer/OfferAmenitiesSection';
 import OfferMapSection from '../components/features/offer/OfferMapSection';
 import OfferBookingCard from '../components/features/offer/OfferBookingCard';
 import OfferDescriptionSection from '../components/features/offer/OfferDescriptionSection';
+import OfferReviewsSection from "../components/features/offer/OfferReviewsSection.tsx";
 
 const OfferPage: React.FC = () => {
     const { offerId } = useParams<{ offerId: string }>();
@@ -37,9 +37,6 @@ const OfferPage: React.FC = () => {
                     <OfferInfoSection offer={offer} />
                     <Divider />
 
-                    <OfferHostInfo host={offer.host} />
-                    <Divider />
-
                     <OfferDescriptionSection description={offer.description} />
                     <Divider />
 
@@ -53,6 +50,9 @@ const OfferPage: React.FC = () => {
                         city={offer.addressCity}
                         country={offer.addressCountry}
                     />
+                    <Divider />
+                    
+                    <OfferReviewsSection offer={offer} />
 
                 </Grid>
 
