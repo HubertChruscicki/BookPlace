@@ -14,7 +14,7 @@ import OfferReviewsSection from "../components/features/offer/OfferReviewsSectio
 const OfferPage: React.FC = () => {
     const { offerId } = useParams<{ offerId: string }>();
     const selectedOfferId = offerId ?? '';
-
+    
     const { data: offer, isLoading, isError } = useOffer(selectedOfferId);
 
     if (!selectedOfferId) {

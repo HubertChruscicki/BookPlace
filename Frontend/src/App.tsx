@@ -3,6 +3,8 @@ import LandingPage from "./pages/LandingPage.tsx";
 import MainLayout from './components/layout/MainLayout';
 import SearchPage from "./pages/SearchPage.tsx";
 import OfferPage from "./pages/OfferPage.tsx";
+import BookingCheckoutPage from './pages/BookingCheckoutPage.tsx';
+import BookingConfirmationPage from "./pages/BookingConfirmationPage.tsx";
 
 export default function App() {
     return (
@@ -28,6 +30,22 @@ export default function App() {
                 element={
                     <MainLayout showSearch={true}>
                         <OfferPage/>
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/booking/checkout"
+                element={
+                    <MainLayout>
+                        <BookingCheckoutPage />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/booking/confirmation"
+                element={
+                    <MainLayout>
+                        <BookingConfirmationPage/>
                     </MainLayout>
                 }
             />

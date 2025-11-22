@@ -40,12 +40,23 @@ const apiClient = axios.create({
     },
 });
 
+const AUTH_ENDPOINTS_TO_EXCLUDE = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/me'];
+
 apiClient.interceptors.response.use(
     (response) => response,
 
     async (error: AxiosError) => {
         const originalRequest = error.config as CustomAxiosRequestConfig;
+        const statusCode = error.response?.status;
+        const url = originalRequest.url ?? '';
 
+        const isAuthEndpoint = AUTH_ENDPOINTS_TO_EXCLUDE.some(endpoint => url.endsWith(endpoint));
+        
+        if (isAuthEndpoint) {
+            console.warn(`401 on Auth endpoint (${url}). Bypassing token refresh logic.`);
+            return Promise.reject(error);
+        }
+        
         if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
@@ -55,8 +66,13 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest);
 
             } catch (refreshError) {
+                window.location.href = '/';
                 return Promise.reject(refreshError);
             }
+        }
+        if (statusCode === 403) {
+            console.error('403 Forbidden: Access denied to this resource.');
+            window.location.href = '/403'; 
         }
 
         return Promise.reject(error);

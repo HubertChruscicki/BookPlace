@@ -259,9 +259,10 @@ const HeaderSearch = () => {
                         height: '48px',
                         borderRadius: '50%',
                         m: 0.5,
-                        background: 'linear-gradient(45deg, #1976d2 30%, #9c27b0 90%)',
+                        backgroundColor: 'primary.main',
+                        color: 'white',
                         '&:hover': {
-                            background: 'linear-gradient(45deg, #1565c0 30%, #7b1fa2 90%)',
+                            backgroundColor: 'primary.dark',
                         }
                     }}
                 >
