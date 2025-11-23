@@ -43,6 +43,8 @@ public class BookingRepository : IBookingRepository
                 .ThenInclude(o => o.Host)
             .Include(b => b.Offer)
                 .ThenInclude(o => o.Photos)
+            .Include(b => b.Offer)
+                .ThenInclude(o => o.OfferType)
             .Include(b => b.Guest)
             .AsNoTracking()
             .FirstOrDefaultAsync(b => b.Id == bookingId, cancellationToken);
@@ -162,6 +164,8 @@ public class BookingRepository : IBookingRepository
                 .ThenInclude(o => o.OfferType)
             .Include(b => b.Offer)
                 .ThenInclude(o => o.Photos)
+            .Include(b => b.Offer)
+                .ThenInclude(o => o.Host)
             .Include(b => b.Guest)
             .AsNoTracking();
 
