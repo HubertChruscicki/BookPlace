@@ -13,6 +13,7 @@ import {
     CalendarToday as CalendarIcon,
     LocationOn as LocationIcon,
     Chat as ChatIcon,
+    People as PeopleIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import type { BookingItem } from '../../models/BookingModels';
@@ -23,17 +24,12 @@ interface BookingCardProps {
 
 const getStatusColor = (status: string) => {
     switch (status) {
-        case 'Confirmed':
-            return 'success';
-        case 'Pending':
-            return 'warning';
-        case 'Completed':
-            return 'info';
+        case 'Confirmed': return 'success';
+        case 'Pending': return 'warning';
+        case 'Completed': return 'info';
         case 'CancelledByHost':
-        case 'CancelledByGuest':
-            return 'error';
-        default:
-            return 'default';
+        case 'CancelledByGuest': return 'error';
+        default: return 'default';
     }
 };
 
@@ -70,7 +66,6 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
     };
 
     const handleChatWithHost = () => {
-        // TODO: Navigate to chat when implemented
         console.log('Navigate to chat with host');
     };
 
@@ -78,8 +73,8 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
         .filter(Boolean)
         .join(', ');
 
-    const imageUrl = booking.offer.coverPhotoUrl?.startsWith('http') 
-        ? booking.offer.coverPhotoUrl 
+    const imageUrl = booking.offer.coverPhotoUrl?.startsWith('http')
+        ? booking.offer.coverPhotoUrl
         : `http://localhost:8080/${booking.offer.coverPhotoUrl}`;
 
     return (
@@ -111,7 +106,7 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
                     sx={{
                         position: 'absolute',
                         top: 12,
-                        right: 12,
+                        left: 12,
                     }}
                 >
                     <Chip
@@ -119,20 +114,21 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
                         color={getStatusColor(booking.status) as any}
                         size="small"
                         sx={{
-                            fontWeight: 600,
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            backdropFilter: 'blur(8px)',
+                            fontWeight: 700,
+                            borderRadius: 20,
+                            boxShadow: 1,
                         }}
                     />
                 </Box>
             </Box>
 
-            <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
+            <CardContent sx={{ flexGrow: 1, p: 2.5, display: 'flex', flexDirection: 'column' }}>
                 <Typography
                     variant="h6"
                     component="h3"
                     sx={{
-                        fontWeight: 600,
+                        fontWeight: 700,
+                        fontSize: '1.15rem',
                         mb: 1,
                         color: 'text.primary',
                         overflow: 'hidden',
@@ -142,79 +138,87 @@ const BookingCard: React.FC<BookingCardProps> = ({ booking }) => {
                 >
                     {booking.offer.title}
                 </Typography>
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        fontWeight: 600,
+                        color: 'text.primary',
+                        mb: 1.5,
+                    }}
+                >
+                    <LocationIcon sx={{fontSize: 18, color: 'primary.main'}}/>
+                    {location}
+                </Typography>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <LocationIcon 
-                        sx={{ 
-                            fontSize: 16, 
-                            color: 'text.secondary', 
-                            mr: 0.5 
-                        }} 
-                    />
-                    <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ fontSize: '0.875rem' }}
-                    >
-                        {location}
-                    </Typography>
-                </Box>
-
-                <Box sx={{ mb: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <CalendarIcon 
-                            sx={{ 
-                                fontSize: 16, 
-                                color: 'text.secondary', 
-                                mr: 0.5 
-                            }} 
-                        />
-                        <Typography variant="body2" color="text.secondary">
+                <Stack spacing={1} sx={{ mb: 2, gap: 0.5 }}>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                        <PeopleIcon sx={{fontSize: 18, color: 'text.secondary'}}/>
+                        <Typography variant="body2" color="text.primary" sx={{fontWeight: 500}}>
+                            {booking.numberOfGuests} Guest{booking.numberOfGuests > 1 ? 's' : ''}
+                        </Typography>
+                    </Box>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 0.5}}>
+                        <CalendarIcon sx={{fontSize: 18, color: 'text.secondary'}}/>
+                        <Typography variant="body2" color="text.primary" sx={{fontWeight: 500}}>
                             {formatDate(booking.checkInDate)} - {formatDate(booking.checkOutDate)}
                         </Typography>
                     </Box>
-                    
-                    <Typography variant="body2" color="text.secondary">
-                        Guests: {booking.numberOfGuests}
-                    </Typography>
-                </Box>
+                </Stack>
 
                 <Typography
-                    variant="h6"
+                    variant="h5"
+                    component="span"
                     sx={{
                         fontWeight: 700,
-                        color: 'primary.main',
-                        mb: 2,
+                        color: 'primary.dark',
+                        mt: 'auto',
+                        mb: 1.5,
                     }}
                 >
                     {booking.totalPrice.toLocaleString('en-US', {
                         style: 'currency',
                         currency: 'USD',
+                        minimumFractionDigits: 2,
                     })}
                 </Typography>
+
 
                 <Stack direction="row" spacing={1}>
                     <Button
                         variant="contained"
                         onClick={handleViewDetails}
+                        size="medium"
                         sx={{
-                            flex: 1,
-                            borderRadius: 2,
+                            borderRadius: 25,
+                            px: 3,
+                            fontWeight: 700,
                             textTransform: 'none',
-                            fontWeight: 600,
+                            flexGrow: 1,
+                            minHeight: 40,
                         }}
                     >
                         View Details
                     </Button>
-                    
+
                     {(booking.status === 'Confirmed' || booking.status === 'Pending') && (
                         <Button
                             variant="outlined"
                             onClick={handleChatWithHost}
+                            size="medium" 
                             sx={{
-                                minWidth: 'auto',
-                                p: 1,
-                                borderRadius: 2,
+                                minWidth: 40, 
+                                height: 40, 
+                                p: 0,
+                                borderRadius: '50%', 
+                                textTransform: 'none',
+                                flexShrink: 0,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
                         >
                             <ChatIcon fontSize="small" />
