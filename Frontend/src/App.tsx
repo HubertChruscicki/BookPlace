@@ -5,6 +5,8 @@ import SearchPage from "./pages/SearchPage.tsx";
 import OfferPage from "./pages/OfferPage.tsx";
 import BookingCheckoutPage from './pages/BookingCheckoutPage.tsx';
 import BookingConfirmationPage from "./pages/BookingConfirmationPage.tsx";
+import MyBookingsPage from "./pages/MyBookingsPage.tsx";
+import BookingDetailsPage from "./pages/BookingDetailsPage.tsx";
 
 export default function App() {
     return (
@@ -47,6 +49,22 @@ export default function App() {
                     <MainLayout>
                         <BookingConfirmationPage/>
                     </MainLayout>
+                }
+            />
+            <Route
+                path="/my-bookings"
+                element={
+                        <MainLayout>
+                            <MyBookingsPage />
+                        </MainLayout>
+                }
+            />
+            <Route
+                path="/my-bookings/:bookingId"
+                element={
+                        <MainLayout>
+                            <BookingDetailsPage />
+                        </MainLayout>
                 }
             />
         </Routes>

@@ -1,4 +1,6 @@
-﻿export interface OfferType {
+﻿import type {OfferHost} from "./HostModel.ts";
+
+export interface OfferType {
     id: number;
     name: string;
 }
@@ -15,13 +17,6 @@ export interface OfferPhoto {
     thumbnailUrl: string;
     isCover: boolean;
     sortOrder: number;
-}
-
-export interface OfferHost {
-    id?: number;
-    name: string;
-    avatarUrl?: string;
-    isSuperHost?: boolean;
 }
 
 export interface OfferSummary {
@@ -66,7 +61,6 @@ export interface GetOffersParams {
     CheckInDate?: string;
     CheckOutDate?: string;
     SortBy?: OfferSortBy;
-    // Filter parameters for filters modal
     Rooms?: number;
     SingleBeds?: number;
     DoubleBeds?: number;

@@ -12,6 +12,6 @@ export const REVIEW_QUERY_KEYS = {
 
 export const BOOKING_QUERY_KEYS = {
     all: ['bookings'] as const,
-    detail: (offerId: number | string, params: unknown) => [...BOOKING_QUERY_KEYS.all, offerId, 'detail', params] as const,
-    create: () => [...BOOKING_QUERY_KEYS.all, 'create'] as const,
+    userBookings: (params: unknown) => [...BOOKING_QUERY_KEYS.all, 'user', params] as const,
+    detail: (id: number | string) => [...BOOKING_QUERY_KEYS.all, 'detail', id] as const,
 };

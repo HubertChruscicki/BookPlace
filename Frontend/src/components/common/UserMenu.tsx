@@ -12,6 +12,7 @@ import {
     ReviewsOutlined as ReviewIcon,
     ExitToApp as LogoutIcon,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import type { User } from '../../models/UserModels';
 
@@ -24,9 +25,15 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
+    onClose();
+  };
+
+  const handleMyBookings = () => {
+    navigate('/my-bookings');
     onClose();
   };
 
@@ -76,11 +83,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) =>
         <ListItemText primary="User Profile" />
       </MenuItem>
 
-      <MenuItem onClick={onClose} sx={menuItemStyles}>
+      <MenuItem onClick={handleMyBookings} sx={menuItemStyles}>
         <ListItemIcon>
           <BookingIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary="Bookings" />
+        <ListItemText primary="My Reservations" />
       </MenuItem>
 
       <MenuItem onClick={onClose} sx={menuItemStyles}>

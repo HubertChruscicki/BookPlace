@@ -40,20 +40,15 @@ const OfferReviewsSection: React.FC<OfferReviewsSectionProps> = ({ offer }) => {
     return (
         <Box sx={{ py: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Box>
                     <Typography variant="h5" sx={{ fontWeight: 700 }}>
                         Reviews ({offer.reviewsCount ?? reviews.length})
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-                        <Rating value={offer.rating ?? 0} precision={0.1} readOnly sx={{ color: '#faaf00' }} />
+                        <Rating value={offer.rating ?? 4} precision={0.1} readOnly sx={{ color: '#faaf00' }} />
                         <Typography variant="body1" color="text.secondary">
                             {offer.rating ? `${offer.rating.toFixed(1)} •` : ''} {offer.reviewsCount ?? 0} reviews
                         </Typography>
                     </Box>
-                </Box>
-                <IconButton color="primary" onClick={() => handleOpenChat()}>
-                    <ChatBubbleOutlineIcon />
-                </IconButton>
             </Box>
 
             {isLoading && (
@@ -99,14 +94,9 @@ const OfferReviewsSection: React.FC<OfferReviewsSectionProps> = ({ offer }) => {
                 </Grid>
             )}
 
-            <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-                <Button variant="outlined" onClick={() => setIsModalOpen(true)} sx={{ borderRadius: 2 }}>
-                    View more
-                </Button>
-                <Button variant="contained" onClick={() => setIsModalOpen(true)} sx={{ borderRadius: 2 }}>
-                    Write a review
-                </Button>
-            </Box>
+            <Button variant="outlined" onClick={() => setIsModalOpen(true)} sx={{ borderRadius: 2, mt: 3 }}>
+                View more
+            </Button>
 
             <OfferReviewsModal open={isModalOpen} onClose={() => setIsModalOpen(false)} offerId={offer.id} />
         </Box>
