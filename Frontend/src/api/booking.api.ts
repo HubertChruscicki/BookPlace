@@ -1,7 +1,7 @@
 ﻿import apiClient from './apiClient';
-import type { 
-    CreateBookingRequest, 
-    GetUserBookingsParams, 
+import type {
+    CreateBookingRequest,
+    GetUserBookingsParams,
     GetUserBookingsResponse,
     BookingItem
 } from '../models/BookingModels';
@@ -17,7 +17,9 @@ export const fetchUserBookings = async (params: GetUserBookingsParams = {}): Pro
         PageSize: params.PageSize || 20,
         Role: params.Role || 'guest',
         Status: params.Status,
-        OfferId: params.OfferId
+        OfferId: params.OfferId,
+        DateFrom: params.DateFrom,
+        DateTo: params.DateTo,
     };
 
     const { data } = await apiClient.get<GetUserBookingsResponse>('/Booking', {

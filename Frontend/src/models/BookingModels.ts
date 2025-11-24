@@ -1,6 +1,4 @@
-﻿// src/models/BookingModels.ts
-
-export interface BookingUser {
+﻿export interface BookingUser {
     id: string;
     name: string;
     avatarUrl: string | null;
@@ -42,9 +40,11 @@ export interface GetUserBookingsResponse {
 export interface GetUserBookingsParams {
     PageNumber?: number;
     PageSize?: number;
-    Role?: 'guest' | 'host'; 
+    Role?: 'guest' | 'host';
     Status?: string;
     OfferId?: number;
+    DateFrom?: string;
+    DateTo?: string;
 }
 
 export interface CreateBookingRequest {

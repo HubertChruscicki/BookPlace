@@ -1,4 +1,4 @@
-﻿import { Box, Typography } from '@mui/material';
+﻿import { Box, Typography, Grid } from '@mui/material';
 import {
     BookOnline,
     TrendingUp,
@@ -7,7 +7,7 @@ import {
     Star,
     CalendarToday,
 } from '@mui/icons-material';
-import StatsCard from '../../components/features/host/StatsCard.tsx';
+import DashboardStatsCard from '../../components/features/host/DashboardStatsCard.tsx';
 
 export default function HostDashboardPage() {
     const stats = {
@@ -24,89 +24,89 @@ export default function HostDashboardPage() {
         revenue: { value: 8, isPositive: true },
         occupancy: { value: -3, isPositive: false },
         rating: { value: 2, isPositive: true },
+        guests: { value: 15, isPositive: true },
     };
 
     return (
         <Box>
-
             <Typography
                 variant="h4"
-                sx={{
-                    fontWeight: 700,
-                    color: 'text.primary',
-                    mb: 1,
-                }}
+                sx={{ fontWeight: 700, color: 'text.primary', mb: 1 }}
             >
-                Panel główny
+                Dashboard
             </Typography>
 
             <Typography
                 variant="body1"
-                sx={{
-                    color: 'text.secondary',
-                    mb: 4,
-                }}
+                sx={{ color: 'text.secondary', mb: 4 }}
             >
-                Przegląd Twojej działalności w BookPlace
+                Overview of your activity on BookPlace
             </Typography>
 
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridTemplateColumns: {
-                        xs: '1fr',
-                        sm: 'repeat(2, 1fr)',
-                        lg: 'repeat(3, 1fr)'
-                    },
-                    gap: 3,
-                }}
-            >
-                <StatsCard
-                    title="Łączne rezerwacje"
-                    value={stats.totalBookings}
-                    icon={<BookOnline color="primary" />}
-                    subtitle="Wszystkich rezerwacji"
-                    trend={trends.bookings}
-                />
+            <Grid container spacing={3}>
 
-                <StatsCard
-                    title="Przychód miesięczny"
-                    value={`${stats.monthlyRevenue.toLocaleString('pl-PL')} zł`}
-                    icon={<TrendingUp color="primary" />} 
-                    subtitle="Obecny miesiąc"
-                    trend={trends.revenue}
-                />
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Total Bookings"
+                        value={stats.totalBookings}
+                        icon={BookOnline}
+                        colorVariant="blue"
+                        trend={trends.bookings}
+                    />
+                </Grid>
 
-                <StatsCard
-                    title="Aktywne oferty"
-                    value={stats.activeOffers}
-                    icon={<Home color="primary" />}
-                    subtitle="Opublikowane oferty"
-                />
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Monthly Revenue"
+                        value={`$${stats.monthlyRevenue}`}
+                        icon={TrendingUp}
+                        colorVariant="mint"
+                        subtitle="Current month"
+                        trend={trends.revenue}
+                    />
+                </Grid>
 
-                <StatsCard
-                    title="Obłożenie"
-                    value={`${stats.occupancyRate}%`}
-                    icon={<CalendarToday color="primary" />} 
-                    subtitle="Średnie obłożenie"
-                    trend={trends.occupancy}
-                />
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Active Offers"
+                        value={stats.activeOffers}
+                        icon={Home}
+                        colorVariant="orange"
+                        subtitle="Live listings"
+                    />
+                </Grid>
 
-                <StatsCard
-                    title="Średnia ocena"
-                    value={stats.averageRating}
-                    icon={<Star color="primary" />} 
-                    subtitle="Ze wszystkich ofert"
-                    trend={trends.rating}
-                />
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Total Guests"
+                        value={stats.totalGuests}
+                        icon={People}
+                        colorVariant="cyan"
+                        trend={trends.guests}
+                    />
+                </Grid>
 
-                <StatsCard
-                    title="Łączni goście"
-                    value={stats.totalGuests}
-                    icon={<People color="primary" />} 
-                    subtitle="Obsłużonych gości"
-                />
-            </Box>
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Average Rating"
+                        value={stats.averageRating}
+                        icon={Star}
+                        colorVariant="pink"
+                        trend={trends.rating}
+                    />
+                </Grid>
+
+                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+                    <DashboardStatsCard
+                        title="Occupancy Rate"
+                        value={`${stats.occupancyRate}%`}
+                        icon={CalendarToday}
+                        colorVariant="purple"
+                        trend={trends.occupancy}
+                    />
+                </Grid>
+
+            </Grid>
         </Box>
     );
 }
