@@ -7,6 +7,7 @@ import {
     Button,
     Box,
     Rating,
+    Chip,
 } from '@mui/material';
 import {LocationOn, People, Hotel, Bathtub} from '@mui/icons-material';
 import type {OfferSummary} from '../../models/OfferModels';
@@ -18,7 +19,6 @@ interface OfferCardProps {
     checkInDate?: string;
     checkOutDate?: string;
     guests?: number;
-    //TODO REVIEW PROPS
 }
 
 export const OfferCard: React.FC<OfferCardProps> = ({offer, checkInDate, checkOutDate, guests}) => {
@@ -80,17 +80,39 @@ export const OfferCard: React.FC<OfferCardProps> = ({offer, checkInDate, checkOu
                 }
             }}
         >
-            <CardMedia
-                component="img"
-                height="180"
-                image={getImageUrl()}
-                alt={offer.title}
-                sx={{
-                    objectFit: 'cover',
-                    borderRadius: '12px 12px 0 0',
-                    flexShrink: 0
-                }}
-            />
+            <Box sx={{ position: 'relative', flexShrink: 0 }}>
+                <CardMedia
+                    component="img"
+                    height="180"
+                    image={getImageUrl()}
+                    alt={offer.title}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: '12px 12px 0 0',
+                    }}
+                />
+
+                <Box sx={{ position: 'absolute', top: 12, left: 12 }}>
+                    <Chip
+                        label={offer.offerType.name}
+                        size="small"
+                        sx={{
+                            pointerEvents: 'none',
+                            textTransform: 'none',
+                            borderRadius: 25,
+                            fontWeight: 700,
+                            padding: '4px 12px',
+                            minWidth: 'auto',
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            color: theme.palette.primary.main,
+                            fontSize: '0.75rem',
+                            height: '28px',
+                            boxShadow: 1,
+                        }}
+                    />
+                </Box>
+            </Box>
+
 
             <CardContent sx={{
                 flexGrow: 1,
@@ -118,26 +140,6 @@ export const OfferCard: React.FC<OfferCardProps> = ({offer, checkInDate, checkOu
                         </Typography>
                     </Box>
 
-                    <Button
-                        variant="outlined"
-                        size="small"
-                        color="primary"
-                        sx={{
-                            pointerEvents: 'none',
-                            textTransform: 'none',
-                            borderRadius: 25,
-                            fontWeight: 700,
-                            padding: '4px 12px',
-                            minWidth: 'auto',
-                            borderColor: 'primary.main',
-                            color: 'primary.main',
-                            backgroundColor: 'transparent',
-                            fontSize: '0.75rem',
-                            height: '28px',
-                        }}
-                    >
-                        {offer.offerType.name}
-                    </Button>
                 </Box>
 
                 <Typography
