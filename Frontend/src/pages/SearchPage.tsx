@@ -1,12 +1,12 @@
 ﻿import { useSearchParams } from 'react-router-dom';
-import { Box, CircularProgress, Alert } from '@mui/material';
-import { useOffers } from '../hooks/useOffers';
+import { Box, CircularProgress, Alert, Typography } from '@mui/material';
+import { useInfiniteOffers } from '../hooks/useOffers'; 
 import type { GetOffersParams } from '../models/OfferModels';
 import { OfferSortBy } from '../models/OfferModels';
 import OfferCard from '../components/common/OfferCard';
 import SearchHeader from '../components/features/search/SearchHeader';
 import type { FilterValues } from '../components/features/search/FiltersModal';
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 
 const SearchPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -16,7 +16,6 @@ const SearchPage = () => {
         const checkInDate = searchParams.get('CheckInDate');
         const checkOutDate = searchParams.get('CheckOutDate');
         const guests = searchParams.get('Guests');
-        const pageNumber = searchParams.get('PageNumber');
         const pageSize = searchParams.get('PageSize');
         const minPrice = searchParams.get('MinPrice');
         const maxPrice = searchParams.get('MaxPrice');
@@ -27,19 +26,17 @@ const SearchPage = () => {
         const doubleBeds = searchParams.get('DoubleBeds');
         const sofas = searchParams.get('Sofas');
         const bathrooms = searchParams.get('Bathrooms');
-    
+
         const parsedParams: GetOffersParams = {
-            PageNumber: pageNumber ? parseInt(pageNumber, 10) : 1,
+            PageNumber: 1, 
             PageSize: pageSize ? parseInt(pageSize, 10) : 12,
         };
 
         if (city) parsedParams.City = city;
         if (checkInDate) parsedParams.CheckInDate = checkInDate;
         if (checkOutDate) parsedParams.CheckOutDate = checkOutDate;
-
         if (guests) parsedParams.Guests = parseInt(guests, 10);
         if (offerTypeId) parsedParams.OfferTypeId = parseInt(offerTypeId, 10);
-
         if (minPrice) parsedParams.MinPrice = parseFloat(minPrice);
         if (maxPrice) parsedParams.MaxPrice = parseFloat(maxPrice);
 
@@ -70,7 +67,32 @@ const SearchPage = () => {
         return parsedParams;
     }, [searchParams]);
 
-    const { data, isLoading, isError, error } = useOffers(params);
+    const {
+        data,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+        isLoading,
+        isError,
+        error
+    } = useInfiniteOffers(params);
+
+    const observer = useRef<IntersectionObserver | null>(null);
+    
+    const lastOfferRef = useCallback((node: HTMLDivElement) => {
+        if (isLoading || isFetchingNextPage) return;
+
+        if (observer.current) observer.current.disconnect();
+
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasNextPage) {
+                fetchNextPage();
+            }
+        });
+
+        if (node) observer.current.observe(node);
+    }, [isLoading, isFetchingNextPage, hasNextPage, fetchNextPage]);
+
 
     const currentSortBy = params.SortBy ?? OfferSortBy.PriceAsc;
     const currentCity = params.City;
@@ -94,101 +116,102 @@ const SearchPage = () => {
 
     const handleFiltersChange = (filters: FilterValues) => {
         const newParams = new URLSearchParams(searchParams);
-        
-        newParams.delete('MinPrice');
-        newParams.delete('MaxPrice');
-        newParams.delete('Rooms');
-        newParams.delete('SingleBeds');
-        newParams.delete('DoubleBeds');
-        newParams.delete('Sofas');
-        newParams.delete('Bathrooms');
-        newParams.delete('Amenities');
+        ['MinPrice', 'MaxPrice', 'Rooms', 'SingleBeds', 'DoubleBeds', 'Sofas', 'Bathrooms', 'Amenities']
+            .forEach(key => newParams.delete(key));
 
-        // Add new filter params if they exist
-        if (filters.minPrice !== undefined) {
-            newParams.set('MinPrice', filters.minPrice.toString());
-        }
-        if (filters.maxPrice !== undefined) {
-            newParams.set('MaxPrice', filters.maxPrice.toString());
-        }
-        if (filters.rooms !== undefined) {
-            newParams.set('Rooms', filters.rooms.toString());
-        }
-        if (filters.singleBeds !== undefined) {
-            newParams.set('SingleBeds', filters.singleBeds.toString());
-        }
-        if (filters.doubleBeds !== undefined) {
-            newParams.set('DoubleBeds', filters.doubleBeds.toString());
-        }
-        if (filters.sofas !== undefined) {
-            newParams.set('Sofas', filters.sofas.toString());
-        }
-        if (filters.bathrooms !== undefined) {
-            newParams.set('Bathrooms', filters.bathrooms.toString());
-        }
+        if (filters.minPrice !== undefined) newParams.set('MinPrice', filters.minPrice.toString());
+        if (filters.maxPrice !== undefined) newParams.set('MaxPrice', filters.maxPrice.toString());
+        if (filters.rooms !== undefined) newParams.set('Rooms', filters.rooms.toString());
+        if (filters.singleBeds !== undefined) newParams.set('SingleBeds', filters.singleBeds.toString());
+        if (filters.doubleBeds !== undefined) newParams.set('DoubleBeds', filters.doubleBeds.toString());
+        if (filters.sofas !== undefined) newParams.set('Sofas', filters.sofas.toString());
+        if (filters.bathrooms !== undefined) newParams.set('Bathrooms', filters.bathrooms.toString());
+
         if (filters.amenities && filters.amenities.length > 0) {
             filters.amenities.forEach(amenityId => {
                 newParams.append('Amenities', amenityId.toString());
             });
         }
 
-        newParams.set('PageNumber', '1');
         setSearchParams(newParams);
     };
 
+    const totalItemsCount = data?.pages[0]?.totalItemsCount || 0;
+
     return (
         <Box>
-            {isLoading && (
-                <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
-                    <CircularProgress />
-                </Box>
-            )}
+            <Box sx={{ width: '100%' }}>
+                <SearchHeader
+                    totalCount={totalItemsCount}
+                    city={currentCity}
+                    sortBy={currentSortBy}
+                    onSortChange={handleSortChange}
+                    onFiltersChange={handleFiltersChange}
+                    activeFilters={currentFilters}
+                />
 
-            {isError && (
-                <Alert severity="error">
-                    Error loading offers: {error?.message || 'Unknown error'}
-                </Alert>
-            )}
-
-            {data && (
-                <Box sx={{ width: '100%' }}>
-                    <SearchHeader
-                        totalCount={data.totalItemsCount}
-                        city={currentCity}
-                        sortBy={currentSortBy}
-                        onSortChange={handleSortChange}
-                        onFiltersChange={handleFiltersChange}
-                        activeFilters={currentFilters}
-                    />
-
-                    <Box 
-                        sx={{ 
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: 3,
-                            justifyContent: 'center'
-                        }}
-                    >
-                        {data.items.map((offer) => (
-                            <Box
-                                key={offer.id}
-                                sx={{
-                                    flex: '1 1 calc(25% - 24px)',
-                                    minWidth: '300px',
-                                    maxWidth: '400px'
-                                }}
-                            >
-                                <OfferCard 
-                                    offer={offer} 
-                                    checkInDate={params.CheckInDate}
-                                    checkOutDate={params.CheckOutDate}
-                                    guests={params.Guests}
-                                />
-                            </Box>
-                        ))}
+                {isLoading && !data ? (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}>
+                        <CircularProgress />
                     </Box>
-                </Box>
-            )}
+                ) : isError ? (
+                    <Alert severity="error">
+                        Error loading offers: {error?.message || 'Unknown error'}
+                    </Alert>
+                ) : (
+                    <>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: 3,
+                                justifyContent: 'center'
+                            }}
+                        >
+                            {data?.pages.map((page, pageIndex) => (
+                                <React.Fragment key={pageIndex}>
+                                    {page.items.map((offer, offerIndex) => {
+                                        const isLastElement =
+                                            pageIndex === data.pages.length - 1 &&
+                                            offerIndex === page.items.length - 1;
+
+                                        return (
+                                            <Box
+                                                ref={isLastElement ? lastOfferRef : null}
+                                                key={offer.id}
+                                                sx={{
+                                                    flex: '1 1 calc(25% - 24px)',
+                                                    minWidth: '300px',
+                                                    maxWidth: '400px'
+                                                }}
+                                            >
+                                                <OfferCard
+                                                    offer={offer}
+                                                    checkInDate={params.CheckInDate}
+                                                    checkOutDate={params.CheckOutDate}
+                                                    guests={params.Guests}
+                                                />
+                                            </Box>
+                                        );
+                                    })}
+                                </React.Fragment>
+                            ))}
+                        </Box>
+
+                        {isFetchingNextPage && (
+                            <Box sx={{ display: 'flex', justifyContent: 'center', my: 4, width: '100%' }}>
+                                <CircularProgress size={30} />
+                            </Box>
+                        )}
+
+                        {!hasNextPage && totalItemsCount > 0 && (
+                            <Box sx={{ textAlign: 'center', my: 4, color: 'text.secondary' }}>
+                                <Typography variant="body2">You've reached the end of the list.</Typography>
+                            </Box>
+                        )}
+                    </>
+                )}
+            </Box>
         </Box>
     );
 };

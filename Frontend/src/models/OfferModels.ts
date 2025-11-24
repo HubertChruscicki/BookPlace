@@ -91,3 +91,20 @@ export interface OfferDetail {
     reviewsCount?: number;
     host?: OfferHost;
 }
+
+export interface HostOfferSummary {
+    id: number;
+    title: string;
+    pricePerNight: number;
+    status: 'Active' | 'Inactive' | 'Archived';
+    fullAddress: string;
+    offerType: OfferType;
+    coverPhoto: OfferPhoto | null;
+}
+
+export interface GetHostOffersParams {
+    PageNumber?: number;
+    PageSize?: number;
+    Status?: string;
+    IncludeArchived?: boolean;
+}

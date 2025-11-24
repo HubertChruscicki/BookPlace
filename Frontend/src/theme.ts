@@ -10,7 +10,7 @@ export const theme = createTheme({
             dark: '#1d4ed8',       // $primary-blue-dark
         },
         secondary: {
-            main: '#fbbf24',       // $accent-yellow
+            main: '#f59e0b',       // $accent-yellow
         },
         background: {
             default: '#f3f4f6',   // $color-gray-100

@@ -178,18 +178,18 @@ export default function HostBookingsPage() {
                         borderBottom: '2px solid',
                         borderColor: 'grey.300',
                         fontWeight: 700,
-                        color: 'text.secondary',
+                        color: 'text.primary',
                         gap: 2,
                         px: 2,
                     }}>
-                        <Typography variant="body2">Image</Typography>
-                        <Typography variant="body2">Offer</Typography>
-                        <Typography variant="body2">Dates</Typography>
-                        <Typography variant="body2">Guests</Typography>
-                        <Typography variant="body2">Price</Typography>
-                        <Typography variant="body2">Status</Typography>
-                        <Typography variant="body2">Guest</Typography>
-                        <Typography variant="body2" sx={{ textAlign: 'right' }}>Actions</Typography>
+                        <Typography variant="h3">Image</Typography>
+                        <Typography variant="h3">Offer</Typography>
+                        <Typography variant="h3">Dates</Typography>
+                        <Typography variant="h3">Guests</Typography>
+                        <Typography variant="h3">Price</Typography>
+                        <Typography variant="h3">Status</Typography>
+                        <Typography variant="h3">Guest</Typography>
+                        <Typography variant="h3" sx={{ textAlign: 'right' }}>Actions</Typography>
                     </Box>
 
                     {filteredBookings.map((booking) => (
