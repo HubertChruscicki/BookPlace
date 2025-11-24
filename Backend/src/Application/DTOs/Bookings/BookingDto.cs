@@ -29,4 +29,5 @@ public class BookingDto
     public DateTime CreatedAt { get; set; }
     public BookingOfferDto Offer { get; set; } = new();
     public OfferHostDto Host { get; set; } = new();
+    public BookingGuestDto Guest { get; set; } = new();
 }
