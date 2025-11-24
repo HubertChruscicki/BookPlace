@@ -13,12 +13,12 @@ import {
     Paper
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useBookingDetails } from '../hooks/useBooking';
-import BookingOfferSection from '../components/features/booking/BookingOfferSection';
-import BookingHostSection from '../components/features/booking/BookingHostSection';
-import BookingMapWidget from '../components/features/booking/BookingMapWidget';
-import BookingCancellationSection from '../components/features/booking/BookingCancellationSection';
-import BookingPaymentDetailsCard from '../components/features/booking/BookingPaymentDetailsCard';
+import { useBookingDetails } from '../../hooks/useBooking.ts';
+import BookingOfferSection from '../../components/features/booking/BookingOfferSection.tsx';
+import BookingHostSection from '../../components/features/booking/BookingHostSection.tsx';
+import BookingMapWidget from '../../components/features/booking/BookingMapWidget.tsx';
+import BookingCancellationSection from '../../components/features/booking/BookingCancellationSection.tsx';
+import BookingPaymentDetailsCard from '../../components/features/booking/BookingPaymentDetailsCard.tsx';
 
 const BookingDetailsPage: React.FC = () => {
     const { bookingId } = useParams<{ bookingId: string }>();

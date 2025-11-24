@@ -1,9 +1,9 @@
-﻿import { useMutation, useQuery } from '@tanstack/react-query';
+﻿import { useMutation, useQuery, keepPreviousData } from '@tanstack/react-query';
 import type { AxiosError } from 'axios';
 import { createBooking, fetchUserBookings, fetchBookingDetails } from '../api/booking.api';
-import type { 
-    CreateBookingRequest, 
-    GetUserBookingsParams, 
+import type {
+    CreateBookingRequest,
+    GetUserBookingsParams,
     GetUserBookingsResponse,
     BookingItem
 } from '../models/BookingModels';
@@ -15,10 +15,11 @@ export const useCreateBooking = () => {
     });
 };
 
-export const useUserBookings = (params: GetUserBookingsParams = {}) => {
+export const useUserBookings = (params: GetUserBookingsParams) => {
     return useQuery<GetUserBookingsResponse, AxiosError>({
-        queryKey: BOOKING_QUERY_KEYS.userBookings(params),
+        queryKey: ['bookings', params],
         queryFn: () => fetchUserBookings(params),
+        placeholderData: keepPreviousData,
     });
 };
 

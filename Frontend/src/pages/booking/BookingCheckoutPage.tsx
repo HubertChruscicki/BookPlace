@@ -17,11 +17,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate, useSearchParams, createSearchParams } from 'react-router-dom';
-import { useOffer } from '../hooks/useOffers';
-import { useCreateBooking } from '../hooks/useBooking';
-import TripDetailsSection from '../components/features/checkout/TripDetailsSection';
-import PaymentMethodSection from '../components/features/checkout/PaymentMethodSection';
-import CheckoutSummaryCard from '../components/features/checkout/CheckoutSummaryCard';
+import { useOffer } from '../../hooks/useOffers.ts';
+import { useCreateBooking } from '../../hooks/useBooking.ts';
+import TripDetailsSection from '../../components/features/checkout/TripDetailsSection.tsx';
+import PaymentMethodSection from '../../components/features/checkout/PaymentMethodSection.tsx';
+import CheckoutSummaryCard from '../../components/features/checkout/CheckoutSummaryCard.tsx';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);

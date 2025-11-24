@@ -1,11 +1,6 @@
-﻿export interface CreateBookingRequest {
-    offerId: number;
-    checkInDate: string;
-    checkOutDate: string;
-    numberOfGuests: number;
-}
+﻿// src/models/BookingModels.ts
 
-export interface BookingHost {
+export interface BookingUser {
     id: string;
     name: string;
     avatarUrl: string | null;
@@ -16,11 +11,7 @@ export interface BookingOffer {
     title: string;
     addressStreet: string;
     addressCity: string;
-    addressZipCode: string;
-    addressCountry: string;
     fullAddress: string;
-    addressLatitude: number;
-    addressLongitude: number;
     coverPhotoUrl: string;
     offerType: string;
 }
@@ -33,16 +24,32 @@ export interface BookingItem {
     checkOutDate: string;
     totalPrice: number;
     numberOfGuests: number;
-    status: 'Pending' | 'Confirmed' | 'CancelledByHost' | 'CancelledByGuest' | 'Completed';
+    status: 'Confirmed' | 'Completed' | 'Cancelled' | 'Pending'; // Statusy API
     createdAt: string;
     offer: BookingOffer;
-    host: BookingHost;
-}
-
-export interface GetUserBookingsParams {
-    limit?: number;
+    host: BookingUser;
+    guest: BookingUser;
 }
 
 export interface GetUserBookingsResponse {
     items: BookingItem[];
+    totalPages: number;
+    totalItemsCount: number;
+    pageNumber: number;
+    pageSize: number;
+}
+
+export interface GetUserBookingsParams {
+    PageNumber?: number;
+    PageSize?: number;
+    Role?: 'guest' | 'host'; 
+    Status?: string;
+    OfferId?: number;
+}
+
+export interface CreateBookingRequest {
+    offerId: number;
+    checkInDate: string;
+    checkOutDate: string;
+    numberOfGuests: number;
 }

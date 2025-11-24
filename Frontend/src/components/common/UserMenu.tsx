@@ -37,6 +37,11 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) =>
     onClose();
   };
 
+  const handleHostPanel = () => {
+    navigate('/host/dashboard');
+    onClose();
+  };
+
   const isHost = user.roles.includes('Host');
 
     const menuItemStyles = {
@@ -67,7 +72,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) =>
 
       {isHost && (
         <>
-          <MenuItem onClick={onClose} sx={menuItemStyles}>
+          <MenuItem onClick={handleHostPanel} sx={menuItemStyles}>
             <ListItemIcon>
               <HomeIcon fontSize="small" />
             </ListItemIcon>

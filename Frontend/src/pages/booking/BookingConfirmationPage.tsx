@@ -2,7 +2,7 @@
 import {Box, Button, Container, Paper, Stack, Typography, CircularProgress} from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import {useNavigate, useSearchParams} from 'react-router-dom';
-import {useOffer} from '../hooks/useOffers';
+import {useOffer} from '../../hooks/useOffers.ts';
 
 const BookingConfirmationPage: React.FC = () => {
     const navigate = useNavigate();

@@ -12,11 +12,16 @@ export const createBooking = async (payload: CreateBookingRequest) => {
 };
 
 export const fetchUserBookings = async (params: GetUserBookingsParams = {}): Promise<GetUserBookingsResponse> => {
-    const { data } = await apiClient.get<GetUserBookingsResponse>('/Booking', { 
-        params: {
-            limit: params.limit || 20,
-            Role: 'guest'
-        }
+    const queryParams = {
+        PageNumber: params.PageNumber || 1,
+        PageSize: params.PageSize || 20,
+        Role: params.Role || 'guest',
+        Status: params.Status,
+        OfferId: params.OfferId
+    };
+
+    const { data } = await apiClient.get<GetUserBookingsResponse>('/Booking', {
+        params: queryParams
     });
     return data;
 };
