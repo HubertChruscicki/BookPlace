@@ -52,9 +52,9 @@ public class ConversationRepository : IConversationRepository
             .Include(c => c.Participants)
             .Include(c => c.Booking)
                 .ThenInclude(b=> b.Offer)
-            .Include(c => c.Offer)
+            .Include(c => c.Booking)
+                .ThenInclude(b => b.Guest)
             .Include(c => c.Review)
-                .ThenInclude(r=>r.Offer)
             .Include(c => c.Messages.OrderByDescending(m => m.SentAt).Take(1))
                 .ThenInclude(m => m.Sender)
             .Include(c => c.Messages.OrderByDescending(m => m.SentAt).Take(1))
@@ -65,17 +65,13 @@ public class ConversationRepository : IConversationRepository
         if (role.Equals("host", StringComparison.OrdinalIgnoreCase))
         {
             query = query.Where(c => 
-                (c.OfferId != null && c.Offer.HostId == userId) ||
-                (c.BookingId != null && c.Booking.Offer.HostId == userId)
+                (c.BookingId != null && c.Booking != null && c.Booking.Offer != null && c.Booking.Offer.HostId == userId)
             );
         }
         else if (role.Equals("guest", StringComparison.OrdinalIgnoreCase))
         {
             query = query.Where(c => 
-                !(
-                    (c.OfferId != null && c.Offer.HostId == userId) ||
-                    (c.BookingId != null && c.Booking.Offer.HostId == userId)
-                )
+                !(c.BookingId != null && c.Booking != null && c.Booking.Offer != null && c.Booking.Offer.HostId == userId)
             );
         }
             

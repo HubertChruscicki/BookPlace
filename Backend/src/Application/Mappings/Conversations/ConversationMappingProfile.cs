@@ -22,7 +22,8 @@ public class ConversationMappingProfile : Profile
             .ForMember(dest => dest.Recipient, opt => opt.Ignore()) // Będzie ustawione ręcznie w HandlerZe
             .ForMember(dest => dest.LastMessage, opt => opt.MapFrom(src => 
                 src.Messages.OrderByDescending(m => m.SentAt).FirstOrDefault()))
-            .ForMember(dest => dest.IsUnread, opt => opt.Ignore()); // Będzie ustawione ręcznie w HandlerZe
+            .ForMember(dest => dest.IsUnread, opt => opt.Ignore()) // Będzie ustawione ręcznie w HandlerZe
+            .ForMember(dest => dest.Context, opt => opt.Ignore()); // Będzie ustawione ręcznie w HandlerZe
 
         CreateMap<Message, MessageDto>()
             .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos));

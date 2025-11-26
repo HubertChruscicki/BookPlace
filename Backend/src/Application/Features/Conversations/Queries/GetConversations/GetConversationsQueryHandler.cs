@@ -2,9 +2,10 @@
 using Application.DTOs.Conversations;
 using Application.Interfaces;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 
-namespace Application.Features.Conversations.Queries;
+namespace Application.Features.Conversations.Queries.GetConversations;
 
 /// <summary>
 /// Handler for retrieving paginated user conversations with reverse pagination (newest on last page).
@@ -48,6 +49,9 @@ public class GetConversationsQueryHandler : IRequestHandler<GetConversationsQuer
 
             item.IsUnread = conversation.Messages
                 .Any(m => m.SenderId != request.UserId && !m.IsRead);
+
+            // Budowanie kontekstu konwersacji
+            item.Context = BuildConversationContext(conversation);
         }
         
         return new PageResult<ConversationInboxDto>(
@@ -55,5 +59,40 @@ public class GetConversationsQueryHandler : IRequestHandler<GetConversationsQuer
             conversationsResult.TotalItemsCount, 
             conversationsResult.PageNumber, 
             conversationsResult.PageSize);
+    }
+
+    /// <summary>
+    /// Builds conversation context based on the conversation's related entities.
+    /// </summary>
+    /// <param name="conversation">Conversation entity with loaded relations</param>
+    /// <returns>Context information for display in inbox</returns>
+    private ConversationContextDto BuildConversationContext(Conversation conversation)
+    {
+        if (conversation.BookingId.HasValue && conversation.Booking != null)
+        {
+            return new ConversationContextDto
+            {
+                Type = "Booking",
+                BookingId = conversation.Booking.Id,
+                BookingTitle = conversation.Booking.Offer?.Title,
+                CheckInDate = conversation.Booking.CheckInDate,
+                CheckOutDate = conversation.Booking.CheckOutDate
+            };
+        }
+
+        if (conversation.ReviewId.HasValue && conversation.Review != null)
+        {
+            return new ConversationContextDto
+            {
+                Type = "Review",
+                ReviewId = conversation.Review.Id
+            };
+        }
+
+        // Fallback - nie powinno się zdarzyć
+        return new ConversationContextDto
+        {
+            Type = "Unknown"
+        };
     }
 }

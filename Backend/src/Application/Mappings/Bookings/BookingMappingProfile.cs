@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Bookings;
 using Application.DTOs.Offers;
+using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Mappings.Bookings;
@@ -12,7 +13,7 @@ public class BookingMappingProfile : Profile
     public BookingMappingProfile()
     {
         CreateMap<Offer, BookingOfferDto>()
-            .ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => 
+            .ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src =>
                 $"{src.AddressStreet}, {src.AddressCity}, {src.AddressZipCode}, {src.AddressCountry}"))
             .ForMember(dest => dest.CoverPhotoUrl, opt => opt.MapFrom(src =>
                 src.Photos.Any(p => p.IsCover)
@@ -32,3 +33,5 @@ public class BookingMappingProfile : Profile
         CreateMap<User, OfferHostDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => $"{src.Name} {src.Surname}"))
             .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.ProfilePictureUrl));
+    }
+}

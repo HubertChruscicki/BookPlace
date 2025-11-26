@@ -21,4 +21,5 @@ public class ConversationInboxDto
     public UserSummaryDto Recipient { get; set; } = null!;
     public MessageDto LastMessage { get; set; } = null!;
     public bool IsUnread { get; set; }
+    public ConversationContextDto Context { get; set; } = null!;
 }
