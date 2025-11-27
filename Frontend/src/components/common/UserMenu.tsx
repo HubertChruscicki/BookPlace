@@ -11,6 +11,7 @@ import {
     CardTravel as BookingIcon,
     ReviewsOutlined as ReviewIcon,
     ExitToApp as LogoutIcon,
+    ChatBubbleOutline as ChatIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -36,6 +37,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) =>
     navigate('/my-bookings');
     onClose();
   };
+  const handleGuestInbox = () => {
+    navigate('/inbox');
+    onClose();
+  };
+
+
 
   const handleHostPanel = () => {
     navigate('/host/dashboard');
@@ -80,6 +87,13 @@ const UserMenu: React.FC<UserMenuProps> = ({ user, anchorEl, open, onClose }) =>
           </MenuItem>
         </>
       )}
+
+      <MenuItem onClick={handleGuestInbox} sx={menuItemStyles}>
+        <ListItemIcon>
+          <ChatIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText primary="Messages" />
+      </MenuItem>
 
       <MenuItem onClick={onClose} sx={menuItemStyles}>
         <ListItemIcon>

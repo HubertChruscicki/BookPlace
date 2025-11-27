@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { useUserBookings } from '../../hooks/useBooking';
 import { useHostOffers } from '../../hooks/useOffers';
 import HostCalendar from '../../components/features/host/HostCalendar';
+import {theme} from "../../theme.ts";
 
 export default function HostCalendarPage() {
     const [selectedOffer, setSelectedOffer] = useState<{ id: number, title: string } | null>(null);
@@ -48,15 +49,18 @@ export default function HostCalendarPage() {
 
     return (
         <Box>
-            <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} mb={4} gap={3}>
-                <Box>
+            <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'center' }} gap={3}>
+                <Box
+                    sx={{ my: 3 }}
+                >
                     <Typography
                         variant="h4"
-                        sx={{ fontWeight: 700, color: 'text.primary', mb: 1 }}
+                        sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
                     >
                         Calendar
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
+                    <Typography
+                        sx={{ fontWeight: 500, fontSize: "1rem", color: theme.palette.text.secondary, mb: 1 }}>
                         Manage availability and view bookings
                     </Typography>
                 </Box>

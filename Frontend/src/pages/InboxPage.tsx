@@ -1,7 +1,8 @@
-﻿import ChatClient from "../../components/features/chat/ChatClient.tsx";
+﻿import ChatClient from "../components/features/chat/ChatClient.tsx";
 import {Box, Typography} from "@mui/material";
-import {theme} from "../../theme.ts";
-export default function HostInboxPage() {
+import {theme} from "../theme.ts";
+
+export default function InboxPage() {
     return(
         <Box>
             <Box
@@ -11,15 +12,15 @@ export default function HostInboxPage() {
                     variant="h4"
                     sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
                 >
-                    Host Inbox
+                    Inbox
                 </Typography>
                 <Typography
                     sx={{ fontWeight: 500, fontSize: "1rem", color: theme.palette.text.secondary, mb: 1 }}>
-                    Chat with your guests
+                    Your chats with hosts and other guests
                 </Typography>
             </Box>
-            <ChatClient role="host" />;
+            
+            <ChatClient role="guest" />;
         </Box>
-
     )
 }

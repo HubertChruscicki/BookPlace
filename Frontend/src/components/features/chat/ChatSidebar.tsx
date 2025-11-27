@@ -6,6 +6,7 @@ import { CalendarMonth, Circle, Home, RateReview } from '@mui/icons-material';
 import type { ConversationSummary } from '../../../models/ChatModels';
 import { format } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import React from "react";
 
 interface ChatSidebarProps {
     conversations: ConversationSummary[];
@@ -13,7 +14,7 @@ interface ChatSidebarProps {
     onSelect: (id: number) => void;
 }
 
-export default function ChatSidebar({ conversations, selectedId, onSelect }: ChatSidebarProps) {
+const ChatSidebar: React.FC<ChatSidebarProps> = ({ conversations, selectedId, onSelect }) => {
     const theme = useTheme();
 
     const formatDateRange = (checkIn: string, checkOut: string) => {
@@ -29,8 +30,10 @@ export default function ChatSidebar({ conversations, selectedId, onSelect }: Cha
     return (
         <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <Box p={3} pb={2}>
-                <Typography variant="h5" fontWeight={800} color="text.primary">
-                    Inbox
+                <Typography
+                    sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
+                >
+                    Chats
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     You have {conversations.filter(c => c.isUnread).length} unread messages
@@ -178,3 +181,5 @@ export default function ChatSidebar({ conversations, selectedId, onSelect }: Cha
         </Box>
     );
 }
+
+export default ChatSidebar;

@@ -15,7 +15,7 @@ interface ChatWindowProps {
     onBack?: () => void;
 }
 
-export default function ChatWindow({ conversation, onBack }: ChatWindowProps) {
+const ChatWindow: React.FC<ChatWindowProps> = ({ conversation, onBack }) => {
     const { user } = useAuth();
     const theme = useTheme();
     const [newMessage, setNewMessage] = useState('');
@@ -235,3 +235,5 @@ export default function ChatWindow({ conversation, onBack }: ChatWindowProps) {
         </Box>
     );
 }
+
+export default ChatWindow;

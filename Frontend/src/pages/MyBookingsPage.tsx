@@ -4,7 +4,7 @@ import BookingsStatusSections from '../components/features/booking/BookingsStatu
 import { useUserBookings } from '../hooks/useBooking';
 
 const MyBookingsPage: React.FC = () => {
-    const { data: bookingsResponse, isLoading, isError } = useUserBookings({ limit: 20 });
+    const { data: bookingsResponse, isLoading, isError } = useUserBookings({ PageSize: 20 });
     const bookings = bookingsResponse?.items || [];
 
     return (

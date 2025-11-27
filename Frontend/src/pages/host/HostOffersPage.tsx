@@ -17,8 +17,9 @@ import { fetchHostOffers } from '../../api/offer.api';
 
 import HostOfferCard from '../../components/features/host/HostOfferCard';
 import PaginationControls from '../../components/common/PaginationControls';
+import {theme} from "../../theme.ts";
 
-const PAGE_SIZE = 8; // Smaller page size for card grid
+const PAGE_SIZE = 8;
 
 export default function HostOffersPage() {
     const queryClient = useQueryClient();
@@ -26,7 +27,6 @@ export default function HostOffersPage() {
     const [pageNumber, setPageNumber] = useState(1);
     const [status, setStatus] = useState<'Active' | 'Inactive'>('Active');
 
-    // 1. Fetch Data
     const {
         data: offersData,
         isLoading,
@@ -40,7 +40,6 @@ export default function HostOffersPage() {
         IncludeArchived: false
     });
 
-    // 2. Prefetching Next Page
     useEffect(() => {
         const totalPages = offersData?.totalPages || 0;
 
@@ -63,7 +62,6 @@ export default function HostOffersPage() {
         }
     }, [offersData, isPlaceholderData, pageNumber, status, queryClient]);
 
-    // Handlers
     const handlePageChange = (newPage: number) => {
         setPageNumber(newPage);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -72,7 +70,7 @@ export default function HostOffersPage() {
     const handleStatusChange = (_event: React.MouseEvent<HTMLElement>, newStatus: 'Active' | 'Inactive' | null) => {
         if (newStatus !== null) {
             setStatus(newStatus);
-            setPageNumber(1); // Reset to page 1 on filter change
+            setPageNumber(1);
         }
     };
 
@@ -81,7 +79,6 @@ export default function HostOffersPage() {
     const handleViewOffer = (id: number) => console.log('View', id);
     const handleReviews = (id: number) => console.log('Reviews', id);
 
-    // Loading State (Initial only)
     if (isLoading && !offersData) {
         return (
             <Box display="flex" justifyContent="center" mt={10}>
@@ -100,13 +97,19 @@ export default function HostOffersPage() {
 
     return (
         <Box>
-            {/* Header */}
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} flexWrap="wrap" gap={2}>
-                <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
+            <Box display="flex" justifyContent="space-between" alignItems="center"  flexWrap="wrap" gap={2}>
+
+                <Box
+                    sx={{ my: 3 }}
+                >
+                    <Typography
+                        variant="h4"
+                        sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
+                    >
                         My Offers
                     </Typography>
-                    <Typography variant="body1" color="text.secondary">
+                    <Typography
+                        sx={{ fontWeight: 500, fontSize: "1rem", color: theme.palette.text.secondary, mb: 1 }}>
                         Manage your properties and listings
                     </Typography>
                 </Box>
@@ -128,7 +131,6 @@ export default function HostOffersPage() {
                 </Button>
             </Box>
 
-            {/* Status Filter (Bubble Style) */}
             <Box mb={4}>
                 <ToggleButtonGroup
                     value={status}
@@ -189,7 +191,6 @@ export default function HostOffersPage() {
                 </ToggleButtonGroup>
             </Box>
 
-            {/* Background Loading Indicator */}
             {isFetching && !isLoading && (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                     <CircularProgress size={20} />
@@ -197,7 +198,6 @@ export default function HostOffersPage() {
                 </Box>
             )}
 
-            {/* Grid of Cards */}
             {items.length === 0 ? (
                 <Alert severity="info" sx={{ borderRadius: 3 }}>
                     No {status.toLowerCase()} offers found.
@@ -205,7 +205,6 @@ export default function HostOffersPage() {
             ) : (
                 <Grid container spacing={3}>
                     {items.map((offer) => (
-                        // ✨ Zmieniono składnię Grid na size={{...}} ✨
                         <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={offer.id}>
                             <HostOfferCard
                                 offer={offer}
@@ -218,7 +217,6 @@ export default function HostOffersPage() {
                 </Grid>
             )}
 
-            {/* Pagination */}
             <PaginationControls
                 pageNumber={pageNumber}
                 totalPages={totalPages}

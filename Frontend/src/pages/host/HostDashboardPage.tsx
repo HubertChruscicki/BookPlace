@@ -8,6 +8,7 @@ import {
     CalendarToday,
 } from '@mui/icons-material';
 import DashboardStatsCard from '../../components/features/host/DashboardStatsCard.tsx';
+import {theme} from "../../theme.ts";
 
 export default function HostDashboardPage() {
     const stats = {
@@ -29,19 +30,20 @@ export default function HostDashboardPage() {
 
     return (
         <Box>
-            <Typography
-                variant="h4"
-                sx={{ fontWeight: 700, color: 'text.primary', mb: 1 }}
+            <Box
+                sx={{ my: 3 }}
             >
-                Dashboard
-            </Typography>
-
-            <Typography
-                variant="body1"
-                sx={{ color: 'text.secondary', mb: 4 }}
-            >
-                Overview of your activity on BookPlace
-            </Typography>
+                <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
+                >
+                    Dashboard
+                </Typography>
+                <Typography
+                    sx={{ fontWeight: 500, fontSize: "1rem", color: theme.palette.text.secondary, mb: 1 }}>
+                    Overview of your activity on BookPlace
+                </Typography>
+            </Box>
 
             <Grid container spacing={3}>
 

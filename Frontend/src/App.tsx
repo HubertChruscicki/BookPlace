@@ -14,6 +14,7 @@ import HostCalendarPage from './pages/host/HostCalendarPage.tsx';
 import HostOffersPage from './pages/host/HostOffersPage.tsx';
 import HostInboxPage from './pages/host/HostInboxPage.tsx';
 import HeaderHostNavigation from './components/common/header/HeaderHostNavigation';
+import InboxPage from "./pages/InboxPage.tsx";
 
 export default function App() {
     return (
@@ -74,8 +75,18 @@ export default function App() {
                         </MainLayout>
                 }
             />
-            
+            <Route element={<ProtectedRoute />}>
+                <Route
+                    path="/inbox"
+                    element={
+                        <MainLayout>
+                            <InboxPage />
+                        </MainLayout>
+                    }
+                />
+            </Route>
             <Route element={<ProtectedRoute allowedRoles={['Host']} />}>
+
                 <Route
                     path="/host/dashboard"
                     element={

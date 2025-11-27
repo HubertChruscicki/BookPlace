@@ -1,6 +1,5 @@
 ﻿import {
     Box,
-    Typography,
     ToggleButton,
     ToggleButtonGroup,
     FormControl,
@@ -26,15 +25,6 @@ const statusOptions = [
 export default function HostBookingFilters({ filters, onStatusChange }: HostBookingFiltersProps) {
     return (
         <>
-            <Box>
-                <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
-                    Bookings
-                </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                    Manage your bookings
-                </Typography>
-            </Box>
-
             <Box sx={{ display: { xs: 'block', md: 'none' } }} mb={4}>
                 <FormControl fullWidth size="medium">
                     <InputLabel id="booking-status-select-label" sx={{ fontWeight: 600 }}>Booking Status</InputLabel>

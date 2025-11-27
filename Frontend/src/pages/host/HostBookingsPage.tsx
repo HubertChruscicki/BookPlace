@@ -1,5 +1,5 @@
 ﻿import { useState, useMemo, useEffect } from 'react';
-import { Box, Typography, Alert, CircularProgress } from '@mui/material';
+import {Box, Typography, Alert, CircularProgress, useTheme} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUserBookings } from '../../hooks/useBooking';
@@ -59,6 +59,7 @@ const transformBookingData = (data: GetUserBookingsResponse | undefined): HostBo
 };
 
 export default function HostBookingsPage() {
+    const theme = useTheme();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [pageNumber, setPageNumber] = useState(1);
@@ -152,6 +153,21 @@ export default function HostBookingsPage() {
 
     return (
         <Box>
+            <Box
+                sx={{ my: 3 }}
+            >
+                <Typography
+                    variant="h4"
+                    sx={{ fontWeight: 700, fontSize: "1.4rem", color: 'text.primary', mb: 1 }}
+                >
+                    Bookings
+                </Typography>
+                <Typography
+                    sx={{ fontWeight: 500, fontSize: "1rem", color: theme.palette.text.secondary, mb: 1 }}>
+                    List of bookings for your offers
+                </Typography>
+            </Box>
+            
             <HostBookingFiltersComponent
                 filters={filters}
                 onStatusChange={handleStatusChange}
