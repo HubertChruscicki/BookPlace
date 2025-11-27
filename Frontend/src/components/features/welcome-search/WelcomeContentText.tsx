@@ -2,7 +2,13 @@
 
 const WelcomeContentText = () => {
     return (
-        <Box>
+        <Box
+            sx={{
+                mt: {
+                    xs: 0, md: 8
+                }
+            }}
+        >
             <Typography
                 variant="h2"
                 sx={{
