@@ -108,3 +108,30 @@ export interface GetHostOffersParams {
     Status?: string;
     IncludeArchived?: boolean;
 }
+
+// Create Offer Payload interfaces
+export interface CreateOfferPhotoPayload {
+    base64Data: string;
+    isCover: boolean;
+}
+
+export interface CreateOfferPayload {
+    title: string;
+    description: string;
+    pricePerNight: number;
+    maxGuests: number;
+    rooms: number;
+    singleBeds: number;
+    doubleBeds: number;
+    sofas: number;
+    bathrooms: number;
+    offerTypeId: number;
+    amenityIds: number[];
+    addressStreet: string;
+    addressCity: string;
+    addressZipCode: string;
+    addressCountry: string;
+    addressLatitude: number;
+    addressLongitude: number;
+    photos: CreateOfferPhotoPayload[];
+}

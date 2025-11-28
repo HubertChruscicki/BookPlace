@@ -13,6 +13,7 @@ import HostBookingsPage from './pages/host/HostBookingsPage.tsx';
 import HostCalendarPage from './pages/host/HostCalendarPage.tsx';
 import HostOffersPage from './pages/host/HostOffersPage.tsx';
 import HostInboxPage from './pages/host/HostInboxPage.tsx';
+import AddOfferPage from './pages/host/AddOfferPage.tsx';
 import HeaderHostNavigation from './components/common/header/HeaderHostNavigation';
 import InboxPage from "./pages/InboxPage.tsx";
 
@@ -116,6 +117,14 @@ export default function App() {
                     element={
                         <MainLayout centerContent={<HeaderHostNavigation />}>
                             <HostOffersPage />
+                        </MainLayout>
+                    }
+                />
+                <Route
+                    path="/host/offers/add"
+                    element={
+                        <MainLayout centerContent={<HeaderHostNavigation />}>
+                            <AddOfferPage />
                         </MainLayout>
                     }
                 />

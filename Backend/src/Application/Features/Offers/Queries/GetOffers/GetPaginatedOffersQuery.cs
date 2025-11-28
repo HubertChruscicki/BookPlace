@@ -20,5 +20,5 @@ public class GetPaginatedOffersQuery : IRequest<PageResult<OfferSummaryDto>>
     public List<int>? AmenityIds { get; set; }
     public DateOnly? CheckInDate { get; set; }
     public DateOnly? CheckOutDate { get; set; }
-    public OfferSortBy SortBy { get; set; } = OfferSortBy.PriceAsc;
+    public OfferSortBy? SortBy { get; set; }
 }

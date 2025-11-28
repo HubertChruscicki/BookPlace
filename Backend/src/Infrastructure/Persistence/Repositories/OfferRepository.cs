@@ -88,7 +88,7 @@ public class OfferRepository : IOfferRepository
         {
             OfferSortBy.PriceAsc => offerQuery.OrderBy(o => o.PricePerNight),
             OfferSortBy.PriceDesc => offerQuery.OrderByDescending(o => o.PricePerNight),
-            _ => offerQuery.OrderBy(o => o.PricePerNight) // Default fallback
+            _ => offerQuery.OrderByDescending(o => o.Id) // Default: newest first (by Id)
         };
 
         return await offerQuery.ToPageResultAsync(query.PageNumber, query.PageSize, ct);

@@ -67,7 +67,7 @@ public class GetPaginatedOffersRequestDto
     public DateOnly? CheckOutDate { get; set; }
 
     /// <summary>
-    /// Sort offers by specified criteria (default: PriceAsc)
+    /// Sort offers by specified criteria 
     /// </summary>
-    public OfferSortBy SortBy { get; set; } = OfferSortBy.PriceAsc;
+    public OfferSortBy? SortBy { get; set; }
 }

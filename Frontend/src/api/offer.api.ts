@@ -6,7 +6,8 @@ import type {
     OfferType,
     Amenity,
     GetHostOffersParams,
-    HostOfferSummary
+    HostOfferSummary,
+    CreateOfferPayload
 } from '../models/OfferModels';
 import type { PageResult } from '../models/PageResultModel';
 
@@ -43,5 +44,10 @@ export const fetchOfferTypes = async (): Promise<OfferType[]> => {
 
 export const fetchAmenities = async (): Promise<Amenity[]> => {
     const { data } = await apiClient.get<Amenity[]>('/Offer/amenities');
+    return data;
+};
+
+export const createOffer = async (payload: CreateOfferPayload): Promise<OfferDetail> => {
+    const { data } = await apiClient.post<OfferDetail>('/Offer', payload);
     return data;
 };

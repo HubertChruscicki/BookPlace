@@ -17,8 +17,8 @@ import {theme} from "../../../theme.ts";
 interface SearchHeaderProps {
     totalCount: number;
     city?: string;
-    sortBy: OfferSortBy;
-    onSortChange: (sortBy: OfferSortBy) => void;
+    sortBy?: OfferSortBy;
+    onSortChange: (sortBy: OfferSortBy | undefined) => void;
     onFiltersChange: (filters: FilterValues) => void;
     activeFilters: FilterValues;
 }
@@ -77,11 +77,17 @@ const SearchHeader: React.FC<SearchHeaderProps> = ({
                         <InputLabel id="sort-select-label">Sort</InputLabel>
                         <Select
                             labelId="sort-select-label"
-                            value={sortBy}
+                            value={sortBy ?? ''}
                             label="Sort"
-                            onChange={(e) => onSortChange(e.target.value as OfferSortBy)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                onSortChange(value === '' ? undefined : value as OfferSortBy);
+                            }}
                             sx={{ borderRadius: 20, px: 1,  }}
                         >
+                            <MenuItem value="">
+                                None
+                            </MenuItem>
                             <MenuItem value={OfferSortBy.PriceAsc}>
                                 Price: Low to High
                             </MenuItem>

@@ -94,7 +94,7 @@ const SearchPage = () => {
     }, [isLoading, isFetchingNextPage, hasNextPage, fetchNextPage]);
 
 
-    const currentSortBy = params.SortBy ?? OfferSortBy.PriceAsc;
+    const currentSortBy = params.SortBy;
     const currentCity = params.City;
 
     const currentFilters: FilterValues = React.useMemo(() => ({
@@ -108,9 +108,13 @@ const SearchPage = () => {
         amenities: params.Amenities,
     }), [params]);
 
-    const handleSortChange = (newSortBy: OfferSortBy) => {
+    const handleSortChange = (newSortBy: OfferSortBy | undefined) => {
         const newParams = new URLSearchParams(searchParams);
-        newParams.set('SortBy', newSortBy.toString());
+        if (newSortBy === undefined) {
+            newParams.delete('SortBy');
+        } else {
+            newParams.set('SortBy', newSortBy.toString());
+        }
         setSearchParams(newParams);
     };
 

@@ -1,10 +1,11 @@
-﻿import { useQuery, useInfiniteQuery, keepPreviousData } from '@tanstack/react-query';
+﻿import { useQuery, useInfiniteQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import {
     fetchOffers,
     fetchAmenities,
     fetchOfferTypes,
     fetchOfferDetails,
-    fetchHostOffers
+    fetchHostOffers,
+    createOffer
 } from '../api/offer.api';
 import type {
     GetOffersParams,
@@ -13,7 +14,8 @@ import type {
     OfferType,
     OfferDetail,
     GetHostOffersParams,
-    HostOfferSummary
+    HostOfferSummary,
+    CreateOfferPayload
 } from '../models/OfferModels';
 import { AxiosError } from 'axios';
 import type { PageResult } from '../models/PageResultModel';
@@ -75,5 +77,16 @@ export const useOffer = (id: string | number) => {
         queryKey: OFFER_QUERY_KEYS.detail(id),
         queryFn: () => fetchOfferDetails(id),
         enabled: !!id,
+    });
+};
+
+export const useCreateOffer = () => {
+    const queryClient = useQueryClient();
+    
+    return useMutation<OfferDetail, AxiosError, CreateOfferPayload>({
+        mutationFn: createOffer,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['host-offers'] });
+        },
     });
 };

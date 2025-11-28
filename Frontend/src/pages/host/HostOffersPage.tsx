@@ -1,4 +1,5 @@
 ﻿import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Typography,
@@ -23,6 +24,7 @@ const PAGE_SIZE = 8;
 
 export default function HostOffersPage() {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const [pageNumber, setPageNumber] = useState(1);
     const [status, setStatus] = useState<'Active' | 'Inactive'>('Active');
@@ -74,9 +76,9 @@ export default function HostOffersPage() {
         }
     };
 
-    const handleAddOffer = () => console.log('Add Offer');
+    const handleAddOffer = () => navigate('/host/offers/add');
     const handleEditOffer = (id: number) => console.log('Edit', id);
-    const handleViewOffer = (id: number) => console.log('View', id);
+    const handleViewOffer = (id: number) => navigate(`/offer/${id}`);
     const handleReviews = (id: number) => console.log('Reviews', id);
 
     if (isLoading && !offersData) {
